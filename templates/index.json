@@ -1,1 +1,31 @@
-{ "sections": {}, "order": [] }
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "designs_showcase": {
+      "type": "designs-showcase",
+      "settings": {}
+    },
+    "prescription_process": {
+      "type": "prescription-process",
+      "settings": {}
+    },
+    "gemstones_atlas": {
+      "type": "gemstones-atlas",
+      "settings": {}
+    },
+    "editorial_story": {
+      "type": "editorial-story",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "designs_showcase",
+    "prescription_process",
+    "gemstones_atlas",
+    "editorial_story"
+  ]
+}

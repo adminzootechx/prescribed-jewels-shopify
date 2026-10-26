@@ -1,0 +1,100 @@
+<section class="pj-hero" aria-labelledby="pj-hero-heading">
+  <div class="pj-hero__media" aria-hidden="true">
+    <div class="pj-hero__slider-track" id="pj-hero-slider-track">
+      <div class="pj-hero__slide">
+        <img
+          src="{{ 'hero-banner.jpg' | asset_url }}"
+          alt=""
+          class="pj-hero__bg-img"
+          width="1408"
+          height="768"
+          fetchpriority="high"
+          loading="eager"
+        >
+      </div>
+      <div class="pj-hero__slide">
+        <img
+          src="{{ 'hero-banner-2.jpg' | asset_url }}"
+          alt=""
+          class="pj-hero__bg-img"
+          width="1408"
+          height="768"
+          loading="eager"
+        >
+      </div>
+      <!-- Clone of Slide 1 for seamless continuous right-to-left loop -->
+      <div class="pj-hero__slide">
+        <img
+          src="{{ 'hero-banner.jpg' | asset_url }}"
+          alt=""
+          class="pj-hero__bg-img"
+          width="1408"
+          height="768"
+          loading="lazy"
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="pj-container pj-hero__overlay">
+    <div class="pj-hero__content">
+      <p class="pj-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1 id="pj-hero-heading" class="pj-hero__title">
+        JEWELLERY<br>
+        THAT FINDS<br>
+        YOU
+      </h1>
+      <p class="pj-hero__lead">{{ section.settings.subtext }}</p>
+
+      <div class="pj-hero__actions">
+        <a href="#pj-designs" class="pj-btn pj-btn--primary">
+          <span>{{ section.settings.cta_label }}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <p class="pj-hero__mantra">
+        YOUR BIRTHPLACE. YOUR TIME. YOUR GEMSTONE. YOUR STORY.
+      </p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "1. Hero Banner",
+  "tag": "section",
+  "class": "pj-section-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "ANCIENT WISDOM. MODERN JEWELLERY."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Jewellery That Finds You"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Thoughtfully designed pieces with a gemstone prescribed from your birth details."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "EXPLORE DESIGNS"
+    }
+  ],
+  "presets": [
+    {
+      "name": "1. Hero Banner"
+    }
+  ]
+}
+{% endschema %}

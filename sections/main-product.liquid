@@ -1,0 +1,142 @@
+<section class="pj-product pj-section" aria-labelledby="pj-product-title">
+  <div class="pj-container pj-product__grid">
+    <div class="pj-product__media">
+      {% if product.featured_image %}
+        {{
+          product.featured_image
+          | image_url: width: 1000
+          | image_tag:
+            class: 'pj-product__img',
+            widths: '500, 750, 1000',
+            alt: product.title
+        }}
+      {% else %}
+        <div class="pj-product__placeholder">
+          {% render 'pj-monogram', variant: 'both' %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="pj-product__details">
+      <p class="pj-eyebrow">PRESCRIBED JEWELS · SIGNATURE &amp; BESPOKE</p>
+      <h1 id="pj-product-title" class="pj-product__title">{{ product.title }}</h1>
+      <p class="pj-product__price">{{ product.selected_or_first_available_variant.price | money }}</p>
+
+      {% if product.description != blank %}
+        <div class="pj-product__description rte">
+          {{ product.description }}
+        </div>
+      {% endif %}
+
+      {% form 'product', product, class: 'pj-form pj-product__form', novalidate: 'novalidate' %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+        {% unless product.has_only_default_variant %}
+          <div class="pj-form__field pj-form__field--full">
+            <label for="pj-variant-select" class="pj-form__label">Select Option</label>
+            <select id="pj-variant-select" name="id" class="pj-form__select">
+              {% for variant in product.variants %}
+                <option
+                  value="{{ variant.id }}"
+                  {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+                  {% unless variant.available %}disabled="disabled"{% endunless %}
+                >
+                  {{ variant.title }} — {{ variant.price | money }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endunless %}
+
+        <div class="pj-form__divider pj-form__field--full">
+          <span>Natal Birth Details (For Days 1–5 Astrologer Prescription)</span>
+        </div>
+
+        <div class="pj-form__grid">
+          <div class="pj-form__field">
+            <label for="pj-prod-birth-date" class="pj-form__label">Date of Birth <span class="pj-req">*</span></label>
+            <input
+              type="date"
+              id="pj-prod-birth-date"
+              name="properties[Birth Date]"
+              class="pj-form__input"
+              required
+              aria-errormessage="pj-prod-date-err"
+            >
+            <div id="pj-prod-date-err" class="pj-form__error">
+              <span aria-hidden="true">!</span> Birth date is required.
+            </div>
+          </div>
+
+          <div class="pj-form__field">
+            <label for="pj-prod-birth-time" class="pj-form__label">Exact Time of Birth <span class="pj-req">*</span></label>
+            <input
+              type="time"
+              id="pj-prod-birth-time"
+              name="properties[Birth Time]"
+              class="pj-form__input"
+              required
+              aria-errormessage="pj-prod-time-err"
+            >
+            <div id="pj-prod-time-err" class="pj-form__error">
+              <span aria-hidden="true">!</span> Exact time of birth is required.
+            </div>
+          </div>
+
+          <div class="pj-form__field">
+            <label for="pj-prod-birth-city" class="pj-form__label">City / Place of Birth <span class="pj-req">*</span></label>
+            <input
+              type="text"
+              id="pj-prod-birth-city"
+              name="properties[Birth City]"
+              class="pj-form__input"
+              placeholder="e.g. Mumbai"
+              required
+              aria-errormessage="pj-prod-city-err"
+            >
+            <div id="pj-prod-city-err" class="pj-form__error">
+              <span aria-hidden="true">!</span> Birth city is required.
+            </div>
+          </div>
+
+          <div class="pj-form__field">
+            <label for="pj-prod-birth-country" class="pj-form__label">Country of Birth <span class="pj-req">*</span></label>
+            <input
+              type="text"
+              id="pj-prod-birth-country"
+              name="properties[Birth Country]"
+              class="pj-form__input"
+              placeholder="e.g. India"
+              required
+              aria-errormessage="pj-prod-country-err"
+            >
+            <div id="pj-prod-country-err" class="pj-form__error">
+              <span aria-hidden="true">!</span> Country of birth is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="pj-form__policy-note">
+          <div class="pj-form__policy-icon" aria-hidden="true">✦</div>
+          <div>
+            “Your order is confirmed. Your personal gemstone selection is now underway. Your finished jewel is expected to ship in approximately 5–7 weeks.”
+          </div>
+        </div>
+
+        <button type="submit" class="pj-btn pj-btn--primary pj-btn--full">
+          <span>Place Order &amp; Begin Prescription</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product — Natal Order",
+  "tag": "section",
+  "class": "pj-section-product",
+  "settings": []
+}
+{% endschema %}

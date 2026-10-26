@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {}
+    },
+    "prescription_process": {
+      "type": "prescription-process",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "prescription_process"
+  ]
+}

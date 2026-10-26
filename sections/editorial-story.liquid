@@ -1,0 +1,60 @@
+<section id="pj-story" class="pj-story pj-section" aria-labelledby="pj-story-heading">
+  <div class="pj-container">
+    <div class="pj-story__card">
+      <div class="pj-story__monogram">
+        {% render 'pj-monogram', variant: 'monogram' %}
+      </div>
+      <p class="pj-eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 id="pj-story-heading" class="pj-story__title">
+        {{ section.settings.heading }}
+      </h2>
+      <p class="pj-story__text">
+        {{ section.settings.body_text }}
+      </p>
+      <div class="pj-story__cta">
+        <button
+          type="button"
+          class="pj-btn pj-btn--primary"
+          data-open-prescription
+          data-design="01 — The Classic (Signature Ring)"
+        >
+          <span>BEGIN YOUR PRESCRIPTION</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "5. Our Story",
+  "tag": "section",
+  "class": "pj-section-story",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "A Piece of Your Own Story"
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Body Text",
+      "default": "Prescribed Jewels is born from the belief that fine jewellery should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details."
+    }
+  ],
+  "presets": [
+    {
+      "name": "5. Our Story"
+    }
+  ]
+}
+{% endschema %}

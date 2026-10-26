@@ -1,1 +1,15 @@
-{ "default": { "general": {} } }
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close"
+    },
+    "brand": {
+      "name": "Prescribed Jewels",
+      "tagline": "Ancient Vedic Wisdom · Modern Fine Jewellery"
+    },
+    "prescription": {
+      "confirmation_quote": "Your order is confirmed. Your personal gemstone selection is now underway. Your finished jewel is expected to ship in approximately 5–7 weeks."
+    }
+  }
+}

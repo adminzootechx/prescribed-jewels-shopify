@@ -1,0 +1,194 @@
+{% comment %}
+  Interactive Native <dialog> Modal for Selecting one of the 7 Designs (6 Static + 1 Custom)
+  and submitting Birth Details for Day 0 Order Placement.
+{% endcomment %}
+<dialog id="pj-prescription-dialog" class="pj-dialog" aria-labelledby="pj-dialog-title">
+  <div class="pj-dialog__container">
+    <header class="pj-dialog__header">
+      <div>
+        <p class="pj-eyebrow" id="pj-dialog-step-eyebrow">DAY 0 · ORDER &amp; NATAL INTAKE</p>
+        <h2 id="pj-dialog-title" class="pj-dialog__title">Begin Your Gemstone Prescription</h2>
+      </div>
+      <button type="button" class="pj-dialog__close" data-dialog-close aria-label="Close modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="pj-dialog__body">
+      <form id="pj-prescription-form" class="pj-form" novalidate>
+        <div class="pj-form__grid">
+          <div class="pj-form__field pj-form__field--full">
+            <label for="pj-design-select" class="pj-form__label">1. Selected Design (6 Signature Static + 1 Custom)</label>
+            <select id="pj-design-select" name="properties[Selected Design]" class="pj-form__select" required aria-errormessage="pj-design-error">
+              <option value="01 — The Classic (Signature Ring)">01 — The Classic · Signature Solitaire Ring (Static Design)</option>
+              <option value="02 — The Solace (Signature Pendant)">02 — The Solace · Sacred Bezel Pendant (Static Design)</option>
+              <option value="03 — The Balance (Signature Bracelet)">03 — The Balance · Talisman Chain Bracelet (Static Design)</option>
+              <option value="04 — The Aura (Signature Drop Earrings)">04 — The Aura · Sculpted Drop Earrings (Static Design)</option>
+              <option value="05 — The Signet (Signature Crest Ring)">05 — The Signet · Heirloom Sovereign Signet (Static Design)</option>
+              <option value="06 — The Celestial (Signature Medallion)">06 — The Celestial · Sunburst Medallion Necklace (Static Design)</option>
+              <option value="07 — Custom Bespoke Commission">07 — Bespoke Jewellery · Custom One-of-a-Kind Architecture</option>
+            </select>
+            <div id="pj-design-error" class="pj-form__error">
+              <span aria-hidden="true">!</span> Please select a design.
+            </div>
+          </div>
+
+          <div class="pj-form__field">
+            <label for="pj-metal-select" class="pj-form__label">Precious Metal Preference</label>
+            <select id="pj-metal-select" name="properties[Precious Metal]" class="pj-form__select">
+              <option value="18k Yellow Gold (Recommended for Vedic Alignment)">18k Solid Yellow Gold (Vedic Standard)</option>
+              <option value="18k Rose Gold">18k Solid Rose Gold</option>
+              <option value="Platinum 950">Platinum 950</option>
+            </select>
+          </div>
+
+          <div class="pj-form__field">
+            <label for="pj-customer-name" class="pj-form__label">Wearer's Full Name <span class="pj-req">*</span></label>
+            <input
+              type="text"
+              id="pj-customer-name"
+              name="properties[Wearer Name]"
+              class="pj-form__input"
+              placeholder="e.g. Aarav Mehta"
+              required
+              aria-errormessage="pj-name-error"
+            >
+            <div id="pj-name-error" class="pj-form__error">
+              <span aria-hidden="true">!</span> Please enter the wearer's full name for the printed prescription.
+            </div>
+          </div>
+
+          <div class="pj-form__divider pj-form__field--full">
+            <span>2. Natal Birth Details (For Astrologer Prescription on Days 1–5)</span>
+          </div>
+
+          <div class="pj-form__field">
+            <label for="pj-birth-date" class="pj-form__label">Date of Birth <span class="pj-req">*</span></label>
+            <input
+              type="date"
+              id="pj-birth-date"
+              name="properties[Birth Date]"
+              class="pj-form__input"
+              required
+              aria-errormessage="pj-date-error"
+            >
+            <div id="pj-date-error" class="pj-form__error">
+              <span aria-hidden="true">!</span> Birth date is required for natal chart calculation.
+            </div>
+          </div>
+
+          <div class="pj-form__field">
+            <label for="pj-birth-time" class="pj-form__label">Exact Time of Birth <span class="pj-req">*</span></label>
+            <input
+              type="time"
+              id="pj-birth-time"
+              name="properties[Birth Time]"
+              class="pj-form__input"
+              required
+              aria-errormessage="pj-time-error"
+            >
+            <div id="pj-time-error" class="pj-form__error">
+              <span aria-hidden="true">!</span> Exact time of birth is required to determine your Lagna (Ascendant).
+            </div>
+          </div>
+
+          <div class="pj-form__field">
+            <label for="pj-birth-city" class="pj-form__label">City / Town of Birth <span class="pj-req">*</span></label>
+            <input
+              type="text"
+              id="pj-birth-city"
+              name="properties[Birth City]"
+              class="pj-form__input"
+              placeholder="e.g. Jaipur, Rajasthan"
+              required
+              aria-errormessage="pj-city-error"
+            >
+            <div id="pj-city-error" class="pj-form__error">
+              <span aria-hidden="true">!</span> Please provide your city or town of birth.
+            </div>
+          </div>
+
+          <div class="pj-form__field">
+            <label for="pj-birth-country" class="pj-form__label">Country of Birth <span class="pj-req">*</span></label>
+            <input
+              type="text"
+              id="pj-birth-country"
+              name="properties[Birth Country]"
+              class="pj-form__input"
+              placeholder="e.g. India"
+              required
+              aria-errormessage="pj-country-error"
+            >
+            <div id="pj-country-error" class="pj-form__error">
+              <span aria-hidden="true">!</span> Please provide your country of birth.
+            </div>
+          </div>
+
+          <div class="pj-form__field pj-form__field--full" id="pj-custom-notes-wrap">
+            <label for="pj-custom-notes" class="pj-form__label">Ring Size / Chain Length or Custom Architectural Notes</label>
+            <textarea
+              id="pj-custom-notes"
+              name="properties[Design & Sizing Notes]"
+              class="pj-form__textarea"
+              rows="2"
+              placeholder="Optional: Specify ring size, chain length, or bespoke silhouette preferences if selecting 07 Bespoke Commission."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="pj-form__policy-note">
+          <div class="pj-form__policy-icon" aria-hidden="true">✦</div>
+          <div>
+            <strong>The Prescription Protocol:</strong> You do not choose the gemstone. Once your order is placed (Day 0), our Vedic astrologer prescribes your single aligned stone from our 18 natural gemstones (Days 1–5). On Days 3–7, your gemstone and its meaning are revealed via email as your jewel enters production—with no revisions or secondary approvals required.
+          </div>
+        </div>
+
+        <div class="pj-form__actions">
+          <button type="submit" class="pj-btn pj-btn--primary pj-btn--full">
+            <span>Confirm Design &amp; Submit Birth Details</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </form>
+
+      <div id="pj-prescription-confirmation" class="pj-confirmation" hidden>
+        <div class="pj-confirmation__badge">DAY 0 · ORDER &amp; BIRTH DETAILS RECORDED</div>
+        <div class="pj-confirmation__monogram">
+          {% render 'pj-monogram', variant: 'monogram' %}
+        </div>
+        <blockquote class="pj-confirmation__quote">
+          “Your order is confirmed. Your personal gemstone selection is now underway. Your finished jewel is expected to ship in approximately 5–7 weeks.”
+        </blockquote>
+        <div class="pj-confirmation__summary" id="pj-confirmation-summary"></div>
+        <div class="pj-confirmation__timeline-mini">
+          <div class="pj-mini-step is-active">
+            <span class="pj-mini-step__time">Day 0</span>
+            <span class="pj-mini-step__name">Order Placed &amp; Birth Details Logged</span>
+          </div>
+          <div class="pj-mini-step">
+            <span class="pj-mini-step__time">Days 1–5</span>
+            <span class="pj-mini-step__name">Astrologer Prescribes Gemstone (No Action Needed)</span>
+          </div>
+          <div class="pj-mini-step">
+            <span class="pj-mini-step__time">Days 3–7</span>
+            <span class="pj-mini-step__name">Branded Email Reveals Your Gemstone &amp; Production Starts</span>
+          </div>
+          <div class="pj-mini-step">
+            <span class="pj-mini-step__time">Weeks 1–5</span>
+            <span class="pj-mini-step__name">Fine Jewellery Crafted Around Your Prescribed Stone</span>
+          </div>
+          <div class="pj-mini-step">
+            <span class="pj-mini-step__time">Weeks 5–7</span>
+            <span class="pj-mini-step__name">Shipped with Printed Prescription Card Inside</span>
+          </div>
+        </div>
+        <div class="pj-confirmation__actions">
+          <button type="button" class="pj-btn pj-btn--outline" id="pj-reset-modal-btn">Modify Details / Preview Another Design</button>
+          <button type="button" class="pj-btn pj-btn--primary" data-dialog-close>Return to Prescribed Jewels</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>

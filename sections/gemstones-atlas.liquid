@@ -1,0 +1,60 @@
+<section id="pj-gemstones" class="pj-gemstones-wheel-outer" aria-labelledby="pj-gemstones-heading" data-gem-wheel-section>
+  <div class="pj-gemstones-wheel-section">
+    <div class="pj-container pj-gemstones-wheel__layout">
+      <!-- Left Column: ONLY Active Gemstone Name & Short Information -->
+      <div class="pj-gemstones-wheel__info">
+        <p class="pj-eyebrow">{{ section.settings.eyebrow }}</p>
+
+        <div class="pj-gemstones-wheel__active-box" id="pj-wheel-info-box" aria-live="polite">
+          <h2 id="pj-gemstones-heading" class="pj-gemstones-wheel__title">
+            <span id="pj-wheel-stone-name">EMERALD</span>
+          </h2>
+
+          <p class="pj-gemstones-wheel__short-desc" id="pj-wheel-desc">
+            Cultivates intellect, eloquent speech, emotional composure, and clear discernment.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Column: Half-Circle Rotating Gemstone Track (No Ring Band) -->
+      <div class="pj-gemstones-wheel__stage" aria-hidden="true">
+        <div class="pj-wheel-half-clip">
+          <div class="pj-wheel-assembly">
+            <!-- Half-Circle Ivory Track Ring -->
+            <div class="pj-wheel-circle-track"></div>
+
+            <!-- Rotating Rotor carrying Gemstone Images along the Half-Circle -->
+            <div
+              class="pj-wheel-rotor"
+              id="pj-wheel-rotor"
+              data-gem-urls="{{ 'gem-01.jpg' | asset_url }}|{{ 'gem-02.jpg' | asset_url }}|{{ 'gem-03.jpg' | asset_url }}|{{ 'gem-04.jpg' | asset_url }}|{{ 'gem-05.jpg' | asset_url }}|{{ 'gem-06.jpg' | asset_url }}|{{ 'gem-07.jpg' | asset_url }}|{{ 'gem-08.jpg' | asset_url }}|{{ 'gem-09.jpg' | asset_url }}|{{ 'gem-10.jpg' | asset_url }}|{{ 'gem-11.jpg' | asset_url }}|{{ 'gem-12.png' | asset_url }}|{{ 'gem-13.png' | asset_url }}|{{ 'gem-14.jpg' | asset_url }}|{{ 'gem-15.jpg' | asset_url }}|{{ 'gem-16.png' | asset_url }}|{{ 'gem-17.png' | asset_url }}|{{ 'gem-18.png' | asset_url }}"
+            >
+              <!-- JS populates the gemstone images around the half-circle wheel -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "4. Rotating Gemstones",
+  "tag": "section",
+  "class": "pj-section-gemstones",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "EIGHTEEN NATURAL VEDIC GEMSTONES"
+    }
+  ],
+  "presets": [
+    {
+      "name": "4. Rotating Gemstones"
+    }
+  ]
+}
+{% endschema %}

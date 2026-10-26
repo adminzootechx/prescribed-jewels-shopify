@@ -1,0 +1,46 @@
+<footer class="pj-footer" role="contentinfo">
+  <div class="pj-container pj-footer__bar">
+    <a href="{{ routes.root_url }}" class="pj-footer__logo" aria-label="{{ shop.name | default: 'Prescribed Jewels' }}">
+      {% render 'pj-monogram', variant: 'wordmark' %}
+    </a>
+
+    <nav class="pj-footer__nav" aria-label="Footer Navigation">
+      <a href="#pj-designs" class="pj-footer__link">Jewels</a>
+      <a href="#pj-story" class="pj-footer__link">Our Story</a>
+      <a href="#pj-process" class="pj-footer__link">The Prescription</a>
+      <a href="#pj-gemstones" class="pj-footer__link">Gemstones</a>
+      <button
+        type="button"
+        class="pj-footer__link pj-footer__link-btn"
+        data-open-prescription
+        data-design="07 — Custom Bespoke Commission"
+      >
+        Inquire
+      </button>
+    </nav>
+
+    <div class="pj-footer__socials">
+      <a href="#pj-designs" class="pj-footer__social-icon" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <rect x="3" y="3" width="18" height="18" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+        </svg>
+      </a>
+      <a href="#pj-designs" class="pj-footer__social-icon" aria-label="Pinterest">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M10 17l1.5-6.5M10.5 13.5c.5.8 1.5 1.2 2.5 1.2 2 0 3.2-1.6 3.2-3.7 0-2-1.6-3.5-4-3.5-2.6 0-4.2 1.7-4.2 3.8 0 .9.3 1.7.9 2.2" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "pj-section-footer",
+  "settings": []
+}
+{% endschema %}

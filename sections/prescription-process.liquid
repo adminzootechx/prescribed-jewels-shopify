@@ -1,0 +1,127 @@
+<section id="pj-process" class="pj-process-scroll-outer" aria-labelledby="pj-process-heading" data-scroll-process>
+  <div class="pj-process-sticky">
+    <div class="pj-container">
+      <div class="pj-process__header">
+        <p class="pj-eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 id="pj-process-heading" class="pj-section-title">
+          A THOUGHTFUL JOURNEY
+        </h2>
+      </div>
+
+      <div class="pj-process__stage">
+        <!-- Alternating Sine-Wave Curve: Arch Over (∩) Step 1 -> U-Curve Under (∪) Step 2 -> Arch Over (∩) Step 3 -> U-Curve Under (∪) Step 4 -> Arch Over (∩) Step 5 -->
+        <div class="pj-process__curve-wrap" aria-hidden="true">
+          <svg class="pj-process__curve-svg" viewBox="0 0 1200 360" fill="none" preserveAspectRatio="none">
+            <path
+              class="pj-process__curve-bg"
+              d="M 10,180 C 30,20 210,20 240,180 C 270,340 450,340 480,180 C 510,20 690,20 720,180 C 750,340 930,340 960,180 C 990,20 1170,20 1190,180"
+            />
+            <path
+              id="pj-curve-path-fill"
+              class="pj-process__curve-fill"
+              d="M 10,180 C 30,20 210,20 240,180 C 270,340 450,340 480,180 C 510,20 690,20 720,180 C 750,340 930,340 960,180 C 990,20 1170,20 1190,180"
+            />
+          </svg>
+        </div>
+
+        <ol class="pj-steps" aria-label="Five-stage prescription journey">
+          <!-- Step 1: Day 0 (Inverted-U Arch on Top ∩) -->
+          <li class="pj-step pj-step--arch-top is-reached" data-process-step="0">
+            <div class="pj-step__card">
+              <div class="pj-step__photo-wrap">
+                <img src="{{ 'design-01-classic.jpg' | asset_url }}" alt="Day 0 Order Placed" class="pj-step__photo" width="240" height="240" loading="lazy">
+                <span class="pj-step__badge">01</span>
+              </div>
+              <span class="pj-step__num">DAY 0</span>
+              <h3 class="pj-step__title">ORDER PLACED</h3>
+              <p class="pj-step__desc">
+                Select your design, share your birth details, and receive immediate confirmation (5–7 weeks delivery).
+              </p>
+            </div>
+          </li>
+
+          <!-- Step 2: Days 1-5 (U-Curve Below ∪) -->
+          <li class="pj-step pj-step--curve-bottom" data-process-step="1">
+            <div class="pj-step__card">
+              <div class="pj-step__photo-wrap">
+                <img src="{{ 'gemstones-editorial.jpg' | asset_url }}" alt="Days 1–5 Gemstone Prescribed" class="pj-step__photo" width="240" height="240" loading="lazy">
+                <span class="pj-step__badge">02</span>
+              </div>
+              <span class="pj-step__num">DAYS 1–5</span>
+              <h3 class="pj-step__title">GEMSTONE PRESCRIBED</h3>
+              <p class="pj-step__desc">
+                Our astrologer studies your birth chart and prescribes your stone. No customer action is required.
+              </p>
+            </div>
+          </li>
+
+          <!-- Step 3: Days 3-7 (Inverted-U Arch on Top ∩) -->
+          <li class="pj-step pj-step--arch-top" data-process-step="2">
+            <div class="pj-step__card">
+              <div class="pj-step__photo-wrap">
+                <img src="{{ 'design-06-celestial.jpg' | asset_url }}" alt="Days 3–7 Prescription Revealed" class="pj-step__photo" width="240" height="240" loading="lazy">
+                <span class="pj-step__badge">03</span>
+              </div>
+              <span class="pj-step__num">DAYS 3–7</span>
+              <h3 class="pj-step__title">PRESCRIPTION REVEALED</h3>
+              <p class="pj-step__desc">
+                A branded email reveals your gemstone and meaning as production begins — no approvals or revisions.
+              </p>
+            </div>
+          </li>
+
+          <!-- Step 4: Weeks 1-5 (U-Curve Below ∪) -->
+          <li class="pj-step pj-step--curve-bottom" data-process-step="3">
+            <div class="pj-step__card">
+              <div class="pj-step__photo-wrap">
+                <img src="{{ 'design-05-signet.jpg' | asset_url }}" alt="Weeks 1–5 Jewellery Production" class="pj-step__photo" width="240" height="240" loading="lazy">
+                <span class="pj-step__badge">04</span>
+              </div>
+              <span class="pj-step__num">WEEKS 1–5</span>
+              <h3 class="pj-step__title">JEWELLERY PRODUCTION</h3>
+              <p class="pj-step__desc">
+                Handcrafted according to your chosen design and prescribed gemstone with quiet precision.
+              </p>
+            </div>
+          </li>
+
+          <!-- Step 5: Weeks 5-7 (Inverted-U Arch on Top ∩) -->
+          <li class="pj-step pj-step--arch-top" data-process-step="4">
+            <div class="pj-step__card">
+              <div class="pj-step__photo-wrap">
+                <img src="{{ 'design-04-aura.jpg' | asset_url }}" alt="Weeks 5–7 Delivered To You" class="pj-step__photo" width="240" height="240" loading="lazy">
+                <span class="pj-step__badge">05</span>
+              </div>
+              <span class="pj-step__num">WEEKS 5–7</span>
+              <h3 class="pj-step__title">DELIVERED TO YOU</h3>
+              <p class="pj-step__desc">
+                Tracking sent; your physical box arrives with the small printed prescription alongside your jewel.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "3. How It Works",
+  "tag": "section",
+  "class": "pj-section-process",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "HOW IT WORKS"
+    }
+  ],
+  "presets": [
+    {
+      "name": "3. How It Works"
+    }
+  ]
+}
+{% endschema %}

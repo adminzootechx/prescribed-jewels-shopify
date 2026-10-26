@@ -1,1 +1,67 @@
-[{ "name": "theme_info", "theme_name": "Prescribed Jewels", "theme_version": "0.1.0", "theme_author": "Zootechx", "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes", "theme_support_email": "architjain2005@gmail.com" }]
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Prescribed Jewels",
+    "theme_version": "1.0.0",
+    "theme_author": "Zootechx",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_email": "architjain2005@gmail.com"
+  },
+  {
+    "name": "Brand & Colors",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "brand_logo",
+        "label": "Brand Logo Image"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_primary",
+        "label": "Primary Background (Warm Ivory)",
+        "default": "#FBF9F4"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_secondary",
+        "label": "Secondary Background (Travertine Sand)",
+        "default": "#F2ECE1"
+      },
+      {
+        "type": "color",
+        "id": "color_text_primary",
+        "label": "Primary Text (Deep Obsidian)",
+        "default": "#161513"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_forest",
+        "label": "Primary Accent (Botanical Emerald)",
+        "default": "#12261E"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_gold",
+        "label": "Metallic Accent (Antique Gold)",
+        "default": "#B69156"
+      }
+    ]
+  },
+  {
+    "name": "Prescription Settings",
+    "settings": [
+      {
+        "type": "text",
+        "id": "shipping_timeline_notice",
+        "label": "Order Confirmation / Timeline Statement",
+        "default": "Your order is confirmed. Your personal gemstone selection is now underway. Your finished jewel is expected to ship in approximately 5–7 weeks."
+      },
+      {
+        "type": "text",
+        "id": "concierge_email",
+        "label": "Bespoke Concierge Email",
+        "default": "concierge@prescribedjewels.com"
+      }
+    ]
+  }
+]

@@ -1,0 +1,230 @@
+<section id="pj-designs" class="pj-designs-scroll-outer" aria-labelledby="pj-designs-heading" data-horizontal-designs>
+  <div class="pj-designs-sticky">
+    <div class="pj-container">
+      <div class="pj-designs__header">
+        <div class="pj-designs__header-left">
+          <p class="pj-eyebrow">{{ section.settings.eyebrow }}</p>
+          <h2 id="pj-designs-heading" class="pj-section-title">
+            SEVEN DESIGNS,<br>ONE MEANING
+          </h2>
+        </div>
+        <div class="pj-designs__header-line" aria-hidden="true"></div>
+        <div class="pj-designs__arrows">
+          <button type="button" class="pj-designs__arrow-btn" id="pj-designs-prev" aria-label="Previous designs">
+            ←
+          </button>
+          <button type="button" class="pj-designs__arrow-btn" id="pj-designs-next" aria-label="Next designs">
+            →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pj-designs__viewport" id="pj-designs-viewport">
+      <div class="pj-designs__track" id="pj-designs-track">
+        <!-- 01: THE CLASSIC (UP) -->
+        <article class="pj-design-tile pj-design-tile--up">
+          <div class="pj-design-tile__media">
+            <img
+              src="{{ 'design-01-classic.jpg' | asset_url }}"
+              alt="01 The Classic"
+              class="pj-design-tile__img"
+              width="600"
+              height="800"
+              loading="lazy"
+            >
+          </div>
+          <div class="pj-design-tile__info">
+            <span class="pj-design-tile__num">01</span>
+            <h3 class="pj-design-tile__name">THE CLASSIC</h3>
+            <button
+              type="button"
+              class="pj-design-tile__link"
+              data-open-prescription
+              data-design="01 — The Classic (Signature Ring)"
+            >
+              VIEW DETAILS →
+            </button>
+          </div>
+        </article>
+
+        <!-- 02: THE SOLACE (DOWN) -->
+        <article class="pj-design-tile pj-design-tile--down">
+          <div class="pj-design-tile__media">
+            <img
+              src="{{ 'design-02-solace.jpg' | asset_url }}"
+              alt="02 The Solace"
+              class="pj-design-tile__img"
+              width="600"
+              height="800"
+              loading="lazy"
+            >
+          </div>
+          <div class="pj-design-tile__info">
+            <span class="pj-design-tile__num">02</span>
+            <h3 class="pj-design-tile__name">THE SOLACE</h3>
+            <button
+              type="button"
+              class="pj-design-tile__link"
+              data-open-prescription
+              data-design="02 — The Solace (Signature Pendant)"
+            >
+              VIEW DETAILS →
+            </button>
+          </div>
+        </article>
+
+        <!-- 03: THE BALANCE (UP) -->
+        <article class="pj-design-tile pj-design-tile--up">
+          <div class="pj-design-tile__media">
+            <img
+              src="{{ 'design-03-balance.jpg' | asset_url }}"
+              alt="03 The Balance"
+              class="pj-design-tile__img"
+              width="600"
+              height="800"
+              loading="lazy"
+            >
+          </div>
+          <div class="pj-design-tile__info">
+            <span class="pj-design-tile__num">03</span>
+            <h3 class="pj-design-tile__name">THE BALANCE</h3>
+            <button
+              type="button"
+              class="pj-design-tile__link"
+              data-open-prescription
+              data-design="03 — The Balance (Signature Bracelet)"
+            >
+              VIEW DETAILS →
+            </button>
+          </div>
+        </article>
+
+        <!-- 04: THE AURA (DOWN) -->
+        <article class="pj-design-tile pj-design-tile--down">
+          <div class="pj-design-tile__media">
+            <img
+              src="{{ 'design-04-aura.jpg' | asset_url }}"
+              alt="04 The Aura"
+              class="pj-design-tile__img"
+              width="600"
+              height="800"
+              loading="lazy"
+            >
+          </div>
+          <div class="pj-design-tile__info">
+            <span class="pj-design-tile__num">04</span>
+            <h3 class="pj-design-tile__name">THE AURA</h3>
+            <button
+              type="button"
+              class="pj-design-tile__link"
+              data-open-prescription
+              data-design="04 — The Aura (Signature Drop Earrings)"
+            >
+              VIEW DETAILS →
+            </button>
+          </div>
+        </article>
+
+        <!-- 05: THE SIGNET (UP) -->
+        <article class="pj-design-tile pj-design-tile--up">
+          <div class="pj-design-tile__media">
+            <img
+              src="{{ 'design-05-signet.jpg' | asset_url }}"
+              alt="05 The Signet"
+              class="pj-design-tile__img"
+              width="600"
+              height="800"
+              loading="lazy"
+            >
+          </div>
+          <div class="pj-design-tile__info">
+            <span class="pj-design-tile__num">05</span>
+            <h3 class="pj-design-tile__name">THE SIGNET</h3>
+            <button
+              type="button"
+              class="pj-design-tile__link"
+              data-open-prescription
+              data-design="05 — The Signet (Signature Crest Ring)"
+            >
+              VIEW DETAILS →
+            </button>
+          </div>
+        </article>
+
+        <!-- 06: THE CELESTIAL (DOWN) -->
+        <article class="pj-design-tile pj-design-tile--down">
+          <div class="pj-design-tile__media">
+            <img
+              src="{{ 'design-06-celestial.jpg' | asset_url }}"
+              alt="06 The Celestial"
+              class="pj-design-tile__img"
+              width="600"
+              height="800"
+              loading="lazy"
+            >
+          </div>
+          <div class="pj-design-tile__info">
+            <span class="pj-design-tile__num">06</span>
+            <h3 class="pj-design-tile__name">THE CELESTIAL</h3>
+            <button
+              type="button"
+              class="pj-design-tile__link"
+              data-open-prescription
+              data-design="06 — The Celestial (Signature Medallion)"
+            >
+              VIEW DETAILS →
+            </button>
+          </div>
+        </article>
+
+        <!-- 07: CUSTOM (UP) -->
+        <article class="pj-design-tile pj-design-tile--up pj-design-tile--custom">
+          <div class="pj-design-tile__media">
+            <img
+              src="{{ 'design-07-bespoke.jpg' | asset_url }}"
+              alt="07 Custom"
+              class="pj-design-tile__img"
+              width="600"
+              height="800"
+              loading="lazy"
+            >
+          </div>
+          <div class="pj-design-tile__info">
+            <span class="pj-design-tile__num">07</span>
+            <h3 class="pj-design-tile__name">CUSTOM</h3>
+            <button
+              type="button"
+              class="pj-design-tile__link"
+              data-open-prescription
+              data-design="07 — Custom Bespoke Commission"
+            >
+              INQUIRE →
+            </button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "2. The 7 Designs",
+  "tag": "section",
+  "class": "pj-section-designs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "THE COLLECTION"
+    }
+  ],
+  "presets": [
+    {
+      "name": "2. The 7 Designs"
+    }
+  ]
+}
+{% endschema %}

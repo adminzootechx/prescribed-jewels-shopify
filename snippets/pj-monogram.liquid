@@ -1,0 +1,25 @@
+{% comment %}
+  Renders the Prescribed Jewels brand wordmark or PJ monogram.
+  Accepts:
+  - variant: 'wordmark' | 'monogram' | 'both' (default: 'wordmark')
+{% endcomment %}
+{% assign logo_variant = variant | default: 'wordmark' %}
+
+{% if logo_variant == 'monogram' %}
+  <span class="pj-monogram-mark" aria-hidden="true">
+    <span class="pj-monogram-p">P</span><span class="pj-monogram-j">J</span>
+  </span>
+{% elsif logo_variant == 'both' %}
+  <span class="pj-wordmark-wrap pj-wordmark-wrap--stacked">
+    <span class="pj-wordmark-main">PRESCRIBED</span>
+    <span class="pj-wordmark-sub">J E W E L S</span>
+    <span class="pj-monogram-mark pj-monogram-mark--sm" aria-hidden="true">
+      <span class="pj-monogram-p">P</span><span class="pj-monogram-j">J</span>
+    </span>
+  </span>
+{% else %}
+  <span class="pj-wordmark-wrap">
+    <span class="pj-wordmark-main">PRESCRIBED</span>
+    <span class="pj-wordmark-sub">J E W E L S</span>
+  </span>
+{% endif %}

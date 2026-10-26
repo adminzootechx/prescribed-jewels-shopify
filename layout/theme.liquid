@@ -1,15 +1,70 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html lang="{{ request.locale.iso_code }}" class="no-js">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ page_title }}{% unless page_title contains shop.name %} – {{ shop.name }}{% endunless %}</title>
+    <meta name="theme-color" content="{{ settings.color_bg_primary | default: '#FBF9F4' }}">
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name | default: 'Prescribed Jewels' }}{% endunless -%}
+    </title>
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% else %}
+      <meta name="description" content="Fine jewellery crafted around a natural gemstone prescribed from your Vedic birth details. Six signature designs and one custom bespoke creation, delivered in 5–7 weeks.">
+    {% endif %}
+
+    {% # theme-check-disable RemoteAsset %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    {% # theme-check-enable RemoteAsset %}
+
     {{ content_for_header }}
+
+    <style>
+      :root {
+        --pj-bg-primary: {{ settings.color_bg_primary | default: '#F3ECE0' }};
+        --pj-bg-secondary: {{ settings.color_bg_secondary | default: '#E9DFCE' }};
+        --pj-bg-card: #F7F1E6;
+        --pj-text-primary: {{ settings.color_text_primary | default: '#1A1815' }};
+        --pj-text-muted: #5A5247;
+        --pj-text-soft: #857B6D;
+        --pj-accent-forest: {{ settings.color_accent_forest | default: '#12261E' }};
+        --pj-accent-forest-hover: #1D3B2F;
+        --pj-accent-gold: {{ settings.color_accent_gold | default: '#B69156' }};
+        --pj-accent-gold-soft: rgba(182, 145, 86, 0.2);
+        --pj-border: rgba(26, 24, 21, 0.12);
+        --pj-border-strong: rgba(26, 24, 21, 0.25);
+        --pj-font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+        --pj-font-sans: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --pj-max-width: 1360px;
+        --pj-radius-sm: 2px;
+        --pj-radius-md: 4px;
+        --pj-radius-arch: 180px 180px 4px 4px;
+        --pj-shadow-soft: 0 18px 48px rgba(22, 21, 19, 0.06);
+        --pj-shadow-elevated: 0 28px 70px rgba(22, 21, 19, 0.14);
+      }
+    </style>
+
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    <script>document.documentElement.classList.replace('no-js', 'js');</script>
   </head>
-  <body>
+  <body class="pj-body template-{{ template.name | handle }}">
+    <a class="pj-skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
     {% sections 'header-group' %}
-    <main id="MainContent">{{ content_for_layout }}</main>
+
+    <main id="MainContent" class="pj-main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
     {% sections 'footer-group' %}
+
+    {% render 'prescription-modal' %}
+
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
   </body>
 </html>
