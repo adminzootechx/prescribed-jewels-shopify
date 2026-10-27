@@ -24,6 +24,13 @@
 
     {{ content_for_header }}
 
+    {%- if settings.use_custom_fonts -%}
+      <style>
+        {{ settings.font_heading | font_face: font_display: 'swap' }}
+        {{ settings.font_body | font_face: font_display: 'swap' }}
+      </style>
+    {%- endif -%}
+
     <style>
       :root {
         --pj-bg-primary: {{ settings.color_bg_primary | default: '#F3ECE0' }};
@@ -38,8 +45,14 @@
         --pj-accent-gold-soft: rgba(182, 145, 86, 0.2);
         --pj-border: rgba(26, 24, 21, 0.12);
         --pj-border-strong: rgba(26, 24, 21, 0.25);
+        {%- if settings.use_custom_fonts %}
+        --pj-font-serif: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+        --pj-font-sans: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+        {%- else %}
         --pj-font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
         --pj-font-sans: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        {%- endif %}
+        --pj-hs: {{ settings.heading_scale | default: 100 | divided_by: 100.0 }};
         --pj-max-width: 1360px;
         --pj-radius-sm: 2px;
         --pj-radius-md: 4px;
@@ -48,6 +61,7 @@
         --pj-shadow-elevated: 0 28px 70px rgba(22, 21, 19, 0.14);
       }
     </style>
+    <style>html { font-size: {{ settings.base_font_size | default: 16 }}px; }</style>
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <script>document.documentElement.classList.replace('no-js', 'js');</script>

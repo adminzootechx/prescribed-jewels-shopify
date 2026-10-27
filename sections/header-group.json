@@ -4,7 +4,43 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {},
+      "blocks": {
+        "link1": {
+          "type": "link",
+          "settings": {
+            "label": "Jewels",
+            "link": "#pj-designs"
+          }
+        },
+        "link2": {
+          "type": "link",
+          "settings": {
+            "label": "Our Story",
+            "link": "#pj-story"
+          }
+        },
+        "link3": {
+          "type": "link",
+          "settings": {
+            "label": "The Prescription",
+            "link": "#pj-process"
+          }
+        },
+        "link4": {
+          "type": "link",
+          "settings": {
+            "label": "Gemstones",
+            "link": "#pj-gemstones"
+          }
+        }
+      },
+      "block_order": [
+        "link1",
+        "link2",
+        "link3",
+        "link4"
+      ]
     }
   },
   "order": [

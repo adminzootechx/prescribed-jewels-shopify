@@ -13,9 +13,9 @@
     </button>
 
     <nav class="pj-header__nav" aria-label="Primary Navigation">
-      <a href="#pj-designs" class="pj-header__link">Jewels</a>
-      <a href="#pj-story" class="pj-header__link">Our Story</a>
-      <a href="#pj-process" class="pj-header__link">The Prescription</a>
+      {%- for block in section.blocks -%}
+        {%- unless forloop.index > 3 -%}<a href="{{ block.settings.link | default: '#' }}" class="pj-header__link" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>{%- endunless -%}
+      {%- endfor -%}
     </nav>
 
     <a href="{{ routes.root_url }}" class="pj-header__logo" aria-label="{{ shop.name | default: 'Prescribed Jewels' }}">
@@ -60,10 +60,9 @@
 
   <div id="pj-mobile-nav" class="pj-mobile-nav" hidden>
     <nav class="pj-container pj-mobile-nav__inner" aria-label="Mobile Navigation">
-      <a href="#pj-designs" class="pj-mobile-nav__link">Jewels</a>
-      <a href="#pj-story" class="pj-mobile-nav__link">Our Story</a>
-      <a href="#pj-process" class="pj-mobile-nav__link">The Prescription</a>
-      <a href="#pj-gemstones" class="pj-mobile-nav__link">Gemstones</a>
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link | default: '#' }}" class="pj-mobile-nav__link">{{ block.settings.label }}</a>
+      {%- endfor -%}
     </nav>
   </div>
 </header>
@@ -72,6 +71,17 @@
 {
   "name": "Header",
   "class": "pj-section-header",
-  "settings": []
+  "settings": [],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Menu link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Jewels" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 6
 }
 {% endschema %}

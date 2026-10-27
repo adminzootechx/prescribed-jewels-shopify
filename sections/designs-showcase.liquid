@@ -1,12 +1,10 @@
-<section id="pj-designs" class="pj-designs-scroll-outer" aria-labelledby="pj-designs-heading" data-horizontal-designs>
+<section id="pj-designs" class="pj-designs-scroll-outer" aria-labelledby="pj-designs-heading" data-horizontal-designs style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }};">
   <div class="pj-designs-sticky">
     <div class="pj-container">
       <div class="pj-designs__header">
         <div class="pj-designs__header-left">
           <p class="pj-eyebrow">{{ section.settings.eyebrow }}</p>
-          <h2 id="pj-designs-heading" class="pj-section-title">
-            SEVEN DESIGNS,<br>ONE MEANING
-          </h2>
+          <h2 id="pj-designs-heading" class="pj-section-title">{{ section.settings.heading | escape | newline_to_br }}</h2>
         </div>
         <div class="pj-designs__header-line" aria-hidden="true"></div>
         <div class="pj-designs__arrows">
@@ -22,187 +20,24 @@
 
     <div class="pj-designs__viewport" id="pj-designs-viewport">
       <div class="pj-designs__track" id="pj-designs-track">
-        <!-- 01: THE CLASSIC (UP) -->
-        <article class="pj-design-tile pj-design-tile--up">
-          <div class="pj-design-tile__media">
-            <img
-              src="{{ 'design-01-classic.jpg' | asset_url }}"
-              alt="01 The Classic"
-              class="pj-design-tile__img"
-              width="600"
-              height="800"
-              loading="lazy"
-            >
-          </div>
-          <div class="pj-design-tile__info">
-            <span class="pj-design-tile__num">01</span>
-            <h3 class="pj-design-tile__name">THE CLASSIC</h3>
-            <button
-              type="button"
-              class="pj-design-tile__link"
-              data-open-prescription
-              data-design="01 — The Classic (Signature Ring)"
-            >
-              VIEW DETAILS →
-            </button>
-          </div>
-        </article>
-
-        <!-- 02: THE SOLACE (DOWN) -->
-        <article class="pj-design-tile pj-design-tile--down">
-          <div class="pj-design-tile__media">
-            <img
-              src="{{ 'design-02-solace.jpg' | asset_url }}"
-              alt="02 The Solace"
-              class="pj-design-tile__img"
-              width="600"
-              height="800"
-              loading="lazy"
-            >
-          </div>
-          <div class="pj-design-tile__info">
-            <span class="pj-design-tile__num">02</span>
-            <h3 class="pj-design-tile__name">THE SOLACE</h3>
-            <button
-              type="button"
-              class="pj-design-tile__link"
-              data-open-prescription
-              data-design="02 — The Solace (Signature Pendant)"
-            >
-              VIEW DETAILS →
-            </button>
-          </div>
-        </article>
-
-        <!-- 03: THE BALANCE (UP) -->
-        <article class="pj-design-tile pj-design-tile--up">
-          <div class="pj-design-tile__media">
-            <img
-              src="{{ 'design-03-balance.jpg' | asset_url }}"
-              alt="03 The Balance"
-              class="pj-design-tile__img"
-              width="600"
-              height="800"
-              loading="lazy"
-            >
-          </div>
-          <div class="pj-design-tile__info">
-            <span class="pj-design-tile__num">03</span>
-            <h3 class="pj-design-tile__name">THE BALANCE</h3>
-            <button
-              type="button"
-              class="pj-design-tile__link"
-              data-open-prescription
-              data-design="03 — The Balance (Signature Bracelet)"
-            >
-              VIEW DETAILS →
-            </button>
-          </div>
-        </article>
-
-        <!-- 04: THE AURA (DOWN) -->
-        <article class="pj-design-tile pj-design-tile--down">
-          <div class="pj-design-tile__media">
-            <img
-              src="{{ 'design-04-aura.jpg' | asset_url }}"
-              alt="04 The Aura"
-              class="pj-design-tile__img"
-              width="600"
-              height="800"
-              loading="lazy"
-            >
-          </div>
-          <div class="pj-design-tile__info">
-            <span class="pj-design-tile__num">04</span>
-            <h3 class="pj-design-tile__name">THE AURA</h3>
-            <button
-              type="button"
-              class="pj-design-tile__link"
-              data-open-prescription
-              data-design="04 — The Aura (Signature Drop Earrings)"
-            >
-              VIEW DETAILS →
-            </button>
-          </div>
-        </article>
-
-        <!-- 05: THE SIGNET (UP) -->
-        <article class="pj-design-tile pj-design-tile--up">
-          <div class="pj-design-tile__media">
-            <img
-              src="{{ 'design-05-signet.jpg' | asset_url }}"
-              alt="05 The Signet"
-              class="pj-design-tile__img"
-              width="600"
-              height="800"
-              loading="lazy"
-            >
-          </div>
-          <div class="pj-design-tile__info">
-            <span class="pj-design-tile__num">05</span>
-            <h3 class="pj-design-tile__name">THE SIGNET</h3>
-            <button
-              type="button"
-              class="pj-design-tile__link"
-              data-open-prescription
-              data-design="05 — The Signet (Signature Crest Ring)"
-            >
-              VIEW DETAILS →
-            </button>
-          </div>
-        </article>
-
-        <!-- 06: THE CELESTIAL (DOWN) -->
-        <article class="pj-design-tile pj-design-tile--down">
-          <div class="pj-design-tile__media">
-            <img
-              src="{{ 'design-06-celestial.jpg' | asset_url }}"
-              alt="06 The Celestial"
-              class="pj-design-tile__img"
-              width="600"
-              height="800"
-              loading="lazy"
-            >
-          </div>
-          <div class="pj-design-tile__info">
-            <span class="pj-design-tile__num">06</span>
-            <h3 class="pj-design-tile__name">THE CELESTIAL</h3>
-            <button
-              type="button"
-              class="pj-design-tile__link"
-              data-open-prescription
-              data-design="06 — The Celestial (Signature Medallion)"
-            >
-              VIEW DETAILS →
-            </button>
-          </div>
-        </article>
-
-        <!-- 07: CUSTOM (UP) -->
-        <article class="pj-design-tile pj-design-tile--up pj-design-tile--custom">
-          <div class="pj-design-tile__media">
-            <img
-              src="{{ 'design-07-bespoke.jpg' | asset_url }}"
-              alt="07 Custom"
-              class="pj-design-tile__img"
-              width="600"
-              height="800"
-              loading="lazy"
-            >
-          </div>
-          <div class="pj-design-tile__info">
-            <span class="pj-design-tile__num">07</span>
-            <h3 class="pj-design-tile__name">CUSTOM</h3>
-            <button
-              type="button"
-              class="pj-design-tile__link"
-              data-open-prescription
-              data-design="07 — Custom Bespoke Commission"
-            >
-              INQUIRE →
-            </button>
-          </div>
-        </article>
+        {%- assign fallbacks = 'design-01-classic.jpg,design-02-solace.jpg,design-03-balance.jpg,design-04-aura.jpg,design-05-signet.jpg,design-06-celestial.jpg,design-07-bespoke.jpg' | split: ',' -%}
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <article class="pj-design-tile {% cycle 'pj-design-tile--up', 'pj-design-tile--down' %}{% if b.is_custom %} pj-design-tile--custom{% endif %}" {{ block.shopify_attributes }}>
+            <div class="pj-design-tile__media">
+              {%- if b.image != blank -%}
+                {{ b.image | image_url: width: 900 | image_tag: class: 'pj-design-tile__img', widths: '450, 600, 900', sizes: '(min-width: 960px) 28vw, 80vw', alt: b.name, loading: 'lazy' }}
+              {%- else -%}
+                <img src="{{ fallbacks[forloop.index0] | default: fallbacks[0] | asset_url }}" alt="{{ b.name | escape }}" class="pj-design-tile__img" width="600" height="800" loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="pj-design-tile__info">
+              <span class="pj-design-tile__num">{{ forloop.index | prepend: '0' }}</span>
+              <h3 class="pj-design-tile__name">{{ b.name }}</h3>
+              <button type="button" class="pj-design-tile__link" data-open-prescription data-design="{{ b.request_label | escape }}">{{ b.button_label }}</button>
+            </div>
+          </article>
+        {%- endfor -%}
       </div>
     </div>
   </div>
@@ -214,17 +49,26 @@
   "tag": "section",
   "class": "pj-section-designs",
   "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE COLLECTION" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "info": "Press Enter for a new line.", "default": "SEVEN DESIGNS,\nONE MEANING" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100 }
+  ],
+  "blocks": [
     {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "THE COLLECTION"
+      "type": "design",
+      "name": "Design",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "Portrait, 3:4." },
+        { "type": "text", "id": "name", "label": "Name", "default": "THE CLASSIC" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "VIEW DETAILS →" },
+        { "type": "text", "id": "request_label", "label": "Name shown on the order form", "default": "01 — The Classic (Signature Ring)" },
+        { "type": "checkbox", "id": "is_custom", "label": "Style as the custom/bespoke tile", "default": false }
+      ]
     }
   ],
+  "max_blocks": 12,
   "presets": [
-    {
-      "name": "2. The 7 Designs"
-    }
+    { "name": "2. The 7 Designs", "blocks": [ { "type": "design" }, { "type": "design" }, { "type": "design" } ] }
   ]
 }
 {% endschema %}
