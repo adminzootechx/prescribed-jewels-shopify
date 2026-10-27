@@ -1,0 +1,75 @@
+{%- liquid
+  assign s = section.settings
+  assign lines = s.statement | newline_to_br | split: '<br />'
+-%}
+{% render 'pj-section-style', section: section %}
+
+<section
+  class="pj-split{% if s.image_side == 'right' %} pj-split--image-right{% endif %}"
+  aria-label="{{ s.statement | strip_newlines | escape }}"
+  style="--pj-split-image: {{ s.image_width }}%; --pj-split-min: {{ s.min_height }}px; --pj-split-focus: {{ s.focus_x }}% {{ s.focus_y }}%;"
+>
+  <div class="pj-split__media">
+    {%- if s.image != blank -%}
+      {{ s.image | image_url: width: 1400 | image_tag: class: 'pj-split__img', widths: '600, 900, 1400', sizes: '(min-width: 800px) 50vw, 100vw', alt: s.image.alt | default: '', loading: 'lazy' }}
+    {%- else -%}
+      <img class="pj-split__img" src="{{ 'closing-portrait.jpg' | asset_url }}" alt="" width="602" height="722" loading="lazy">
+    {%- endif -%}
+  </div>
+
+  <div class="pj-split__panel">
+    <div class="pj-split__inner">
+      <p class="pj-split__statement">
+        {%- for line in lines -%}
+          {%- assign clean = line | strip_html | strip -%}
+          {%- if clean != blank -%}<span>{{ clean }}</span>{%- endif -%}
+        {%- endfor -%}
+      </p>
+      <span class="pj-split__rule" aria-hidden="true"></span>
+      {%- if s.button_label != blank -%}
+        {%- if s.button_link != blank -%}
+          <a href="{{ s.button_link }}" class="pj-split__cta">{{ s.button_label }}</a>
+        {%- else -%}
+          <button type="button" class="pj-split__cta" data-open-prescription data-design="01 — The Classic (Signature Ring)">{{ s.button_label }}</button>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Photo + statement",
+  "tag": "div",
+  "class": "pj-section-split",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "image_picker", "id": "image", "label": "Photo", "info": "Leave empty to use the built-in portrait." },
+    { "type": "textarea", "id": "statement", "label": "Statement", "info": "One line per row.", "default": "Personal.\nTimeless.\nYours." },
+    { "type": "text", "id": "button_label", "label": "Link text", "default": "Begin your prescription" },
+    { "type": "url", "id": "button_link", "label": "Link", "info": "Leave empty to open the prescription form." },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "image_side", "label": "Photo position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
+    { "type": "range", "id": "image_width", "label": "Photo width", "min": 30, "max": 70, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "min_height", "label": "Minimum height", "min": 320, "max": 900, "step": 20, "unit": "px", "default": 560 },
+    { "type": "range", "id": "focus_x", "label": "Photo focus, across", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "focus_y", "label": "Photo focus, down", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 85 },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Panel background", "default": "#F4EBE2" },
+    { "type": "color", "id": "text_color", "label": "Statement", "default": "#3A332D" },
+    { "type": "color", "id": "accent_color", "label": "Rule and link", "default": "#3A332D" },
+
+    { "type": "header", "content": "Fonts and sizes" },
+    { "type": "checkbox", "id": "use_custom_fonts", "label": "Use the fonts chosen below", "default": false, "info": "Off: the theme fonts." },
+    { "type": "font_picker", "id": "font_heading", "label": "Statement font", "default": "cormorant_n6" },
+    { "type": "font_picker", "id": "font_body", "label": "Link font", "default": "jost_n5" },
+    { "type": "range", "id": "heading_size", "label": "Statement size", "min": 50, "max": 150, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "body_size", "label": "Link size", "min": 70, "max": 150, "step": 5, "unit": "%", "default": 100 }
+  ],
+  "presets": [
+    { "name": "Photo + statement" }
+  ]
+}
+{% endschema %}

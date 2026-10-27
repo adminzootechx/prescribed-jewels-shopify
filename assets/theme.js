@@ -488,7 +488,7 @@
       const rad = (angleDeg * Math.PI) / 180;
       const x = Math.cos(rad) * RADIUS;
       const y = Math.sin(rad) * RADIUS;
-      slot.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${s * 45}deg)`;
+      slot.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
 
       const inner = document.createElement('div');
       inner.className = 'pj-wheel-gem-inner';
@@ -523,6 +523,7 @@
       }
     };
 
+    const wheelFrameSpin = document.getElementById('pj-wheel-frame-spin');
     const wheelHalo = wheelSection ? wheelSection.querySelector('.pj-wheel-halo') : null;
     const arrowSvg = document.getElementById('pj-gem-arrow');
     const arrowPath = document.getElementById('pj-gem-arrow-path');
@@ -624,6 +625,9 @@
     const renderWheelState = (animate = true) => {
       const activeSlot = ((wheelStep % NUM_SLOTS) + NUM_SLOTS) % NUM_SLOTS;
       wheelRotor.style.transform = `rotate(${-wheelStep * 45}deg)`;
+      if (wheelFrameSpin) wheelFrameSpin.style.transform = `rotate(${-wheelStep * 45}deg)`;
+      // Counter-turn each stone by the wheel's rotation so it always reads upright
+      slotElements.forEach((entry) => entry.inner.style.setProperty('--ur', `${wheelStep * 45}deg`));
 
       [-3, -2, -1, 0, 1, 2, 3, 4].forEach((rel) => {
         const slotIdx = (activeSlot + rel + NUM_SLOTS) % NUM_SLOTS;
