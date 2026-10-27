@@ -5,17 +5,16 @@
     </a>
 
     <nav class="pj-footer__nav" aria-label="Footer Navigation">
-      <a href="#pj-designs" class="pj-footer__link">Jewels</a>
-      <a href="#pj-story" class="pj-footer__link">Our Story</a>
-      <a href="#pj-process" class="pj-footer__link">The Prescription</a>
-      <a href="#pj-gemstones" class="pj-footer__link">Gemstones</a>
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link | default: '#' }}" class="pj-footer__link" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+      {%- endfor -%}
       <button
         type="button"
         class="pj-footer__link pj-footer__link-btn"
         data-open-prescription
         data-design="07 — Custom Bespoke Commission"
       >
-        Inquire
+        {{ section.settings.inquire_label }}
       </button>
     </nav>
 
@@ -41,6 +40,19 @@
 {
   "name": "Footer",
   "class": "pj-section-footer",
-  "settings": []
+  "settings": [
+    { "type": "text", "id": "inquire_label", "label": "Inquire button label", "default": "Inquire" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Footer link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Jewels" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 8
 }
 {% endschema %}

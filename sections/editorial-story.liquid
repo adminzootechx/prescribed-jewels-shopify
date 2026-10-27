@@ -1,4 +1,4 @@
-<section id="pj-story" class="pj-story pj-section" aria-labelledby="pj-story-heading">
+<section id="pj-story" class="pj-story pj-section" aria-labelledby="pj-story-heading" style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }};{% if section.settings.card_color != blank %} --pj-bg-primary: {{ section.settings.card_color }};{% endif %}">
   <div class="pj-container">
     <div class="pj-story__card">
       <div class="pj-story__monogram">
@@ -18,7 +18,7 @@
           data-open-prescription
           data-design="01 — The Classic (Signature Ring)"
         >
-          <span>BEGIN YOUR PRESCRIPTION</span>
+          <span>{{ section.settings.button_label }}</span>
           <span aria-hidden="true">→</span>
         </button>
       </div>
@@ -44,6 +44,9 @@
       "label": "Heading",
       "default": "A Piece of Your Own Story"
     },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100 },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "BEGIN YOUR PRESCRIPTION" },
+    { "type": "color", "id": "card_color", "label": "Card color", "info": "Leave empty to use the theme background." },
     {
       "type": "textarea",
       "id": "body_text",

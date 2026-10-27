@@ -1,24 +1,337 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
-      "settings": {}
+      "settings": {
+        "image_1": "shopify://shop_images/Golden_Hour_Emerald_Pendant.png",
+        "image_2": "shopify://shop_images/Golden_Hour_Elegance_with_Emerald_Ring.png",
+        "slide_seconds": 5,
+        "veil": 100,
+        "eyebrow": "ANCIENT WISDOM. MODERN JEWELLERY.",
+        "heading": "JEWELLERY\nTHAT FINDS\nYOU",
+        "title_size": 100,
+        "subtext": "Thoughtfully designed pieces with a gemstone prescribed from your birth details.",
+        "cta_label": "EXPLORE DESIGNS",
+        "cta_link": "",
+        "mantra": "YOUR BIRTHPLACE. YOUR TIME. YOUR GEMSTONE. YOUR STORY.",
+        "text_color": "",
+        "height": 100
+      }
     },
     "designs_showcase": {
       "type": "designs-showcase",
-      "settings": {}
+      "blocks": {
+        "design1": {
+          "type": "design",
+          "settings": {
+            "name": "THE CLASSIC",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "01 — The Classic (Signature Ring)",
+            "is_custom": false
+          }
+        },
+        "design2": {
+          "type": "design",
+          "settings": {
+            "name": "THE SOLACE",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "02 — The Solace (Signature Pendant)",
+            "is_custom": false
+          }
+        },
+        "design3": {
+          "type": "design",
+          "settings": {
+            "name": "THE BALANCE",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "03 — The Balance (Signature Bracelet)",
+            "is_custom": false
+          }
+        },
+        "design4": {
+          "type": "design",
+          "settings": {
+            "name": "THE AURA",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "04 — The Aura (Signature Drop Earrings)",
+            "is_custom": false
+          }
+        },
+        "design5": {
+          "type": "design",
+          "settings": {
+            "name": "THE SIGNET",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "05 — The Signet (Signature Crest Ring)",
+            "is_custom": false
+          }
+        },
+        "design6": {
+          "type": "design",
+          "settings": {
+            "name": "THE CELESTIAL",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "06 — The Celestial (Signature Medallion)",
+            "is_custom": false
+          }
+        },
+        "design7": {
+          "type": "design",
+          "settings": {
+            "name": "CUSTOM",
+            "button_label": "INQUIRE →",
+            "request_label": "07 — Custom Bespoke Commission",
+            "is_custom": true
+          }
+        }
+      },
+      "block_order": [
+        "design1",
+        "design2",
+        "design3",
+        "design4",
+        "design5",
+        "design6",
+        "design7"
+      ],
+      "settings": {
+        "eyebrow": "THE COLLECTION",
+        "heading": "SEVEN DESIGNS,\nONE MEANING",
+        "heading_size": 100
+      }
     },
     "prescription_process": {
       "type": "prescription-process",
-      "settings": {}
+      "blocks": {
+        "step1": {
+          "type": "step",
+          "settings": {
+            "when": "DAY 0",
+            "title": "ORDER PLACED",
+            "text": "Select your design, share your birth details, and receive immediate confirmation (5–7 weeks delivery)."
+          }
+        },
+        "step2": {
+          "type": "step",
+          "settings": {
+            "when": "DAYS 1–5",
+            "title": "GEMSTONE PRESCRIBED",
+            "text": "Our astrologer studies your birth chart and prescribes your stone. No customer action is required."
+          }
+        },
+        "step3": {
+          "type": "step",
+          "settings": {
+            "when": "DAYS 3–7",
+            "title": "PRESCRIPTION REVEALED",
+            "text": "A branded email reveals your gemstone and meaning as production begins — no approvals or revisions."
+          }
+        },
+        "step4": {
+          "type": "step",
+          "settings": {
+            "when": "WEEKS 1–5",
+            "title": "JEWELLERY PRODUCTION",
+            "text": "Handcrafted according to your chosen design and prescribed gemstone with quiet precision."
+          }
+        },
+        "step5": {
+          "type": "step",
+          "settings": {
+            "when": "WEEKS 5–7",
+            "title": "DELIVERED TO YOU",
+            "text": "Tracking sent; your physical box arrives with the small printed prescription alongside your jewel."
+          }
+        }
+      },
+      "block_order": [
+        "step1",
+        "step2",
+        "step3",
+        "step4",
+        "step5"
+      ],
+      "settings": {
+        "eyebrow": "HOW IT WORKS",
+        "heading": "A THOUGHTFUL JOURNEY",
+        "heading_size": 100,
+        "circle_size": 136
+      }
     },
     "gemstones_atlas": {
       "type": "gemstones-atlas",
-      "settings": {}
+      "blocks": {
+        "gem1": {
+          "type": "gem",
+          "settings": {
+            "name": "EMERALD",
+            "text": "Cultivates intellect, eloquent speech, emotional composure, and clear discernment."
+          }
+        },
+        "gem2": {
+          "type": "gem",
+          "settings": {
+            "name": "RUBY",
+            "text": "Ignites vitality, sovereign confidence, courage, and unwavering inner purpose."
+          }
+        },
+        "gem3": {
+          "type": "gem",
+          "settings": {
+            "name": "YELLOW SAPPHIRE",
+            "text": "Attracts wisdom, auspicious abundance, spiritual grace, and prosperous growth."
+          }
+        },
+        "gem4": {
+          "type": "gem",
+          "settings": {
+            "name": "BLUE SAPPHIRE",
+            "text": "Bestows disciplined focus, karmic protection, endurance, and decisive clarity."
+          }
+        },
+        "gem5": {
+          "type": "gem",
+          "settings": {
+            "name": "DIAMOND",
+            "text": "Elevates artistic refinement, magnetic harmony, devotion, and luminous grace."
+          }
+        },
+        "gem6": {
+          "type": "gem",
+          "settings": {
+            "name": "NATURAL PEARL",
+            "text": "Soothes the heart, deepens intuition, and restores serene emotional balance."
+          }
+        },
+        "gem7": {
+          "type": "gem",
+          "settings": {
+            "name": "RED CORAL",
+            "text": "Fuels decisive action, physical stamina, resilience, and fearless initiative."
+          }
+        },
+        "gem8": {
+          "type": "gem",
+          "settings": {
+            "name": "HESSONITE GARNET",
+            "text": "Clears mental fog, shields against illusion, and unlocks unconventional success."
+          }
+        },
+        "gem9": {
+          "type": "gem",
+          "settings": {
+            "name": "CAT’S EYE",
+            "text": "Awakens spiritual insight, detachment from chaos, and instinctive protection."
+          }
+        },
+        "gem10": {
+          "type": "gem",
+          "settings": {
+            "name": "MOONSTONE",
+            "text": "Nurtures receptivity, creative flow, restful calm, and gentle inner rhythm."
+          }
+        },
+        "gem11": {
+          "type": "gem",
+          "settings": {
+            "name": "AMETHYST",
+            "text": "Encourages patience, meditative stillness, humility, and steady perseverance."
+          }
+        },
+        "gem12": {
+          "type": "gem",
+          "settings": {
+            "name": "CITRINE",
+            "text": "Sparks optimism, generosity, higher learning, and warm creative abundance."
+          }
+        },
+        "gem13": {
+          "type": "gem",
+          "settings": {
+            "name": "PERIDOT",
+            "text": "Sharpens analytical wit, adaptability, joyful expression, and mental renewal."
+          }
+        },
+        "gem14": {
+          "type": "gem",
+          "settings": {
+            "name": "WHITE SAPPHIRE",
+            "text": "Invites beauty, harmonious partnerships, poise, and pure creative inspiration."
+          }
+        },
+        "gem15": {
+          "type": "gem",
+          "settings": {
+            "name": "RED GARNET",
+            "text": "Strengthens self-assurance, grounded warmth, leadership, and life force."
+          }
+        },
+        "gem16": {
+          "type": "gem",
+          "settings": {
+            "name": "CARNELIAN",
+            "text": "Kindles bold motivation, vital energy, determination, and creative courage."
+          }
+        },
+        "gem17": {
+          "type": "gem",
+          "settings": {
+            "name": "IOLITE",
+            "text": "Aligns inner vision, structured ambition, self-mastery, and clear direction."
+          }
+        },
+        "gem18": {
+          "type": "gem",
+          "settings": {
+            "name": "GREEN TOURMALINE",
+            "text": "Harmonizes intellect with heart, inviting balanced prosperity and insight."
+          }
+        }
+      },
+      "block_order": [
+        "gem1",
+        "gem2",
+        "gem3",
+        "gem4",
+        "gem5",
+        "gem6",
+        "gem7",
+        "gem8",
+        "gem9",
+        "gem10",
+        "gem11",
+        "gem12",
+        "gem13",
+        "gem14",
+        "gem15",
+        "gem16",
+        "gem17",
+        "gem18"
+      ],
+      "settings": {
+        "bg_color": "#f5e9de",
+        "heading_size": 100
+      }
     },
     "editorial_story": {
       "type": "editorial-story",
-      "settings": {}
+      "settings": {
+        "eyebrow": "OUR STORY",
+        "heading": "A Piece of Your Own Story",
+        "heading_size": 100,
+        "button_label": "BEGIN YOUR PRESCRIPTION",
+        "card_color": "",
+        "body_text": "Prescribed Jewels is born from the belief that fine jewellery should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details."
+      }
     }
   },
   "order": [

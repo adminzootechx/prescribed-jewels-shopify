@@ -1,18 +1,42 @@
-<section id="pj-gemstones" class="pj-gemstones-wheel-outer" aria-labelledby="pj-gemstones-heading" data-gem-wheel-section>
+<section id="pj-gemstones" class="pj-gemstones-wheel-outer" aria-labelledby="pj-gemstones-heading" data-gem-wheel-section style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }}; --pj-gem-bg: {{ section.settings.bg_color }};">
   <div class="pj-gemstones-wheel-section">
     <div class="pj-container pj-gemstones-wheel__layout">
-      <!-- Left Column: ONLY Active Gemstone Name & Short Information -->
+      <!-- Curved arrow from the highlighted stone to its photograph, drawn in the stone's own colour -->
+      <svg class="pj-gem-arrow" id="pj-gem-arrow" aria-hidden="true" focusable="false">
+        <defs>
+          <marker id="pj-arrowhead" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+            <path d="M1 1 L10 6 L1 11" fill="none" stroke="var(--gem-c, #B69156)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+        <circle id="pj-gem-arrow-dot" r="5" />
+        <path id="pj-gem-arrow-path" pathLength="1" marker-end="url(#pj-arrowhead)" />
+      </svg>
+
+      <!-- Left: the chosen stone, with what is known about it set out around its photograph -->
       <div class="pj-gemstones-wheel__info">
-        <p class="pj-eyebrow">{{ section.settings.eyebrow }}</p>
+        <div class="pj-gem-diagram" id="pj-wheel-info-box" aria-live="polite">
+          <svg class="pj-gem-diagram__lines" viewBox="0 0 720 540" aria-hidden="true" focusable="false">
+            <g class="pj-gem-diagram__leaders">
+              <path d="M214 76 C 252 80, 272 104, 286 136" />
+              <path d="M506 76 C 468 80, 448 104, 434 136" />
+              <path d="M214 462 C 226 436, 232 412, 242 388" />
+              <path d="M506 462 C 494 436, 488 412, 478 388" />
+              <circle cx="214" cy="76" r="3.5" /><circle cx="506" cy="76" r="3.5" />
+              <circle cx="214" cy="462" r="3.5" /><circle cx="506" cy="462" r="3.5" />
+            </g>
+          </svg>
 
-        <div class="pj-gemstones-wheel__active-box" id="pj-wheel-info-box" aria-live="polite">
-          <h2 id="pj-gemstones-heading" class="pj-gemstones-wheel__title">
-            <span id="pj-wheel-stone-name">EMERALD</span>
-          </h2>
+          <div class="pj-gem-diagram__photo" id="pj-gem-photo-wrap"><img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="400" height="400" decoding="async"></div>
 
-          <p class="pj-gemstones-wheel__short-desc" id="pj-wheel-desc">
-            Cultivates intellect, eloquent speech, emotional composure, and clear discernment.
-          </p>
+          <div class="pj-gem-diagram__name">
+            <p class="pj-gemstones-wheel__planet" id="pj-wheel-planet">MERCURY · BUDHA</p>
+            <h2 id="pj-gemstones-heading" class="pj-gemstones-wheel__title"><span id="pj-wheel-stone-name">EMERALD</span></h2>
+          </div>
+
+          <div class="pj-gem-note pj-gem-note--tl"><h3 class="pj-gem-note__title">Features</h3><p id="pj-gem-features"></p></div>
+          <div class="pj-gem-note pj-gem-note--tr"><h3 class="pj-gem-note__title">Uses</h3><p id="pj-gem-uses"></p></div>
+          <div class="pj-gem-note pj-gem-note--bl"><h3 class="pj-gem-note__title">Importance</h3><p id="pj-wheel-desc">Cultivates intellect, eloquent speech, emotional composure, and clear discernment.</p></div>
+          <div class="pj-gem-note pj-gem-note--br"><h3 class="pj-gem-note__title">Traditionally worn</h3><p id="pj-gem-wear"></p></div>
         </div>
       </div>
 
@@ -22,12 +46,22 @@
           <div class="pj-wheel-assembly">
             <!-- Half-Circle Ivory Track Ring -->
             <div class="pj-wheel-circle-track"></div>
+                        <div class="pj-wheel-halo" aria-hidden="true"></div>
 
             <!-- Rotating Rotor carrying Gemstone Images along the Half-Circle -->
             <div
               class="pj-wheel-rotor"
               id="pj-wheel-rotor"
-              data-gem-urls="{{ 'gem-01.jpg' | asset_url }}|{{ 'gem-02.jpg' | asset_url }}|{{ 'gem-03.jpg' | asset_url }}|{{ 'gem-04.jpg' | asset_url }}|{{ 'gem-05.jpg' | asset_url }}|{{ 'gem-06.jpg' | asset_url }}|{{ 'gem-07.jpg' | asset_url }}|{{ 'gem-08.jpg' | asset_url }}|{{ 'gem-09.jpg' | asset_url }}|{{ 'gem-10.jpg' | asset_url }}|{{ 'gem-11.jpg' | asset_url }}|{{ 'gem-12.png' | asset_url }}|{{ 'gem-13.png' | asset_url }}|{{ 'gem-14.jpg' | asset_url }}|{{ 'gem-15.jpg' | asset_url }}|{{ 'gem-16.png' | asset_url }}|{{ 'gem-17.png' | asset_url }}|{{ 'gem-18.png' | asset_url }}"
+              data-gem-names="{%- for block in section.blocks -%}{{ block.settings.name | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-descs="{%- for block in section.blocks -%}{{ block.settings.text | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-features="{%- for block in section.blocks -%}{{ block.settings.features | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-uses="{%- for block in section.blocks -%}{{ block.settings.uses | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-wear="{%- for block in section.blocks -%}{{ block.settings.wear | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-angle2="{%- for block in section.blocks -%}{%- if block.settings.angle_2 != blank -%}{{ block.settings.angle_2 | image_url: width: 900 }}{%- endif -%}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-angle3="{%- for block in section.blocks -%}{%- if block.settings.angle_3 != blank -%}{{ block.settings.angle_3 | image_url: width: 900 }}{%- endif -%}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-photos="{%- for block in section.blocks -%}{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 900 }}{%- endif -%}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-urls="{{ 'gemx-emerald-1.webp' | asset_url }}|{{ 'gemx-ruby-1.webp' | asset_url }}|||{{ 'gemx-diamond-1.webp' | asset_url }}|||{{ 'gemx-hessonite-1.webp' | asset_url }}|{{ 'gemx-catseye-1.webp' | asset_url }}|{{ 'gemx-moonstone-1.webp' | asset_url }}|{{ 'gemx-amethyst-1.webp' | asset_url }}|{{ 'gemx-citrine-1.webp' | asset_url }}||||||"
+              data-gem-views="{{ 'gemx-emerald-2.webp' | asset_url }},{{ 'gemx-emerald-3.webp' | asset_url }},{{ 'gemx-emerald-4.webp' | asset_url }}|{{ 'gemx-ruby-2.webp' | asset_url }},{{ 'gemx-ruby-3.webp' | asset_url }},{{ 'gemx-ruby-4.webp' | asset_url }}|||{{ 'gemx-diamond-2.webp' | asset_url }},{{ 'gemx-diamond-3.webp' | asset_url }}|||{{ 'gemx-hessonite-2.webp' | asset_url }},{{ 'gemx-hessonite-3.webp' | asset_url }},{{ 'gemx-hessonite-4.webp' | asset_url }}|{{ 'gemx-catseye-2.webp' | asset_url }},{{ 'gemx-catseye-3.webp' | asset_url }},{{ 'gemx-catseye-4.webp' | asset_url }}|{{ 'gemx-moonstone-2.webp' | asset_url }},{{ 'gemx-moonstone-3.webp' | asset_url }},{{ 'gemx-moonstone-4.webp' | asset_url }}|{{ 'gemx-amethyst-2.webp' | asset_url }},{{ 'gemx-amethyst-3.webp' | asset_url }},{{ 'gemx-amethyst-4.webp' | asset_url }}|{{ 'gemx-citrine-2.webp' | asset_url }},{{ 'gemx-citrine-3.webp' | asset_url }},{{ 'gemx-citrine-4.webp' | asset_url }}||||||"
             >
               <!-- JS populates the gemstone images around the half-circle wheel -->
             </div>
@@ -44,13 +78,26 @@
   "tag": "section",
   "class": "pj-section-gemstones",
   "settings": [
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#F5E9DE" },
+    { "type": "range", "id": "heading_size", "label": "Stone name size", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100 }
+  ],
+  "blocks": [
     {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "EIGHTEEN NATURAL VEDIC GEMSTONES"
+      "type": "gem",
+      "name": "Gemstone",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "Square, the stone alone on a plain ivory background. A stone without a photo is left out of the wheel." },
+        { "type": "image_picker", "id": "angle_2", "label": "Second angle (optional)", "info": "Same framing, turned. Shown on the left in turn with the main photo." },
+        { "type": "image_picker", "id": "angle_3", "label": "Third angle (optional)" },
+        { "type": "text", "id": "name", "label": "Name", "default": "EMERALD" },
+        { "type": "textarea", "id": "text", "label": "Importance", "default": "Cultivates intellect, eloquent speech, emotional composure, and clear discernment." },
+        { "type": "textarea", "id": "features", "label": "Features", "info": "Leave empty to use the built-in text." },
+        { "type": "textarea", "id": "uses", "label": "Uses", "info": "Leave empty to use the built-in text." },
+        { "type": "text", "id": "wear", "label": "Traditionally worn", "info": "Leave empty to use the built-in text." }
+      ]
     }
   ],
+  "max_blocks": 18,
   "presets": [
     {
       "name": "4. Rotating Gemstones"

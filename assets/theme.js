@@ -47,7 +47,7 @@
           heroTrack.style.transform = 'translate3d(0%, 0, 0)';
         }, 1150);
       }
-    }, 5000);
+    }, parseInt(heroTrack.closest('.pj-hero').getAttribute('data-interval'), 10) || 5000);
   }
 
   /* --------------------------------------------------------------------------
@@ -345,6 +345,28 @@
       }
     ];
 
+    // Traditional notes for each stone: features, uses and how it is worn (the editor can override any of them)
+    const GEM_NOTES = [
+      ['Deep green beryl, prized for clarity and a soft inner glow.', 'Worn for study, speech and good business sense.', 'Gold, little finger, Wednesday'],
+      ['Red corundum, among the hardest gems after diamond.', 'Worn for leadership, confidence and vitality.', 'Gold, ring finger, Sunday'],
+      ['Golden corundum with a warm, even glow.', 'Worn for learning, good fortune and wise counsel.', 'Gold, index finger, Thursday'],
+      ['Deep blue corundum, valued for its rich saturation.', 'Worn for discipline, focus and steady progress.', 'Silver, middle finger, Saturday'],
+      ['Brilliant and colourless, the hardest natural gem.', 'Worn for beauty, harmony and refined taste.', 'Platinum or white gold, ring finger, Friday'],
+      ['A lustrous gem formed within a living mollusc.', 'Worn for calm, emotional balance and restful sleep.', 'Silver, little finger, Monday'],
+      ['Warm red marine gem with a smooth, waxy glow.', 'Worn for courage, energy and drive.', 'Gold or copper, ring finger, Tuesday'],
+      ['Honey-brown garnet with a deep, spiced amber tone.', 'Worn for clarity, ambition and fresh starts.', 'Silver, middle finger, Saturday'],
+      ['Chrysoberyl with a sharp, moving band of light.', 'Worn for intuition, detachment and insight.', 'Silver, middle finger, Tuesday'],
+      ['Milky feldspar with a floating blue sheen.', 'Worn for gentleness, sleep and intuition.', 'Silver, little finger, Monday'],
+      ['Violet quartz, from pale lilac to deep purple.', 'Worn for composure, focus and restraint.', 'Silver, ring finger, Saturday'],
+      ['Golden quartz that stays bright in every light.', 'Worn for optimism, prosperity and goodwill.', 'Gold, index finger, Thursday'],
+      ['Fresh olive green, found in a single colour family.', 'Worn for renewal, growth and good cheer.', 'Gold or silver, little finger, Wednesday'],
+      ['Clear corundum with diamond-like sparkle.', 'Worn for grace, harmony and calm confidence.', 'Silver, ring finger, Friday'],
+      ['Deep wine-red crystal with a warm, glassy shine.', 'Worn for energy, warmth and devotion.', 'Gold, ring finger, Sunday'],
+      ['Translucent orange-red chalcedony.', 'Worn for motivation, courage and action.', 'Gold or copper, ring finger, Tuesday'],
+      ['Violet-blue gem that shifts colour with the angle.', 'Worn for vision, direction and patience.', 'Silver, middle finger, Saturday'],
+      ['Vivid green crystal that comes in many shades.', 'Worn for growth, creativity and well-being.', 'Gold, little finger, Wednesday']
+    ];
+
     const buildGemSvg = (stone, uid) => {
       const gradId = `pjGemGrad_${uid}`;
       const shineId = `pjGemShine_${uid}`;
@@ -418,15 +440,42 @@
       `;
     };
 
+    const wheelBar = document.getElementById('pj-wheel-progress-bar');
+    // Names, descriptions and photographs set in the theme editor replace the built-in ones, stone by stone
+    const editNames = (wheelRotor.getAttribute('data-gem-names') || '').split('|');
+    const editDescs = (wheelRotor.getAttribute('data-gem-descs') || '').split('|');
+    const editPhotos = (wheelRotor.getAttribute('data-gem-photos') || '').split('|');
+    editNames.forEach((n, i) => { if (n && GEMSTONES[i]) GEMSTONES[i].name = n; });
+    editDescs.forEach((d, i) => { if (d && GEMSTONES[i]) GEMSTONES[i].desc = d; });
+    ['features', 'uses', 'wear'].forEach((key, k) => {
+      (wheelRotor.getAttribute('data-gem-' + key) || '').split('|').forEach((v, i) => { if (v && GEM_NOTES[i]) GEM_NOTES[i][k] = v; });
+    });
+
     const NUM_SLOTS = 8;
     const RADIUS = 232;
     const ROTATE_MS = 2000;
     const slotElements = [];
-    const gemUrls = (wheelRotor.getAttribute('data-gem-urls') || '').split('|').filter(Boolean);
+    const gemUrls = (wheelRotor.getAttribute('data-gem-urls') || '').split('|');
+    const views = (wheelRotor.getAttribute('data-gem-views') || '').split('|').map((v) => v.split(',').filter(Boolean));
+    const angle2 = (wheelRotor.getAttribute('data-gem-angle2') || '').split('|');
+    const angle3 = (wheelRotor.getAttribute('data-gem-angle3') || '').split('|');
+    editPhotos.forEach((u, i) => { if (u) gemUrls[i] = u; });
+
+    // Only real photographs go on the wheel: a stone without one is left out until a photo is added in the editor
+    for (let i = GEMSTONES.length - 1; i >= 0; i--) {
+      if (!gemUrls[i]) {
+        GEMSTONES.splice(i, 1);
+        GEM_NOTES.splice(i, 1);
+        gemUrls.splice(i, 1);
+        views.splice(i, 1);
+        angle2.splice(i, 1);
+        angle3.splice(i, 1);
+      }
+    }
     const infoBox = document.getElementById('pj-wheel-info-box');
 
     // Preload all gem photos so rotation never flickers
-    gemUrls.forEach((url) => {
+    gemUrls.concat(angle2, angle3, [].concat(...views)).filter(Boolean).forEach((url) => {
       const img = new Image();
       img.src = url;
     });
@@ -463,6 +512,7 @@
       const url = gemUrls[stoneIdx];
       if (url) {
         if (entry.img.getAttribute('src') !== url) entry.img.setAttribute('src', url);
+        entry.img.classList.toggle('is-cutout', /\.webp/.test(url));
         entry.img.hidden = false;
         const svg = entry.inner.querySelector('svg');
         if (svg) svg.remove();
@@ -473,11 +523,94 @@
       }
     };
 
+    const wheelHalo = wheelSection ? wheelSection.querySelector('.pj-wheel-halo') : null;
+    const arrowSvg = document.getElementById('pj-gem-arrow');
+    const arrowPath = document.getElementById('pj-gem-arrow-path');
+    const arrowDot = document.getElementById('pj-gem-arrow-dot');
+    const photoWrap = document.getElementById('pj-gem-photo-wrap');
+    const photoImg = document.getElementById('pj-gem-photo');
+    const noteFeatures = document.getElementById('pj-gem-features');
+    const noteUses = document.getElementById('pj-gem-uses');
+    const noteWear = document.getElementById('pj-gem-wear');
+
+    // The big photograph on the left: the stone turns slowly, or steps through the extra angles added in the editor
+    let angleTimer = null;
+    let shownStone = -1;
+    const showStone = (idx) => {
+      if (!photoImg || !photoWrap || idx === shownStone) return;
+      shownStone = idx;
+      clearInterval(angleTimer);
+      const own = views[idx] || [];
+      const sequence = own.length ? own.concat([angle2[idx], angle3[idx]].filter(Boolean)) : [gemUrls[idx], angle2[idx], angle3[idx]].filter(Boolean);
+      const isCut = (u) => /\.webp/.test(u || '');
+      photoImg.classList.remove('is-swapping');
+      photoImg.classList.toggle('is-cutout', isCut(sequence[0]));
+      photoImg.src = sequence[0] || '';
+      photoWrap.classList.remove('is-turning');
+      void photoWrap.offsetWidth;
+      if (sequence.length > 1) {
+        let v = 0;
+        angleTimer = setInterval(() => {
+          v = (v + 1) % sequence.length;
+          photoImg.classList.add('is-swapping');
+          setTimeout(() => { photoImg.classList.toggle('is-cutout', isCut(sequence[v])); photoImg.src = sequence[v]; photoImg.classList.remove('is-swapping'); }, 360);
+        }, 2600);
+      } else if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        photoWrap.classList.add('is-turning');
+      }
+    };
+
+    // A curved arrow from the left edge of the highlighted stone to the photograph, then drawn in
+    const placeArrow = (redraw) => {
+      if (!arrowSvg || !arrowPath || !wheelHalo || !photoWrap || window.innerWidth < 960) return;
+      const box = arrowSvg.getBoundingClientRect();
+      const halo = wheelHalo.getBoundingClientRect();
+      const photo = photoWrap.getBoundingClientRect();
+      const sx = halo.left + halo.width / 2 - box.left - 90;
+      const sy = halo.top + halo.height / 2 - box.top;
+      const ex = photo.left + photo.width / 2 - box.left + photo.width * 0.47;
+      const ey = photo.top + photo.height / 2 - box.top;
+      const reach = Math.max(80, sx - ex);
+      const lift = Math.min(150, reach * 0.3);
+      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${(sx - reach * 0.38).toFixed(1)} ${(sy + lift).toFixed(1)}, ${(ex + reach * 0.34).toFixed(1)} ${(ey - lift).toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      arrowPath.setAttribute('d', d);
+      arrowDot.setAttribute('cx', sx.toFixed(1));
+      arrowDot.setAttribute('cy', sy.toFixed(1));
+      if (redraw) {
+        arrowPath.style.transition = 'none';
+        arrowPath.style.strokeDashoffset = '1';
+        void arrowPath.getBoundingClientRect();
+        arrowPath.style.transition = 'stroke-dashoffset 0.9s cubic-bezier(0.2, 0.7, 0.1, 1)';
+        arrowPath.style.strokeDashoffset = '0';
+      }
+    };
+    window.addEventListener('resize', () => placeArrow(false), { passive: true });
+    window.addEventListener('load', () => placeArrow(true));
+
     const updateInfo = (animate) => {
       const currentStone = GEMSTONES[activeStoneIndex];
       const apply = () => {
         wheelStoneName.textContent = currentStone.name;
         wheelDesc.textContent = currentStone.desc;
+        if (wheelCounter) wheelCounter.textContent = currentStone.num;
+        if (wheelPlanet) {
+          const cap = (t) => t.toLowerCase().replace(/(^|[\s-])([a-z])/g, (m, s, ch) => s + ch.toUpperCase());
+          const [body, tradition] = currentStone.planet.split(' · ');
+          wheelPlanet.textContent = `Ruled by ${cap(body)}${tradition ? ' (' + cap(tradition) + ')' : ''}`;
+        }
+        if (wheelSection) {
+          // Pale stones (diamond, pearl, white sapphire) take their deeper tone so the line stays visible on the sand
+          const hex = currentStone.c2.replace('#', '');
+          const lum = (0.2126 * parseInt(hex.slice(0, 2), 16) + 0.7152 * parseInt(hex.slice(2, 4), 16) + 0.0722 * parseInt(hex.slice(4, 6), 16)) / 255;
+          wheelSection.style.setProperty('--gem-c', lum > 0.68 ? currentStone.c3 : currentStone.c2);
+        }
+        const notes = GEM_NOTES[activeStoneIndex] || ['', '', ''];
+        if (noteFeatures) noteFeatures.textContent = notes[0];
+        if (noteUses) noteUses.textContent = notes[1];
+        if (noteWear) noteWear.textContent = notes[2];
+        showStone(activeStoneIndex);
+        placeArrow(true);
+        if (wheelBar) wheelBar.style.transform = `scaleX(${((activeStoneIndex + 1) / GEMSTONES.length).toFixed(3)})`;
         infoBox?.classList.remove('is-fading');
       };
       if (animate && infoBox) {
@@ -511,15 +644,50 @@
 
     renderWheelState(false);
 
-    // Continuous rotation every 2 seconds while the section is on screen
+    // The wheel itself is the scroll surface: hover it and scroll to turn it, or leave it and it keeps turning on its own.
+    // The page only scrolls past it again once the wheel reaches its first or last stone.
+    const reduceWheel = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const stage = wheelSection ? wheelSection.querySelector('.pj-wheel-half-clip') : null;
+
     let wheelTimer = null;
     const startWheel = () => {
-      if (!wheelTimer) wheelTimer = setInterval(advance, ROTATE_MS);
+      if (!wheelTimer && !reduceWheel) wheelTimer = setInterval(advance, ROTATE_MS);
     };
     const stopWheel = () => {
       clearInterval(wheelTimer);
       wheelTimer = null;
     };
+    const restartAuto = () => {
+      if (wheelTimer) { stopWheel(); startWheel(); }
+    };
+
+    const goTo = (target) => {
+      activeStoneIndex = target;
+      wheelStep = target;
+      renderWheelState(true);
+    };
+
+    if (stage) {
+      let acc = 0;
+      let lastStep = 0;
+      stage.addEventListener('wheel', (e) => {
+        const dir = e.deltaY > 0 ? 1 : -1;
+        const next = activeStoneIndex + dir;
+        // At either end, let the page carry on scrolling
+        if (next < 0 || next >= GEMSTONES.length) { acc = 0; return; }
+        e.preventDefault();
+        acc += e.deltaY;
+        const now = performance.now();
+        if (Math.abs(acc) >= 70 && now - lastStep > 320) {
+          acc = 0;
+          lastStep = now;
+          goTo(next);
+          restartAuto();
+        }
+      }, { passive: false });
+    }
+
+    window.addEventListener('resize', () => placeArrow(false), { passive: true });
 
     if ('IntersectionObserver' in window && wheelSection) {
       new IntersectionObserver(
