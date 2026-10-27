@@ -44,9 +44,47 @@
       <div class="pj-gemstones-wheel__stage" aria-hidden="true">
         <div class="pj-wheel-half-clip">
           <div class="pj-wheel-assembly">
-            <!-- Half-Circle Ivory Track Ring -->
-            <div class="pj-wheel-circle-track"></div>
-                        <div class="pj-wheel-halo" aria-hidden="true"></div>
+            <!-- Polished gold wheel: two rims, a spoked hub and rivets. The spokes turn with the stones; the rims stay put so the light on them does not jump. -->
+            <svg class="pj-wheel-frame" viewBox="0 0 560 560" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="pj-gold-a" gradientUnits="userSpaceOnUse" x1="40" y1="40" x2="520" y2="520">
+                  <stop offset="0" stop-color="#6a4915"/>
+                  <stop offset="0.16" stop-color="#c8993f"/>
+                  <stop offset="0.3" stop-color="#fff0b4"/>
+                  <stop offset="0.46" stop-color="#d4a54a"/>
+                  <stop offset="0.62" stop-color="#8a5d1c"/>
+                  <stop offset="0.8" stop-color="#e9c46d"/>
+                  <stop offset="1" stop-color="#5c3f12"/>
+                </linearGradient>
+                <linearGradient id="pj-gold-b" gradientUnits="userSpaceOnUse" x1="520" y1="40" x2="40" y2="520">
+                  <stop offset="0" stop-color="#5c3f12"/>
+                  <stop offset="0.2" stop-color="#e2b95f"/>
+                  <stop offset="0.38" stop-color="#fff3c4"/>
+                  <stop offset="0.55" stop-color="#b98a35"/>
+                  <stop offset="0.75" stop-color="#f0cf80"/>
+                  <stop offset="1" stop-color="#6a4915"/>
+                </linearGradient>
+                <radialGradient id="pj-gold-rivet" cx="0.35" cy="0.3" r="0.8">
+                  <stop offset="0" stop-color="#fff6cf"/>
+                  <stop offset="0.5" stop-color="#d1a444"/>
+                  <stop offset="1" stop-color="#6a4915"/>
+                </radialGradient>
+              </defs>
+              <circle cx="280" cy="280" r="270" fill="none" stroke="url(#pj-gold-a)" stroke-width="13"/>
+              <circle cx="280" cy="280" r="276" fill="none" stroke="#fff6d2" stroke-opacity="0.55" stroke-width="1.6"/>
+              <circle cx="280" cy="280" r="263" fill="none" stroke="#4a3210" stroke-opacity="0.35" stroke-width="1.2"/>
+              <circle cx="280" cy="280" r="190" fill="none" stroke="url(#pj-gold-b)" stroke-width="10"/>
+              <circle cx="280" cy="280" r="194.5" fill="none" stroke="#fff6d2" stroke-opacity="0.5" stroke-width="1.4"/>
+              <g class="pj-wheel-frame__spin" id="pj-wheel-frame-spin">
+                <path d="M311.4 293.0 L455.5 352.7 M293.0 311.4 L352.7 455.5 M267.0 311.4 L207.3 455.5 M248.6 293.0 L104.5 352.7 M248.6 267.0 L104.5 207.3 M267.0 248.6 L207.3 104.5 M293.0 248.6 L352.7 104.5 M311.4 267.0 L455.5 207.3" fill="none" stroke="url(#pj-gold-b)" stroke-width="8" stroke-linecap="round"/>
+                <path d="M455.5 352.7 L529.4 383.3 M352.7 455.5 L383.3 529.4 M207.3 455.5 L176.7 529.4 M104.5 352.7 L30.6 383.3 M104.5 207.3 L30.6 176.7 M207.3 104.5 L176.7 30.6 M352.7 104.5 L383.3 30.6 M455.5 207.3 L529.4 176.7" fill="none" stroke="url(#pj-gold-a)" stroke-width="7" stroke-linecap="round"/>
+                <circle cx="455.5" cy="352.7" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="529.4" cy="383.3" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="352.7" cy="455.5" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="383.3" cy="529.4" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="207.3" cy="455.5" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="176.7" cy="529.4" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="104.5" cy="352.7" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="30.6" cy="383.3" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="104.5" cy="207.3" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="30.6" cy="176.7" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="207.3" cy="104.5" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="176.7" cy="30.6" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="352.7" cy="104.5" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="383.3" cy="30.6" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="455.5" cy="207.3" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="529.4" cy="176.7" r="6.5" fill="url(#pj-gold-rivet)"/>
+              </g>
+              <circle cx="280" cy="280" r="34" fill="url(#pj-gold-a)"/>
+              <circle cx="280" cy="280" r="34" fill="none" stroke="#fff3c4" stroke-opacity="0.6" stroke-width="1.4"/>
+              <circle cx="280" cy="280" r="15" fill="url(#pj-gold-rivet)"/>
+            </svg>
+            <div class="pj-wheel-halo" aria-hidden="true"></div>
 
             <!-- Rotating Rotor carrying Gemstone Images along the Half-Circle -->
             <div

@@ -1,0 +1,72 @@
+{%- liquid
+  assign s = section.settings
+  assign paragraphs = s.body | newline_to_br | split: '<br />'
+-%}
+{% render 'pj-section-style', section: section %}
+
+<section
+  id="pj-about"
+  class="pj-about{% if s.image_side == 'right' %} pj-about--image-right{% endif %}{% unless s.fade_image %} pj-about--hard-edge{% endunless %}"
+  aria-labelledby="pj-about-heading"
+  style="--pj-about-image: {{ s.image_width }}%; --pj-about-pad: {{ s.padding }}px;"
+>
+  <div class="pj-about__media">
+    {%- if s.image != blank -%}
+      {{ s.image | image_url: width: 1600 | image_tag: class: 'pj-about__img', widths: '800, 1200, 1600', sizes: '(min-width: 900px) 60vw, 100vw', alt: s.image.alt | default: s.heading, loading: 'lazy' }}
+    {%- else -%}
+      <img class="pj-about__img" src="{{ 'about-story-jewels.jpg' | asset_url }}" alt="{{ s.heading | escape }}" width="845" height="728" loading="lazy">
+    {%- endif -%}
+  </div>
+
+  <div class="pj-about__copy">
+    <div class="pj-about__label">
+      <p class="pj-about__eyebrow">{{ s.eyebrow }}</p>
+      <span class="pj-about__label-rule" aria-hidden="true"></span>
+    </div>
+    <h2 id="pj-about-heading" class="pj-about__title">{{ s.heading | escape | newline_to_br }}</h2>
+    <div class="pj-about__body">
+      {%- for p in paragraphs -%}
+        {%- assign clean = p | strip_html | strip -%}
+        {%- if clean != blank -%}<p>{{ clean }}</p>{%- endif -%}
+      {%- endfor -%}
+    </div>
+    <span class="pj-about__end-rule" aria-hidden="true"></span>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About banner",
+  "tag": "div",
+  "class": "pj-section-about",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Leave empty to use the built-in jewellery photograph. A wide image with a plain background on the text side works best." },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "About Prescribed Jewels" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Our Story" },
+    { "type": "textarea", "id": "body", "label": "Text", "info": "Leave a blank line between paragraphs.", "default": "Prescribed Jewels was born from a belief in the meaning and energy of gemstones.\n\nWe curate authentic, high-quality stones rooted in traditional wisdom and present them with a modern, wearable approach — helping you find a gemstone that truly aligns with you." },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "image_side", "label": "Image position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
+    { "type": "range", "id": "image_width", "label": "Image width", "min": 30, "max": 70, "step": 5, "unit": "%", "default": 50 },
+    { "type": "checkbox", "id": "fade_image", "label": "Fade the image into the background", "default": true },
+    { "type": "range", "id": "padding", "label": "Extra vertical padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 0 },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#F8E6D3" },
+    { "type": "color", "id": "text_color", "label": "Heading and label", "default": "#14110E" },
+    { "type": "color", "id": "muted_color", "label": "Body text", "default": "#2A221B" },
+    { "type": "color", "id": "accent_color", "label": "Lines", "default": "#14110E" },
+
+    { "type": "header", "content": "Fonts and sizes" },
+    { "type": "checkbox", "id": "use_custom_fonts", "label": "Use the fonts chosen below", "default": false, "info": "Off: the theme fonts." },
+    { "type": "font_picker", "id": "font_heading", "label": "Heading font", "default": "cormorant_n4" },
+    { "type": "font_picker", "id": "font_body", "label": "Text font", "default": "cormorant_n5" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 50, "max": 150, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "body_size", "label": "Text size", "min": 70, "max": 150, "step": 5, "unit": "%", "default": 100 }
+  ],
+  "presets": [
+    { "name": "About banner" }
+  ]
+}
+{% endschema %}

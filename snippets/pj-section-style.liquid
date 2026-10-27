@@ -1,0 +1,24 @@
+{%- comment -%}
+  Per-section look set in the theme editor: colours, fonts and text sizes.
+  Usage: {% render 'pj-section-style', section: section %}
+  Only the settings a section actually defines are written; the rest fall back to the theme.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<style>
+  {%- if s.use_custom_fonts -%}
+    {{ s.font_heading | font_face: font_display: 'swap' }}
+    {{ s.font_body | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  #shopify-section-{{ section.id }} {
+    {%- if s.use_custom_fonts %}
+    --pj-font-serif: {{ s.font_heading.family }}, {{ s.font_heading.fallback_families }};
+    --pj-font-sans: {{ s.font_body.family }}, {{ s.font_body.fallback_families }};
+    {%- endif %}
+    {%- if s.bg_color != blank %} --pj-s-bg: {{ s.bg_color }};{% endif %}
+    {%- if s.text_color != blank %} --pj-s-text: {{ s.text_color }};{% endif %}
+    {%- if s.muted_color != blank %} --pj-s-muted: {{ s.muted_color }};{% endif %}
+    {%- if s.accent_color != blank %} --pj-s-accent: {{ s.accent_color }};{% endif %}
+    {%- if s.heading_size != blank %} --pj-s-hs: {{ s.heading_size | divided_by: 100.0 }};{% endif %}
+    {%- if s.body_size != blank %} --pj-s-bs: {{ s.body_size | divided_by: 100.0 }};{% endif %}
+  }
+</style>

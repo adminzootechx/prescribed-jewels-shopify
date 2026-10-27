@@ -1,15 +1,33 @@
-<section id="pj-story" class="pj-story pj-section" aria-labelledby="pj-story-heading" style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }};{% if section.settings.card_color != blank %} --pj-bg-primary: {{ section.settings.card_color }};{% endif %}">
-  <div class="pj-container">
-    <div class="pj-story__card">
-      <div class="pj-story__monogram">
-        {% render 'pj-monogram', variant: 'monogram' %}
-      </div>
-      <p class="pj-eyebrow">{{ section.settings.eyebrow }}</p>
+{%- assign s = section.settings -%}
+{% render 'pj-section-style', section: section %}
+
+<section
+  id="pj-story"
+  class="pj-story pj-section pj-story--{{ s.align }}"
+  aria-labelledby="pj-story-heading"
+  style="--pj-hs-sec: {{ s.heading_size | divided_by: 100.0 }}; --pj-story-veil: {{ s.veil }}%; --pj-story-veil-color: {{ s.veil_color | default: '#2A1C10' }}; --pj-story-min: {{ s.min_height }}px; --pj-story-focus: {{ s.focus_x }}% {{ s.focus_y }}%;{% if s.card_color != blank %} --pj-bg-primary: {{ s.card_color }};{% endif %}"
+>
+  <div class="pj-story__bg" aria-hidden="true">
+    {%- if s.image != blank -%}
+      {{ s.image | image_url: width: 2400 | image_tag: class: 'pj-story__bg-img', widths: '1200, 1800, 2400', sizes: '100vw', alt: '', loading: 'lazy' }}
+    {%- else -%}
+      <img class="pj-story__bg-img" src="{{ 'hero-banner-2.jpg' | asset_url }}" alt="" width="1408" height="768" loading="lazy">
+    {%- endif -%}
+  </div>
+
+  <div class="pj-container pj-story__layout">
+    <div class="pj-story__content">
+      {%- if s.show_monogram -%}
+        <div class="pj-story__monogram">
+          {% render 'pj-monogram', variant: 'monogram' %}
+        </div>
+      {%- endif -%}
+      <p class="pj-eyebrow">{{ s.eyebrow }}</p>
       <h2 id="pj-story-heading" class="pj-story__title">
-        {{ section.settings.heading }}
+        {{ s.heading }}
       </h2>
       <p class="pj-story__text">
-        {{ section.settings.body_text }}
+        {{ s.body_text }}
       </p>
       <div class="pj-story__cta">
         <button
@@ -18,7 +36,7 @@
           data-open-prescription
           data-design="01 — The Classic (Signature Ring)"
         >
-          <span>{{ section.settings.button_label }}</span>
+          <span>{{ s.button_label }}</span>
           <span aria-hidden="true">→</span>
         </button>
       </div>
@@ -32,27 +50,36 @@
   "tag": "section",
   "class": "pj-section-story",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "OUR STORY"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "A Piece of Your Own Story"
-    },
-    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100 },
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "OUR STORY" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "A Piece of Your Own Story" },
+    { "type": "textarea", "id": "body_text", "label": "Body Text", "default": "Prescribed Jewels is born from the belief that fine jewellery should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details." },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "BEGIN YOUR PRESCRIPTION" },
-    { "type": "color", "id": "card_color", "label": "Card color", "info": "Leave empty to use the theme background." },
-    {
-      "type": "textarea",
-      "id": "body_text",
-      "label": "Body Text",
-      "default": "Prescribed Jewels is born from the belief that fine jewellery should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details."
-    }
+    { "type": "checkbox", "id": "show_monogram", "label": "Show the PJ monogram", "default": true },
+
+    { "type": "header", "content": "Background image" },
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Leave empty to use the built-in travertine and ruby photograph." },
+    { "type": "range", "id": "focus_x", "label": "Image focus, across", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "focus_y", "label": "Image focus, down", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "color", "id": "veil_color", "label": "Tint over the image", "default": "#2A1C10" },
+    { "type": "range", "id": "veil", "label": "Tint strength", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 45, "info": "Raise it if the text is hard to read." },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "align", "label": "Text position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" }, { "value": "right", "label": "Right" } ] },
+    { "type": "range", "id": "min_height", "label": "Minimum height", "min": 360, "max": 900, "step": 20, "unit": "px", "default": 620 },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "text_color", "label": "Heading and label", "default": "#FBF6EC" },
+    { "type": "color", "id": "muted_color", "label": "Body text", "default": "#F3E9D8" },
+    { "type": "color", "id": "accent_color", "label": "Button", "default": "#FBF6EC", "info": "Fill colour of the button." },
+    { "type": "color", "id": "card_color", "label": "Theme background override", "info": "Only used behind the image while it loads. Leave empty for the theme background." },
+
+    { "type": "header", "content": "Fonts and sizes" },
+    { "type": "checkbox", "id": "use_custom_fonts", "label": "Use the fonts chosen below", "default": false, "info": "Off: the theme fonts." },
+    { "type": "font_picker", "id": "font_heading", "label": "Heading font", "default": "cormorant_n4" },
+    { "type": "font_picker", "id": "font_body", "label": "Text font", "default": "jost_n3" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "body_size", "label": "Text size", "min": 70, "max": 150, "step": 5, "unit": "%", "default": 100 }
   ],
   "presets": [
     {
