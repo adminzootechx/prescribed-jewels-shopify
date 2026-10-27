@@ -109,6 +109,10 @@
         "heading_size": 100
       }
     },
+    "about_story": {
+      "type": "about-story",
+      "settings": {}
+    },
     "prescription_process": {
       "type": "prescription-process",
       "blocks": {
@@ -166,6 +170,10 @@
         "heading_size": 100,
         "circle_size": 136
       }
+    },
+    "closing_split": {
+      "type": "closing-split",
+      "settings": {}
     },
     "gemstones_atlas": {
       "type": "gemstones-atlas",
@@ -337,7 +345,9 @@
   "order": [
     "hero",
     "designs_showcase",
+    "about_story",
     "prescription_process",
+    "closing_split",
     "gemstones_atlas",
     "editorial_story"
   ]
