@@ -140,7 +140,7 @@ textarea {
 .pj-section-title {
   margin: 0;
   font-family: var(--pj-font-serif);
-  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-size: calc(clamp(2rem, 3.6vw, 3rem) * var(--pj-hs, 1) * var(--pj-hs-sec, 1));
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: 0.02em;
@@ -281,7 +281,7 @@ textarea {
 
 .pj-hero {
   position: relative;
-  height: calc(100vh - 54px);
+  height: calc(var(--pj-hero-h, 100vh) - 54px);
   min-height: 460px;
   display: flex;
   align-items: center;
@@ -314,15 +314,25 @@ textarea {
   height: 100%;
   flex-shrink: 0;
   position: relative;
+  overflow: hidden;
 }
 
 .pj-hero__bg-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center right;
+  object-position: center center;
+  transform-origin: 50% 50%;
+  animation: pj-hero-drift 9s ease-in-out infinite alternate;
 }
 
+/* The whole photograph breathes outward from its centre, so it reads as full-frame, never one-sided */
+@keyframes pj-hero-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.09); }
+}
+
+/* A light veil only behind the copy; the photograph stays fully visible across the rest of the frame */
 .pj-hero__media::after {
   content: '';
   position: absolute;
@@ -331,11 +341,19 @@ textarea {
   pointer-events: none;
   background: linear-gradient(
     90deg,
-    rgba(243, 236, 224, 0.95) 0%,
-    rgba(243, 236, 224, 0.84) 36%,
-    rgba(243, 236, 224, 0.12) 66%,
-    rgba(243, 236, 224, 0) 100%
+    rgba(243, 236, 224, calc(0.82 * var(--pj-veil, 1))) 0%,
+    rgba(243, 236, 224, calc(0.5 * var(--pj-veil, 1))) 30%,
+    rgba(243, 236, 224, calc(0.08 * var(--pj-veil, 1))) 56%,
+    rgba(243, 236, 224, 0) 70%
   );
+}
+
+@media (max-width: 749px) {
+  .pj-hero__media::after { background: rgba(243, 236, 224, calc(0.58 * var(--pj-veil, 1))); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pj-hero__bg-img { animation: none; }
 }
 
 .pj-hero__overlay {
@@ -347,12 +365,13 @@ textarea {
 
 .pj-hero__content {
   max-width: 520px;
+  color: var(--pj-hero-text, inherit);
 }
 
 .pj-hero__title {
   margin: 0 0 0.75rem;
   font-family: var(--pj-font-serif);
-  font-size: clamp(2.6rem, 4.8vw, 4.2rem);
+  font-size: calc(clamp(2.6rem, 4.8vw, 4.2rem) * var(--pj-hs, 1) * var(--pj-hs-sec, 1));
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: 0.02em;
@@ -641,7 +660,7 @@ textarea {
 }
 
 .pj-process__header .pj-section-title {
-  font-size: clamp(1.5rem, 2.3vw, 2.05rem);
+  font-size: calc(clamp(1.5rem, 2.3vw, 2.05rem) * var(--pj-hs, 1) * var(--pj-hs-sec, 1));
 }
 
 .pj-process__stage {
@@ -696,20 +715,41 @@ textarea {
 }
 
 @media (min-width: 960px) {
+  /* The route is drawn in a 1200 x 360 box: crests sit at y = 60 (16.7%), troughs at y = 300 (83.3%),
+     and the five stops fall at x = 10%, 30%, 50%, 70%, 90%. Each circle is centred exactly on its stop,
+     so the route runs through the middle of every photograph. */
+  .pj-process__stage { height: clamp(460px, 66vh, 560px); padding: 0; }
+
   .pj-steps {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1.15rem;
-    min-height: 64vh;
+    display: block;
+    position: absolute;
+    inset: 0;
+    min-height: 0;
   }
 
-  /* Alternating Wave: Steps 1, 3, 5 sit inside the top Inverted-U arch (∩); Steps 2, 4 sit inside the bottom U-curve (∪) */
-  .pj-step--arch-top {
-    transform: translateY(-2.4rem);
+  .pj-step {
+    position: absolute;
+    width: 200px;
+    margin-left: -100px;
   }
 
-  .pj-step--curve-bottom {
-    transform: translateY(2.4rem);
-  }
+  .pj-step:nth-child(1) { left: 10%; }
+  .pj-step:nth-child(2) { left: 30%; }
+  .pj-step:nth-child(3) { left: 50%; }
+  .pj-step:nth-child(4) { left: 70%; }
+  .pj-step:nth-child(5) { left: 90%; }
+
+  /* Route above: circle on the crest, words underneath */
+  .pj-step--arch-top { top: calc(16.667% - var(--pj-d) / 2); }
+
+  /* Route below: circle in the trough, words above, inside the open bowl of the curve */
+  .pj-step--curve-bottom { bottom: calc(16.667% - var(--pj-d) / 2); }
+  .pj-step--curve-bottom .pj-step__card { flex-direction: column-reverse; }
+  .pj-step--curve-bottom .pj-step__photo-wrap { margin: 1.1rem 0 0; }
+  .pj-step--curve-bottom .pj-step__text { margin-bottom: 0; }
+
+  .pj-step__title,
+  .pj-step__desc { max-width: 190px; }
 }
 
 .pj-step {
@@ -726,58 +766,73 @@ textarea {
 }
 
 .pj-step__card {
-  background: var(--pj-bg-card);
-  border: 1px solid rgba(182, 145, 86, 0.35);
-  padding: 0.9rem 0.85rem 1.1rem;
+  background: none;
+  border: 0;
+  padding: 0;
   width: 100%;
-  max-width: 245px;
+  max-width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 12px 28px rgba(26, 24, 21, 0.06);
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-}
-
-.pj-step.is-reached .pj-step__card {
-  border-color: var(--pj-accent-gold);
-  box-shadow: 0 18px 36px rgba(26, 24, 21, 0.12);
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.1, 1);
 }
 
 .pj-step__card:hover {
   transform: translateY(-6px);
 }
 
+/* No box: a round photograph on the curve, with a fine gold ring that closes in once the step is reached */
 .pj-step__photo-wrap {
   position: relative;
-  width: 100%;
-  height: clamp(110px, 17vh, 145px);
-  overflow: hidden;
-  border-radius: 70px 70px 4px 4px;
-  margin-bottom: 0.7rem;
-  border: 1px solid rgba(182, 145, 86, 0.35);
+  width: var(--pj-d, 128px);
+  height: var(--pj-d, 128px);
+  flex: none;
+  border-radius: 50%;
+  margin-bottom: 1.1rem;
+  box-shadow: 0 0 0 7px var(--pj-bg-secondary), 0 0 0 8px rgba(182, 145, 86, 0.35), 0 22px 34px -18px rgba(26, 24, 21, 0.4);
+  transition: box-shadow 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.1, 1);
 }
 
-.pj-step--curve-bottom .pj-step__photo-wrap {
-  border-radius: 4px 4px 70px 70px;
+.pj-step.is-reached .pj-step__photo-wrap {
+  transform: scale(1.04);
+  box-shadow: 0 0 0 7px var(--pj-bg-secondary), 0 0 0 9px var(--pj-accent-gold), 0 26px 38px -18px rgba(26, 24, 21, 0.5);
 }
 
 .pj-step__photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  filter: grayscale(0.85) sepia(0.15);
+  transition: filter 0.8s ease;
+}
+
+.pj-step.is-reached .pj-step__photo {
+  filter: none;
 }
 
 .pj-step__badge {
   position: absolute;
-  top: 0.45rem;
-  right: 0.45rem;
-  background: rgba(243, 236, 224, 0.92);
+  top: 2px;
+  right: -2px;
+  width: 1.7rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--pj-bg-secondary);
   color: var(--pj-text-primary);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
-  padding: 0.18rem 0.45rem;
-  border: 1px solid rgba(182, 145, 86, 0.45);
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(182, 145, 86, 0.6);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.pj-step.is-reached .pj-step__badge {
+  background: var(--pj-accent-gold);
+  color: #FFFDF8;
 }
 
 .pj-step__num {
@@ -808,8 +863,12 @@ textarea {
    4. ROTATING GEMSTONES WHEEL (PINTEREST ASHCLAIR-STYLE + SHORT STONE INFO)
    ========================================================================== */
 
+.pj-gemstones-wheel-outer { position: relative; }
+
 .pj-gemstones-wheel-section {
-  background-color: var(--pj-bg-secondary);
+  background:
+    radial-gradient(ellipse 55% 70% at 28% 45%, rgba(255, 252, 247, 0.75), rgba(255, 252, 247, 0) 70%),
+    var(--pj-gem-bg, #F5E9DE);
   min-height: calc(100vh - 54px);
   display: flex;
   align-items: center;
@@ -820,6 +879,7 @@ textarea {
 }
 
 .pj-gemstones-wheel__layout {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
@@ -841,12 +901,18 @@ textarea {
 }
 
 .pj-gemstones-wheel__active-box {
-  background: var(--pj-bg-primary);
-  border: 1px solid rgba(182, 145, 86, 0.38);
-  padding: clamp(1.35rem, 2.8vh, 2.1rem) clamp(1.35rem, 2.5vw, 2.25rem);
+  max-width: 560px;
+  background: none;
+  border: 0;
+  border-left: 2px solid var(--gem-c, #B69156);
+  transition: border-color 0.5s ease;
+  padding: 0.35rem 0 0.35rem clamp(1.25rem, 2.5vw, 2rem);
   margin-bottom: 1.15rem;
-  box-shadow: 0 18px 40px rgba(26, 24, 21, 0.07);
 }
+
+.pj-wheel-hint { color: var(--pj-text-soft); font-size: 0.6rem; letter-spacing: 0.2em; }
+.pj-wheel-progress { height: 1px; margin-top: 1.4rem; max-width: 22rem; background: rgba(182, 145, 86, 0.28); position: relative; overflow: hidden; }
+.pj-wheel-progress span { position: absolute; inset: 0; background: var(--pj-accent-gold); transform-origin: left; transform: scaleX(0.05); transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.1, 1); }
 
 .pj-gemstones-wheel__meta-row {
   display: flex;
@@ -866,13 +932,187 @@ textarea {
 }
 
 .pj-gemstones-wheel__planet {
-  color: #9A763B;
+  margin: 0 0 0.6rem;
+  font-family: var(--pj-font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #3A322A;
+}
+
+/* The curved arrow: drawn from the highlighted stone towards its photograph, in the stone's colour */
+.pj-gem-arrow {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.pj-gem-arrow path {
+  fill: none;
+  stroke: var(--gem-c, #B69156);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.pj-gem-arrow circle { fill: var(--pj-gem-bg, #E2D5BE); stroke: var(--gem-c, #B69156); stroke-width: 2; }
+
+@media (min-width: 960px) {
+  .pj-gem-arrow { display: block; }
+}
+
+/* The diagram: photograph in the middle, four notes around it, each tied back by a fine leader line */
+.pj-gem-diagram {
+  position: relative;
+  width: min(100%, 720px);
+  aspect-ratio: 720 / 540;
+  margin-top: 0.75rem;
+  transition: opacity 0.26s ease;
+}
+
+.pj-gem-diagram__lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.pj-gem-diagram__leaders path { fill: none; stroke: var(--gem-c, #B69156); stroke-width: 1.6; transition: stroke 0.5s ease; }
+.pj-gem-diagram__leaders circle { fill: var(--gem-c, #B69156); transition: fill 0.5s ease; }
+
+/* The stone alone: no plate. The photograph is blended into the sand so only the gem and its soft shadow remain. */
+.pj-gem-diagram__photo {
+  position: absolute;
+  left: 30%;
+  top: 17.5%;
+  width: 40%;
+  aspect-ratio: 1;
+  perspective: 900px;
+}
+
+.pj-gem-diagram__photo::before {
+  content: '';
+  position: absolute;
+  inset: -34%;
+  background: radial-gradient(circle, rgba(255, 253, 249, 0.95) 0%, rgba(255, 250, 244, 0.55) 38%, rgba(255, 250, 244, 0) 68%);
+  pointer-events: none;
+}
+
+.pj-gem-diagram__photo::after {
+  content: '';
+  position: absolute;
+  left: 18%;
+  bottom: 9%;
+  width: 64%;
+  height: 9%;
+  background: radial-gradient(ellipse, rgba(38, 28, 20, 0.42) 0%, rgba(38, 28, 20, 0) 70%);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.pj-gem-diagram__photo img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.55);
+  mix-blend-mode: multiply;
+  filter: brightness(1.06) saturate(1.06);
+  -webkit-mask-image: radial-gradient(circle at 50% 52%, #000 34%, transparent 62%);
+  mask-image: radial-gradient(circle at 50% 52%, #000 34%, transparent 62%);
+  transition: opacity 0.35s ease;
+}
+
+.pj-gem-diagram__photo img.is-swapping { opacity: 0; }
+
+/* Cut-out stones carry their own edge: no blending, no mask, no zoom */
+.pj-gem-diagram__photo img.is-cutout {
+  object-fit: contain;
+  transform: scale(1.18);
+  mix-blend-mode: normal;
+  filter: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+  animation: none;
+}
+
+/* Turning the stone: front, three-quarter left, close on the table, three-quarter right */
+.pj-gem-diagram__photo.is-turning img { animation: pj-gem-turn 14s ease-in-out infinite; }
+
+@keyframes pj-gem-turn {
+  0%, 100% { transform: scale(1.55) rotateY(0deg) rotateX(0deg); filter: brightness(1.06) saturate(1.06); }
+  20% { transform: scale(1.5) rotateY(38deg) rotateX(9deg); filter: brightness(1.12) saturate(1.1); }
+  40% { transform: scale(1.62) rotateY(10deg) rotateX(-6deg); filter: brightness(1.04) saturate(1.06); }
+  55% { transform: scale(2.4) rotateY(0deg) rotateX(0deg); filter: brightness(1.1) saturate(1.12); }
+  75% { transform: scale(1.5) rotateY(-38deg) rotateX(9deg); filter: brightness(1.12) saturate(1.1); }
+}
+
+.pj-gem-diagram__name {
+  position: absolute;
+  left: 50%;
+  top: 71%;
+  width: 36%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.pj-gem-diagram__name .pj-gemstones-wheel__planet { margin-bottom: 0.15rem; }
+.pj-gem-diagram__name .pj-gemstones-wheel__title { margin: 0; font-weight: 500; letter-spacing: 0.04em; text-wrap: balance; color: #1A1713; font-size: calc(clamp(1.9rem, 3.1vw, 2.9rem) * var(--pj-hs, 1) * var(--pj-hs-sec, 1)); line-height: 1.04; }
+
+.pj-gem-note { position: absolute; width: 29%; transition: opacity 0.26s ease, transform 0.26s ease; }
+.pj-gem-note--tl { left: 0; top: 4%; text-align: right; }
+.pj-gem-note--tr { right: 0; top: 4%; }
+.pj-gem-note--bl { left: 0; bottom: 2%; text-align: right; }
+.pj-gem-note--br { right: 0; bottom: 2%; }
+
+.pj-gem-note__title {
+  margin: 0 0 0.3rem;
+  font-family: var(--pj-font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #17130F;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--gem-c, #B69156);
+  display: inline-block;
+  transition: border-color 0.5s ease;
+}
+
+.pj-gem-note p {
+  margin: 0;
+  font-family: var(--pj-font-serif);
+  margin-top: 0.55rem;
+  font-size: clamp(1.2rem, 1.55vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: #231E18;
+}
+
+.pj-gem-diagram.is-fading .pj-gem-note,
+.pj-gem-diagram.is-fading .pj-gem-diagram__name { opacity: 0; transform: translateY(6px); }
+.pj-gem-diagram.is-fading .pj-gem-note--tl, .pj-gem-diagram.is-fading .pj-gem-note--tr { transform: translateY(-6px); }
+.pj-gem-diagram__name { transition: opacity 0.26s ease; }
+.pj-gem-diagram.is-fading .pj-gem-diagram__name { transform: translateX(-50%); }
+
+/* Phones and tablets: photograph first, notes stacked beneath, no leader lines */
+@media (max-width: 959px) {
+  .pj-gem-diagram { aspect-ratio: auto; display: grid; gap: 1.25rem; justify-items: center; text-align: center; }
+  .pj-gem-diagram__lines { display: none; }
+  .pj-gem-diagram__photo, .pj-gem-diagram__name, .pj-gem-note { position: static; transform: none; width: auto; text-align: center; }
+  .pj-gem-diagram__photo { width: min(78vw, 320px); }
+  .pj-gem-diagram__name { width: 100%; }
+  .pj-gem-diagram.is-fading .pj-gem-diagram__name { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pj-gem-diagram__photo.is-turning img { animation: none; }
 }
 
 .pj-gemstones-wheel__title {
   margin: 0 0 0.55rem;
   font-family: var(--pj-font-serif);
-  font-size: clamp(2.1rem, 3.8vw, 3.2rem);
+  font-size: calc(clamp(2.8rem, 5.2vw, 4.6rem) * var(--pj-hs, 1) * var(--pj-hs-sec, 1));
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: 0.03em;
@@ -973,6 +1213,46 @@ textarea {
   pointer-events: none;
 }
 
+.pj-wheel-orbit {
+  position: absolute;
+  inset: 110px;
+  border-radius: 50%;
+  border: 1px dashed rgba(182, 145, 86, 0.55);
+  pointer-events: none;
+  animation: pj-orbit 90s linear infinite;
+}
+
+.pj-wheel-orbit::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: calc(50% - 4px);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pj-accent-gold);
+  box-shadow: 0 0 12px 2px rgba(182, 145, 86, 0.6);
+}
+
+@keyframes pj-orbit { to { transform: rotate(360deg); } }
+
+/* A warm glow where the chosen stone sits, at the leftmost point of the wheel */
+.pj-wheel-halo {
+  position: absolute;
+  left: -34px;
+  top: 50%;
+  width: 190px;
+  height: 190px;
+  margin-top: -95px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--gem-c, #D6B26C) 42%, transparent) 0%, color-mix(in srgb, var(--gem-c, #D6B26C) 14%, transparent) 48%, transparent 72%);
+  pointer-events: none;
+  z-index: 2;
+  animation: pj-halo 3.6s ease-in-out infinite alternate;
+}
+
+@keyframes pj-halo { from { opacity: 0.7; transform: scale(0.94); } to { opacity: 1; transform: scale(1.06); } }
+
 .pj-wheel-rotor {
   position: absolute;
   inset: 0;
@@ -1000,6 +1280,13 @@ textarea {
   display: block;
 }
 
+.pj-wheel-gem-img.is-cutout {
+  object-fit: contain;
+  border-radius: 0;
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 8px 8px rgba(26, 24, 21, 0.3));
+}
+
 .pj-wheel-gem-slot {
   position: absolute;
   left: 50%;
@@ -1023,8 +1310,13 @@ textarea {
 }
 
 .pj-wheel-gem-slot.is-active .pj-wheel-gem-inner {
-  transform: scale(1.3);
+  transform: scale(1.38);
   opacity: 1;
+  filter: drop-shadow(0 12px 14px rgba(26, 24, 21, 0.22));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pj-wheel-orbit, .pj-wheel-halo { animation: none; }
 }
 
 /* ==========================================================================
@@ -1059,7 +1351,7 @@ textarea {
 .pj-story__title {
   margin: 0 0 1rem;
   font-family: var(--pj-font-serif);
-  font-size: clamp(2.1rem, 3.8vw, 3.15rem);
+  font-size: calc(clamp(2.1rem, 3.8vw, 3.15rem) * var(--pj-hs, 1) * var(--pj-hs-sec, 1));
   font-weight: 400;
   line-height: 1.08;
 }

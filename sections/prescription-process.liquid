@@ -1,11 +1,9 @@
-<section id="pj-process" class="pj-process-scroll-outer" aria-labelledby="pj-process-heading" data-scroll-process>
+<section id="pj-process" class="pj-process-scroll-outer" aria-labelledby="pj-process-heading" data-scroll-process style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }}; --pj-d: {{ section.settings.circle_size }}px;">
   <div class="pj-process-sticky">
     <div class="pj-container">
       <div class="pj-process__header">
         <p class="pj-eyebrow">{{ section.settings.eyebrow }}</p>
-        <h2 id="pj-process-heading" class="pj-section-title">
-          A THOUGHTFUL JOURNEY
-        </h2>
+        <h2 id="pj-process-heading" class="pj-section-title">{{ section.settings.heading }}</h2>
       </div>
 
       <div class="pj-process__stage">
@@ -24,81 +22,31 @@
           </svg>
         </div>
 
-        <ol class="pj-steps" aria-label="Five-stage prescription journey">
-          <!-- Step 1: Day 0 (Inverted-U Arch on Top ∩) -->
-          <li class="pj-step pj-step--arch-top is-reached" data-process-step="0">
-            <div class="pj-step__card">
-              <div class="pj-step__photo-wrap">
-                <img src="{{ 'design-01-classic.jpg' | asset_url }}" alt="Day 0 Order Placed" class="pj-step__photo" width="240" height="240" loading="lazy">
-                <span class="pj-step__badge">01</span>
+        {%- assign fallbacks = 'design-01-classic.jpg,gemstones-editorial.jpg,design-06-celestial.jpg,design-05-signet.jpg,design-04-aura.jpg' | split: ',' -%}
+        <ol class="pj-steps" aria-label="Prescription journey">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign b = block.settings
+              assign is_top = forloop.index0 | modulo: 2
+            -%}
+            <li class="pj-step {% if is_top == 0 %}pj-step--arch-top{% else %}pj-step--curve-bottom{% endif %}{% if forloop.first %} is-reached{% endif %}" data-process-step="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+              <div class="pj-step__card">
+                <div class="pj-step__photo-wrap">
+                  {%- if b.image != blank -%}
+                    {{ b.image | image_url: width: 480 | image_tag: class: 'pj-step__photo', widths: '240, 360, 480', sizes: '160px', alt: b.title, loading: 'lazy' }}
+                  {%- else -%}
+                    <img src="{{ fallbacks[forloop.index0] | default: fallbacks[0] | asset_url }}" alt="{{ b.title | escape }}" class="pj-step__photo" width="240" height="240" loading="lazy">
+                  {%- endif -%}
+                  <span class="pj-step__badge">{{ forloop.index | prepend: '0' }}</span>
+                </div>
+                <div class="pj-step__text">
+                  <span class="pj-step__num">{{ b.when }}</span>
+                  <h3 class="pj-step__title">{{ b.title }}</h3>
+                  <p class="pj-step__desc">{{ b.text }}</p>
+                </div>
               </div>
-              <span class="pj-step__num">DAY 0</span>
-              <h3 class="pj-step__title">ORDER PLACED</h3>
-              <p class="pj-step__desc">
-                Select your design, share your birth details, and receive immediate confirmation (5–7 weeks delivery).
-              </p>
-            </div>
-          </li>
-
-          <!-- Step 2: Days 1-5 (U-Curve Below ∪) -->
-          <li class="pj-step pj-step--curve-bottom" data-process-step="1">
-            <div class="pj-step__card">
-              <div class="pj-step__photo-wrap">
-                <img src="{{ 'gemstones-editorial.jpg' | asset_url }}" alt="Days 1–5 Gemstone Prescribed" class="pj-step__photo" width="240" height="240" loading="lazy">
-                <span class="pj-step__badge">02</span>
-              </div>
-              <span class="pj-step__num">DAYS 1–5</span>
-              <h3 class="pj-step__title">GEMSTONE PRESCRIBED</h3>
-              <p class="pj-step__desc">
-                Our astrologer studies your birth chart and prescribes your stone. No customer action is required.
-              </p>
-            </div>
-          </li>
-
-          <!-- Step 3: Days 3-7 (Inverted-U Arch on Top ∩) -->
-          <li class="pj-step pj-step--arch-top" data-process-step="2">
-            <div class="pj-step__card">
-              <div class="pj-step__photo-wrap">
-                <img src="{{ 'design-06-celestial.jpg' | asset_url }}" alt="Days 3–7 Prescription Revealed" class="pj-step__photo" width="240" height="240" loading="lazy">
-                <span class="pj-step__badge">03</span>
-              </div>
-              <span class="pj-step__num">DAYS 3–7</span>
-              <h3 class="pj-step__title">PRESCRIPTION REVEALED</h3>
-              <p class="pj-step__desc">
-                A branded email reveals your gemstone and meaning as production begins — no approvals or revisions.
-              </p>
-            </div>
-          </li>
-
-          <!-- Step 4: Weeks 1-5 (U-Curve Below ∪) -->
-          <li class="pj-step pj-step--curve-bottom" data-process-step="3">
-            <div class="pj-step__card">
-              <div class="pj-step__photo-wrap">
-                <img src="{{ 'design-05-signet.jpg' | asset_url }}" alt="Weeks 1–5 Jewellery Production" class="pj-step__photo" width="240" height="240" loading="lazy">
-                <span class="pj-step__badge">04</span>
-              </div>
-              <span class="pj-step__num">WEEKS 1–5</span>
-              <h3 class="pj-step__title">JEWELLERY PRODUCTION</h3>
-              <p class="pj-step__desc">
-                Handcrafted according to your chosen design and prescribed gemstone with quiet precision.
-              </p>
-            </div>
-          </li>
-
-          <!-- Step 5: Weeks 5-7 (Inverted-U Arch on Top ∩) -->
-          <li class="pj-step pj-step--arch-top" data-process-step="4">
-            <div class="pj-step__card">
-              <div class="pj-step__photo-wrap">
-                <img src="{{ 'design-04-aura.jpg' | asset_url }}" alt="Weeks 5–7 Delivered To You" class="pj-step__photo" width="240" height="240" loading="lazy">
-                <span class="pj-step__badge">05</span>
-              </div>
-              <span class="pj-step__num">WEEKS 5–7</span>
-              <h3 class="pj-step__title">DELIVERED TO YOU</h3>
-              <p class="pj-step__desc">
-                Tracking sent; your physical box arrives with the small printed prescription alongside your jewel.
-              </p>
-            </div>
-          </li>
+            </li>
+          {%- endfor -%}
         </ol>
       </div>
     </div>
@@ -111,16 +59,29 @@
   "tag": "section",
   "class": "pj-section-process",
   "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "HOW IT WORKS" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "A THOUGHTFUL JOURNEY" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "circle_size", "label": "Photo circle size", "min": 90, "max": 170, "step": 2, "unit": "px", "default": 136, "info": "Desktop. The route always passes through the middle of each circle." }
+  ],
+  "blocks": [
     {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "HOW IT WORKS"
+      "type": "step",
+      "name": "Step",
+      "limit": 5,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "Square. Shown as a circle." },
+        { "type": "text", "id": "when", "label": "Timing", "default": "DAY 0" },
+        { "type": "text", "id": "title", "label": "Title", "default": "ORDER PLACED" },
+        { "type": "textarea", "id": "text", "label": "Description", "default": "Select your design and share your birth details." }
+      ]
     }
   ],
+  "max_blocks": 5,
   "presets": [
     {
-      "name": "3. How It Works"
+      "name": "3. How It Works",
+      "blocks": [ { "type": "step" }, { "type": "step" }, { "type": "step" }, { "type": "step" }, { "type": "step" } ]
     }
   ]
 }
