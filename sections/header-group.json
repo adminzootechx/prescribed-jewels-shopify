@@ -1,46 +1,55 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "name": "Header group",
   "type": "header",
   "sections": {
     "header": {
       "type": "header",
-      "settings": {},
+      "settings": {
+        "logo_text": "PRESCRIBED JEWELS",
+        "logo_font_size": 100,
+        "logo_letter_spacing": 18,
+        "nav_case": "titlecase",
+        "nav_text_size": 100,
+        "nav_spacing": 32,
+        "cart_label": "Cart",
+        "show_cart_count": true,
+        "cart_action": "drawer",
+        "overlay_hero": true,
+        "enable_sticky": true,
+        "text_color": "#F4EBE1",
+        "accent_color": "#B69156",
+        "bg_color_scrolled": "#120E0A",
+        "bg_opacity_scrolled": 85,
+        "header_padding_y": 18,
+        "max_width": 1400
+      },
       "blocks": {
         "link1": {
           "type": "link",
           "settings": {
-            "label": "Jewels",
-            "link": "#pj-designs"
+            "label": "The Process",
+            "link": "#pj-process"
           }
         },
         "link2": {
           "type": "link",
           "settings": {
-            "label": "Our Story",
-            "link": "#pj-story"
+            "label": "The Designs",
+            "link": "#pj-designs"
           }
         },
         "link3": {
           "type": "link",
           "settings": {
-            "label": "The Prescription",
-            "link": "#pj-process"
+            "label": "Our Philosophy",
+            "link": "#pj-story"
           }
         },
         "link4": {
           "type": "link",
           "settings": {
-            "label": "Gemstones",
-            "link": "#pj-gemstones"
+            "label": "Journal",
+            "link": "/blogs/journal"
           }
         }
       },

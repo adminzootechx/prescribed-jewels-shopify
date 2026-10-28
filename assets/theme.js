@@ -27,6 +27,17 @@
     });
   }
 
+  /* Sticky / Scrolled Header Glass Effect */
+  const header = document.querySelector('.pj-header');
+  if (header) {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 30;
+      header.classList.toggle('is-scrolled', isScrolled);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+  }
+
   /* --------------------------------------------------------------------------
    * 2. Hero 2-Photo Auto-Slider (Every 5 seconds, slides from right to left)
    * -------------------------------------------------------------------------- */
