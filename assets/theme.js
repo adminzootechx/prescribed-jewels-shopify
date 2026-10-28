@@ -453,7 +453,7 @@
 
     const NUM_SLOTS = 8;
     const RADIUS = 230;
-    const ROTATE_MS = 2000;
+    const ROTATE_MS = 4500;
     const slotElements = [];
     const gemUrls = (wheelRotor.getAttribute('data-gem-urls') || '').split('|');
     const views = (wheelRotor.getAttribute('data-gem-views') || '').split('|').map((v) => v.split(',').filter(Boolean));
@@ -510,6 +510,17 @@
       slot.appendChild(inner);
 
       wheelRotor.appendChild(slot);
+      slot.addEventListener('click', () => {
+        const activeSlot = ((wheelStep % NUM_SLOTS) + NUM_SLOTS) % NUM_SLOTS;
+        const diff = (s - activeSlot + NUM_SLOTS) % NUM_SLOTS;
+        const stepDiff = diff > 4 ? diff - NUM_SLOTS : diff;
+        if (stepDiff !== 0) {
+          activeStoneIndex = (((activeStoneIndex + stepDiff) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
+          wheelStep += stepDiff;
+          renderWheelState(true);
+          restartAuto();
+        }
+      });
       slotElements.push({ slot, inner, img });
     }
 
@@ -536,6 +547,7 @@
     const arrowSvg = document.getElementById('pj-gem-arrow');
     const arrowPath = document.getElementById('pj-gem-arrow-path');
     const arrowDot = document.getElementById('pj-gem-arrow-dot');
+    const arrowHead = document.getElementById('pj-gem-arrow-head');
     const photoWrap = document.getElementById('pj-gem-photo-wrap');
     const photoImg = document.getElementById('pj-gem-photo');
     const noteFeatures = document.getElementById('pj-gem-features');
@@ -569,9 +581,29 @@
       }
     };
 
-    // A curved arrow dynamically connecting the active stone on the ring to the big gemstone
+    // A curved arrow: starts when the wheel arrives and stops (and the gem pops up), moves from the ring gem to the big gem, and points into it
+    const ROTATE_DURATION_MS = 820;
+    let wheelTransitionTimer = null;
     let arrowAnimFrame = null;
-    const placeArrow = (redraw) => {
+
+    const hideArrow = () => {
+      if (arrowAnimFrame) {
+        cancelAnimationFrame(arrowAnimFrame);
+        arrowAnimFrame = null;
+      }
+      if (arrowSvg) {
+        arrowSvg.classList.remove('is-visible');
+        arrowSvg.style.opacity = '0';
+      }
+      if (arrowPath) {
+        arrowPath.style.strokeDashoffset = '9999';
+      }
+      if (arrowHead) {
+        arrowHead.style.opacity = '0';
+      }
+    };
+
+    const placeArrow = (animate = true) => {
       if (!arrowSvg || !arrowPath || !photoWrap || window.innerWidth < 960) return;
       const box = arrowSvg.getBoundingClientRect();
       if (box.width === 0 || box.height === 0) return;
@@ -587,7 +619,7 @@
       const endOffY = parseFloat(sec?.dataset.arrowEndY || '0') || 0;
       const customLift = parseFloat(sec?.dataset.arrowLift || '32');
 
-      // 1. Source: The active gemstone on the rotating ring
+      // 1. Source: The active gemstone on the rotating ring (popped up and resting)
       const gemTarget = (activeEntry.img && activeEntry.img.offsetWidth > 0 && !activeEntry.img.hidden)
         ? activeEntry.img
         : activeEntry.inner;
@@ -622,34 +654,75 @@
         arrowDot.setAttribute('cy', sy.toFixed(1));
       }
 
-      if (redraw) {
-        arrowPath.style.transition = 'none';
-        arrowPath.style.strokeDashoffset = '1';
-        void arrowPath.getBoundingClientRect();
-        arrowPath.style.transition = 'stroke-dashoffset 0.8s cubic-bezier(0.2, 0.7, 0.1, 1)';
-        arrowPath.style.strokeDashoffset = '0';
-      }
-    };
+      const totalLength = arrowPath.getTotalLength();
+      if (!totalLength) return;
 
-    const trackArrow = () => {
+      if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        arrowSvg.classList.add('is-visible');
+        arrowSvg.style.opacity = '1';
+        arrowPath.style.strokeDasharray = 'none';
+        arrowPath.style.strokeDashoffset = '0';
+        if (arrowHead) {
+          const endPt = arrowPath.getPointAtLength(totalLength);
+          const prevEnd = arrowPath.getPointAtLength(Math.max(0, totalLength - 2));
+          const endAngle = Math.atan2(endPt.y - prevEnd.y, endPt.x - prevEnd.x) * (180 / Math.PI);
+          arrowHead.setAttribute('transform', `translate(${endPt.x.toFixed(1)}, ${endPt.y.toFixed(1)}) rotate(${endAngle.toFixed(1)})`);
+          arrowHead.style.opacity = '1';
+        }
+        return;
+      }
+
+      // Animate arrow moving from ring gem across to bigger gem and then pointing
       if (arrowAnimFrame) cancelAnimationFrame(arrowAnimFrame);
+
+      arrowSvg.classList.add('is-visible');
+      arrowSvg.style.opacity = '1';
+      arrowPath.style.strokeDasharray = `${totalLength}`;
+      arrowPath.style.strokeDashoffset = `${totalLength}`;
+      if (arrowHead) arrowHead.style.opacity = '0';
+
+      const duration = 650; // ms to travel across
       const startTime = performance.now();
-      const duration = 920;
-      const tick = (now) => {
-        placeArrow(false);
-        if (now - startTime < duration) {
-          arrowAnimFrame = requestAnimationFrame(tick);
+
+      const step = (now) => {
+        const elapsed = now - startTime;
+        const rawProgress = Math.min(1, elapsed / duration);
+        // Smooth ease-out cubic
+        const progress = 1 - Math.pow(1 - rawProgress, 3);
+        const currentDist = progress * totalLength;
+
+        arrowPath.style.strokeDashoffset = `${(1 - progress) * totalLength}`;
+
+        if (arrowHead && progress > 0.02) {
+          const pt = arrowPath.getPointAtLength(currentDist);
+          const prevPt = arrowPath.getPointAtLength(Math.max(0, currentDist - 2));
+          const angle = Math.atan2(pt.y - prevPt.y, pt.x - prevPt.x) * (180 / Math.PI);
+          arrowHead.setAttribute('transform', `translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)}) rotate(${angle.toFixed(1)})`);
+          arrowHead.style.opacity = '1';
+        }
+
+        if (rawProgress < 1) {
+          arrowAnimFrame = requestAnimationFrame(step);
         } else {
-          placeArrow(false);
+          // Reached the big gem! Locked in place pointing directly into the gem
+          const endPt = arrowPath.getPointAtLength(totalLength);
+          const prevEnd = arrowPath.getPointAtLength(Math.max(0, totalLength - 2));
+          const endAngle = Math.atan2(endPt.y - prevEnd.y, endPt.x - prevEnd.x) * (180 / Math.PI);
+          if (arrowHead) {
+            arrowHead.setAttribute('transform', `translate(${endPt.x.toFixed(1)}, ${endPt.y.toFixed(1)}) rotate(${endAngle.toFixed(1)})`);
+            arrowHead.style.opacity = '1';
+          }
+          arrowPath.style.strokeDashoffset = '0';
+          arrowAnimFrame = null;
         }
       };
-      arrowAnimFrame = requestAnimationFrame(tick);
+
+      arrowAnimFrame = requestAnimationFrame(step);
     };
 
     window.addEventListener('resize', () => placeArrow(false), { passive: true });
     window.addEventListener('load', () => placeArrow(true));
     if (photoImg) photoImg.addEventListener('load', () => placeArrow(false));
-    if (wheelRotor) wheelRotor.addEventListener('transitionend', () => placeArrow(false));
     document.addEventListener('shopify:section:load', (e) => {
       if (e.target && (e.target.contains(wheelSection) || e.target === wheelSection)) {
         placeArrow(true);
@@ -676,7 +749,6 @@
         if (noteUses) noteUses.textContent = notes[1];
         if (noteWear) noteWear.textContent = notes[2];
         showStone(activeStoneIndex);
-        placeArrow(true);
         if (wheelBar) wheelBar.style.transform = `scaleX(${((activeStoneIndex + 1) / GEMSTONES.length).toFixed(3)})`;
         infoBox?.classList.remove('is-fading');
       };
@@ -689,25 +761,50 @@
     };
 
     const renderWheelState = (animate = true) => {
+      clearTimeout(wheelTransitionTimer);
+      hideArrow();
+
       const activeSlot = ((wheelStep % NUM_SLOTS) + NUM_SLOTS) % NUM_SLOTS;
       wheelRotor.style.transform = `rotate(${-wheelStep * 45}deg)`;
       if (wheelFrameSpin) wheelFrameSpin.style.transform = `rotate(${-wheelStep * 45}deg)`;
       // Counter-turn each stone by the wheel's rotation so it always reads upright
       slotElements.forEach((entry) => entry.inner.style.setProperty('--ur', `${wheelStep * 45}deg`));
 
-      [-3, -2, -1, 0, 1, 2, 3, 4].forEach((rel) => {
-        const slotIdx = (activeSlot + rel + NUM_SLOTS) % NUM_SLOTS;
-        const stoneIdx = (((activeStoneIndex + rel) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
-        const entry = slotElements[slotIdx];
-        entry.slot.classList.toggle('is-active', rel === 0);
-        setSlotGem(entry, stoneIdx, slotIdx);
-      });
-
-      updateInfo(animate);
       if (animate) {
-        trackArrow();
+        // While rotating: un-pop gems and fade info so NO arrow connects during rotation
+        slotElements.forEach((entry) => entry.slot.classList.remove('is-active'));
+        if (infoBox) infoBox.classList.add('is-fading');
+
+        [-3, -2, -1, 0, 1, 2, 3, 4].forEach((rel) => {
+          const slotIdx = (activeSlot + rel + NUM_SLOTS) % NUM_SLOTS;
+          const stoneIdx = (((activeStoneIndex + rel) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
+          const entry = slotElements[slotIdx];
+          setSlotGem(entry, stoneIdx, slotIdx);
+        });
+
+        // When the wheel arrives and STOPS:
+        wheelTransitionTimer = setTimeout(() => {
+          // 1. Arrived gem pops up!
+          const activeEntry = slotElements[activeSlot];
+          if (activeEntry) activeEntry.slot.classList.add('is-active');
+
+          // 2. Info updates and reveals
+          updateInfo(false);
+
+          // 3. Arrow starts moving from the popped-up ring gem to the bigger gem and points
+          placeArrow(true);
+        }, ROTATE_DURATION_MS);
       } else {
-        placeArrow(false);
+        // Instant (first load)
+        [-3, -2, -1, 0, 1, 2, 3, 4].forEach((rel) => {
+          const slotIdx = (activeSlot + rel + NUM_SLOTS) % NUM_SLOTS;
+          const stoneIdx = (((activeStoneIndex + rel) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
+          const entry = slotElements[slotIdx];
+          entry.slot.classList.toggle('is-active', rel === 0);
+          setSlotGem(entry, stoneIdx, slotIdx);
+        });
+        updateInfo(false);
+        placeArrow(true);
       }
     };
 

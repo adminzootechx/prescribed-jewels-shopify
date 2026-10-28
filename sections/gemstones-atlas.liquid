@@ -47,13 +47,11 @@
     <div class="pj-container pj-gemstones-wheel__layout">
       <!-- Curved arrow from the highlighted stone to its photograph, drawn in the stone's own colour -->
       <svg class="pj-gem-arrow" id="pj-gem-arrow" aria-hidden="true" focusable="false">
-        <defs>
-          <marker id="pj-arrowhead" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="11" markerHeight="11" orient="auto">
-            <path d="M1 1 L10 6 L1 11" fill="none" stroke="var(--gem-c, #B69156)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </marker>
-        </defs>
         <circle id="pj-gem-arrow-dot" r="5" />
-        <path id="pj-gem-arrow-path" pathLength="1" marker-end="url(#pj-arrowhead)" />
+        <path id="pj-gem-arrow-path" />
+        <g id="pj-gem-arrow-head" style="opacity: 0;">
+          <path d="M -10 -6 L 2 0 L -10 6" fill="none" stroke="var(--gem-c, #B69156)" stroke-width="var(--pj-w-arrow-stroke, 2.6px)" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
       </svg>
 
       <!-- Left: the chosen stone, with what is known about it set out around its photograph -->
