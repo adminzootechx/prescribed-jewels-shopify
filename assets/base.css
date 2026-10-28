@@ -407,6 +407,39 @@ textarea {
   background-color: var(--pj-bg-primary);
 }
 
+.pj-designs-sticky {
+  position: relative;
+  isolation: isolate;
+}
+
+.pj-designs__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pj-designs__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.pj-designs-sticky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, rgba(14, 11, 9, 0.2) 0%, rgba(10, 8, 6, 0.55) 100%),
+    linear-gradient(to bottom, rgba(12, 10, 8, 0.45) 0%, transparent 20%, transparent 80%, rgba(12, 10, 8, 0.55) 100%),
+    color-mix(in srgb, var(--pj-designs-veil-color, #14100C) var(--pj-designs-veil, 35%), transparent);
+}
+
 @media (min-width: 960px) {
   .pj-designs-scroll-outer {
     height: 210vh;
@@ -447,11 +480,14 @@ textarea {
 
 .pj-designs__header .pj-eyebrow {
   margin-bottom: 0.2rem;
+  color: var(--pj-designs-color, var(--pj-text-muted));
+  opacity: 0.85;
 }
 
 .pj-designs__header .pj-section-title {
   font-size: clamp(1.45rem, 2.2vw, 1.95rem);
   line-height: 1.05;
+  color: var(--pj-designs-color, inherit);
 }
 
 .pj-designs__header-line {
@@ -476,8 +512,11 @@ textarea {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1px solid var(--pj-border-strong);
-  background: transparent;
+  border: 1px solid rgba(244, 235, 225, 0.28);
+  background: rgba(20, 16, 12, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--pj-designs-color, #F4EBE1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -531,6 +570,7 @@ textarea {
   flex-direction: column;
   background: var(--pj-bg-card);
   border: 1px solid rgba(182, 145, 86, 0.28);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.32);
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease;
   will-change: transform, box-shadow;
 }

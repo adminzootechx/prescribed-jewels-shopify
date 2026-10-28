@@ -1,5 +1,12 @@
-<section id="pj-designs" class="pj-designs-scroll-outer" aria-labelledby="pj-designs-heading" data-horizontal-designs style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }};">
-  <div class="pj-designs-sticky">
+<section id="pj-designs" class="pj-designs-scroll-outer" aria-labelledby="pj-designs-heading" data-horizontal-designs style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }};{% if section.settings.text_color != blank and section.settings.text_color != 'rgba(0,0,0,0)' %} --pj-designs-color: {{ section.settings.text_color }};{% endif %}">
+  <div class="pj-designs-sticky" style="--pj-designs-veil: {{ section.settings.veil | default: 35 }}%;{% if section.settings.veil_color != blank %} --pj-designs-veil-color: {{ section.settings.veil_color }};{% endif %}">
+    <div class="pj-designs__bg" aria-hidden="true">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 2400 | image_tag: class: 'pj-designs__bg-img', widths: '800, 1200, 1600, 2000, 2400', sizes: '100vw', alt: '', loading: 'lazy' }}
+      {%- else -%}
+        <img src="{{ 'collection-stone-bg.png' | asset_url }}" alt="" class="pj-designs__bg-img" width="1920" height="1080" loading="lazy">
+      {%- endif -%}
+    </div>
     <div class="pj-container">
       <div class="pj-designs__header">
         <div class="pj-designs__header-left">
@@ -49,6 +56,10 @@
   "tag": "section",
   "class": "pj-section-designs",
   "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background Image" },
+    { "type": "range", "id": "veil", "label": "Overlay strength", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 35 },
+    { "type": "color", "id": "veil_color", "label": "Overlay tint", "default": "#14100C" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#F4EBE1" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE COLLECTION" },
     { "type": "textarea", "id": "heading", "label": "Heading", "info": "Press Enter for a new line.", "default": "SEVEN DESIGNS,\nONE MEANING" },
     { "type": "range", "id": "heading_size", "label": "Heading size", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100 }
