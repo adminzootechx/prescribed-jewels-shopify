@@ -1,5 +1,14 @@
-<section id="pj-gemstones" class="pj-gemstones-wheel-outer" aria-labelledby="pj-gemstones-heading" data-gem-wheel-section style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }}; --pj-gem-bg: {{ section.settings.bg_color }};">
+{% render 'pj-section-style', section: section %}
+<section id="pj-gemstones" class="pj-gemstones-wheel-outer" aria-labelledby="pj-gemstones-heading" data-gem-wheel-section style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }}; --pj-w-veil: {{ section.settings.veil }}%; --pj-w-veil-color: {{ section.settings.veil_color }}; --pj-w-text: {{ section.settings.text_color }}; --pj-w-muted: {{ section.settings.muted_color }}; --pj-w-bg: {{ section.settings.veil_color }}; --pj-w-ns: {{ section.settings.notes_size | divided_by: 100.0 }}; --pj-w-nts: {{ section.settings.note_title_size | divided_by: 100.0 }}; --pj-w-ps: {{ section.settings.planet_size | divided_by: 100.0 }}; --pj-w-minh: {{ section.settings.height | divided_by: 100.0 }}; --pj-w-wscale: {{ section.settings.wheel_size | divided_by: 100.0 }}; --pj-w-glow: {{ section.settings.glow_color }}; --pj-w-glow-a: {{ section.settings.glow_strength }}%;{% unless section.settings.use_stone_color %} --gem-c: {{ section.settings.accent_color }};{% endunless %}"{% unless section.settings.use_stone_color %} data-fixed-accent{% endunless %}>
   <div class="pj-gemstones-wheel-section">
+    <div class="pj-wheel-bg" aria-hidden="true">
+      {%- if section.settings.bg_image != blank -%}
+        {{ section.settings.bg_image | image_url: width: 2400 | image_tag: class: 'pj-wheel-bg__img', widths: '800, 1400, 2000, 2400', sizes: '100vw', alt: '', loading: 'lazy' }}
+      {%- else -%}
+        <img src="{{ 'wheel-velvet-bg.jpg' | asset_url }}" alt="" class="pj-wheel-bg__img" width="2400" height="1350" loading="lazy">
+      {%- endif -%}
+    </div>
+    <div class="pj-wheel-glow" aria-hidden="true"></div>
     <div class="pj-container pj-gemstones-wheel__layout">
       <!-- Curved arrow from the highlighted stone to its photograph, drawn in the stone's own colour -->
       <svg class="pj-gem-arrow" id="pj-gem-arrow" aria-hidden="true" focusable="false">
@@ -19,8 +28,8 @@
             <g class="pj-gem-diagram__leaders">
               <path d="M214 76 C 252 80, 272 104, 286 136" />
               <path d="M506 76 C 468 80, 448 104, 434 136" />
-              <path d="M214 462 C 226 436, 232 412, 242 388" />
-              <path d="M506 462 C 494 436, 488 412, 478 388" />
+              <path d="M214 462 C 220 424, 230 384, 250 346" />
+              <path d="M506 462 C 500 424, 490 384, 470 346" />
               <circle cx="214" cy="76" r="3.5" /><circle cx="506" cy="76" r="3.5" />
               <circle cx="214" cy="462" r="3.5" /><circle cx="506" cy="462" r="3.5" />
             </g>
@@ -70,15 +79,12 @@
                   <stop offset="1" stop-color="#6a4915"/>
                 </radialGradient>
               </defs>
-              <circle cx="280" cy="280" r="270" fill="none" stroke="url(#pj-gold-a)" stroke-width="13"/>
-              <circle cx="280" cy="280" r="276" fill="none" stroke="#fff6d2" stroke-opacity="0.55" stroke-width="1.6"/>
-              <circle cx="280" cy="280" r="263" fill="none" stroke="#4a3210" stroke-opacity="0.35" stroke-width="1.2"/>
-              <circle cx="280" cy="280" r="190" fill="none" stroke="url(#pj-gold-b)" stroke-width="10"/>
-              <circle cx="280" cy="280" r="194.5" fill="none" stroke="#fff6d2" stroke-opacity="0.5" stroke-width="1.4"/>
+              <circle cx="280" cy="280" r="270" fill="none" stroke="url(#pj-gold-a)" stroke-width="6"/>
+              <circle cx="280" cy="280" r="273.5" fill="none" stroke="#fff6d2" stroke-opacity="0.55" stroke-width="1.2"/>
+              <circle cx="280" cy="280" r="190" fill="none" stroke="url(#pj-gold-b)" stroke-width="5"/>
+              <circle cx="280" cy="280" r="193" fill="none" stroke="#fff6d2" stroke-opacity="0.5" stroke-width="1.2"/>
               <g class="pj-wheel-frame__spin" id="pj-wheel-frame-spin">
-                <path d="M311.4 293.0 L455.5 352.7 M293.0 311.4 L352.7 455.5 M267.0 311.4 L207.3 455.5 M248.6 293.0 L104.5 352.7 M248.6 267.0 L104.5 207.3 M267.0 248.6 L207.3 104.5 M293.0 248.6 L352.7 104.5 M311.4 267.0 L455.5 207.3" fill="none" stroke="url(#pj-gold-b)" stroke-width="8" stroke-linecap="round"/>
-                <path d="M455.5 352.7 L529.4 383.3 M352.7 455.5 L383.3 529.4 M207.3 455.5 L176.7 529.4 M104.5 352.7 L30.6 383.3 M104.5 207.3 L30.6 176.7 M207.3 104.5 L176.7 30.6 M352.7 104.5 L383.3 30.6 M455.5 207.3 L529.4 176.7" fill="none" stroke="url(#pj-gold-a)" stroke-width="7" stroke-linecap="round"/>
-                <circle cx="455.5" cy="352.7" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="529.4" cy="383.3" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="352.7" cy="455.5" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="383.3" cy="529.4" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="207.3" cy="455.5" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="176.7" cy="529.4" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="104.5" cy="352.7" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="30.6" cy="383.3" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="104.5" cy="207.3" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="30.6" cy="176.7" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="207.3" cy="104.5" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="176.7" cy="30.6" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="352.7" cy="104.5" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="383.3" cy="30.6" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="455.5" cy="207.3" r="6.5" fill="url(#pj-gold-rivet)"/><circle cx="529.4" cy="176.7" r="6.5" fill="url(#pj-gold-rivet)"/>
+                <path d="M314 280 L470 280 M304.04 304.04 L414.35 414.35 M280 314 L280 470 M255.96 304.04 L145.65 414.35 M246 280 L90 280 M255.96 255.96 L145.65 145.65 M280 246 L280 90 M304.04 255.96 L414.35 145.65" fill="none" stroke="url(#pj-gold-b)" stroke-width="4.5" stroke-linecap="round"/>
               </g>
               <circle cx="280" cy="280" r="34" fill="url(#pj-gold-a)"/>
               <circle cx="280" cy="280" r="34" fill="none" stroke="#fff3c4" stroke-opacity="0.6" stroke-width="1.4"/>
@@ -99,6 +105,8 @@
               data-gem-angle3="{%- for block in section.blocks -%}{%- if block.settings.angle_3 != blank -%}{{ block.settings.angle_3 | image_url: width: 900 }}{%- endif -%}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
               data-gem-photos="{%- for block in section.blocks -%}{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 900 }}{%- endif -%}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
               data-gem-urls="{{ 'gemx-emerald-1.webp' | asset_url }}|{{ 'gemx-ruby-1.webp' | asset_url }}|||{{ 'gemx-diamond-1.webp' | asset_url }}|||{{ 'gemx-hessonite-1.webp' | asset_url }}|{{ 'gemx-catseye-1.webp' | asset_url }}|{{ 'gemx-moonstone-1.webp' | asset_url }}|{{ 'gemx-amethyst-1.webp' | asset_url }}|{{ 'gemx-citrine-1.webp' | asset_url }}||||||"
+              data-gem-side="{{ 'gemx-emerald-3.webp' | asset_url }}|{{ 'gemx-ruby-side.webp' | asset_url }}|||{{ 'gemx-diamond-side.webp' | asset_url }}|||{{ 'gemx-hessonite-3.webp' | asset_url }}|{{ 'gemx-catseye-3.webp' | asset_url }}|{{ 'gemx-moonstone-3.webp' | asset_url }}|{{ 'gemx-amethyst-3.webp' | asset_url }}|{{ 'gemx-citrine-3.webp' | asset_url }}||||||"
+              data-gem-side-own="{%- for block in section.blocks -%}{%- if block.settings.side_image != blank -%}{{ block.settings.side_image | image_url: width: 900 }}{%- endif -%}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
               data-gem-views="{{ 'gemx-emerald-2.webp' | asset_url }},{{ 'gemx-emerald-3.webp' | asset_url }},{{ 'gemx-emerald-4.webp' | asset_url }}|{{ 'gemx-ruby-2.webp' | asset_url }},{{ 'gemx-ruby-3.webp' | asset_url }},{{ 'gemx-ruby-4.webp' | asset_url }}|||{{ 'gemx-diamond-2.webp' | asset_url }},{{ 'gemx-diamond-3.webp' | asset_url }}|||{{ 'gemx-hessonite-2.webp' | asset_url }},{{ 'gemx-hessonite-3.webp' | asset_url }},{{ 'gemx-hessonite-4.webp' | asset_url }}|{{ 'gemx-catseye-2.webp' | asset_url }},{{ 'gemx-catseye-3.webp' | asset_url }},{{ 'gemx-catseye-4.webp' | asset_url }}|{{ 'gemx-moonstone-2.webp' | asset_url }},{{ 'gemx-moonstone-3.webp' | asset_url }},{{ 'gemx-moonstone-4.webp' | asset_url }}|{{ 'gemx-amethyst-2.webp' | asset_url }},{{ 'gemx-amethyst-3.webp' | asset_url }},{{ 'gemx-amethyst-4.webp' | asset_url }}|{{ 'gemx-citrine-2.webp' | asset_url }},{{ 'gemx-citrine-3.webp' | asset_url }},{{ 'gemx-citrine-4.webp' | asset_url }}||||||"
             >
               <!-- JS populates the gemstone images around the half-circle wheel -->
@@ -116,8 +124,31 @@
   "tag": "section",
   "class": "pj-section-gemstones",
   "settings": [
-    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#F5E9DE" },
-    { "type": "range", "id": "heading_size", "label": "Stone name size", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100 }
+    { "type": "header", "content": "Section size" },
+    { "type": "range", "id": "height", "label": "Section height", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100, "info": "100% fills one screen. Raise it for more room, lower it for a shorter section." },
+    { "type": "range", "id": "wheel_size", "label": "Wheel size", "min": 60, "max": 130, "step": 5, "unit": "%", "default": 100 },
+
+    { "type": "header", "content": "Background" },
+    { "type": "image_picker", "id": "bg_image", "label": "Background image", "info": "Leave blank to use the built-in dark satin photograph." },
+    { "type": "range", "id": "veil", "label": "Dark overlay strength", "min": 0, "max": 95, "step": 5, "unit": "%", "default": 25 },
+    { "type": "color", "id": "veil_color", "label": "Dark overlay tint colour", "default": "#120E0A" },
+    { "type": "color", "id": "glow_color", "label": "Warm light colour", "default": "#D9A25A", "info": "A soft pool of light behind the wheel and the stone." },
+    { "type": "range", "id": "glow_strength", "label": "Warm light strength", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 30 },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "text_color", "label": "Stone name and note titles", "default": "#F4EBE1" },
+    { "type": "color", "id": "muted_color", "label": "Note text", "default": "#D9CFC2" },
+    { "type": "checkbox", "id": "use_stone_color", "label": "Colour the lines and arrow to match each stone", "default": true },
+    { "type": "color", "id": "accent_color", "label": "Line and arrow colour", "default": "#C9A15B", "info": "Used when the option above is off." },
+
+    { "type": "header", "content": "Fonts and sizes" },
+    { "type": "checkbox", "id": "use_custom_fonts", "label": "Use the fonts chosen below", "default": false, "info": "Off: the theme fonts." },
+    { "type": "font_picker", "id": "font_heading", "label": "Stone name and note text font", "default": "cormorant_n5" },
+    { "type": "font_picker", "id": "font_body", "label": "Note titles font", "default": "jost_n5" },
+    { "type": "range", "id": "heading_size", "label": "Stone name size", "min": 60, "max": 160, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "planet_size", "label": "Ruling planet size", "min": 70, "max": 180, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "note_title_size", "label": "Note title size", "min": 70, "max": 180, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "notes_size", "label": "Note text size", "min": 70, "max": 180, "step": 5, "unit": "%", "default": 100 }
   ],
   "blocks": [
     {
@@ -125,6 +156,7 @@
       "name": "Gemstone",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Photo", "info": "Square, the stone alone on a plain ivory background. A stone without a photo is left out of the wheel." },
+        { "type": "image_picker", "id": "side_image", "label": "Photo shown on the left (side view)", "info": "The stone standing upright, seen from the side, on a transparent background. Leave empty to use the built-in side view." },
         { "type": "image_picker", "id": "angle_2", "label": "Second angle (optional)", "info": "Same framing, turned. Shown on the left in turn with the main photo." },
         { "type": "image_picker", "id": "angle_3", "label": "Third angle (optional)" },
         { "type": "text", "id": "name", "label": "Name", "default": "EMERALD" },

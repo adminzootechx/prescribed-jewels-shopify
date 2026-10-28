@@ -906,16 +906,42 @@ textarea {
 .pj-gemstones-wheel-outer { position: relative; }
 
 .pj-gemstones-wheel-section {
-  background:
-    radial-gradient(ellipse 55% 70% at 28% 45%, rgba(255, 252, 247, 0.75), rgba(255, 252, 247, 0) 70%),
-    var(--pj-gem-bg, #F5E9DE);
-  min-height: calc(100vh - 54px);
+  isolation: isolate;
+  background-color: var(--pj-w-bg, #120E0A);
+  color: var(--pj-w-text, #F4EBE1);
+  min-height: calc((100vh - 54px) * var(--pj-w-minh, 1));
   display: flex;
   align-items: center;
   overflow: hidden;
   position: relative;
   padding: 1.25rem 0;
-  border-bottom: 1px solid var(--pj-border);
+  border-bottom: 1px solid rgba(244, 235, 225, 0.12);
+}
+
+/* Textured stone, darkened with a brown veil and vignette like the sections above */
+.pj-wheel-bg { position: absolute; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+.pj-wheel-bg__img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.pj-gemstones-wheel-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(14, 11, 9, 0) 40%, rgba(10, 8, 6, 0.5) 100%),
+    linear-gradient(to bottom, rgba(12, 10, 8, 0.55) 0%, transparent 20%, transparent 80%, rgba(12, 10, 8, 0.65) 100%),
+    color-mix(in srgb, var(--pj-w-veil-color, #120E0A) var(--pj-w-veil, 60%), transparent);
+}
+
+/* Pools of warm light: one behind the wheel, a softer one behind the stone */
+.pj-wheel-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 34% 62% at 88% 50%, color-mix(in srgb, var(--pj-w-glow, #D9A25A) var(--pj-w-glow-a, 30%), transparent), transparent 70%),
+    radial-gradient(ellipse 28% 50% at 27% 46%, color-mix(in srgb, var(--pj-w-glow, #D9A25A) calc(var(--pj-w-glow-a, 30%) * 0.55), transparent), transparent 70%);
 }
 
 .pj-gemstones-wheel__layout {
@@ -938,6 +964,8 @@ textarea {
   position: relative;
   z-index: 4;
   padding-right: 1rem;
+  /* Nudge the stone and its notes in from the page edge, towards the wheel */
+  padding-left: clamp(0.75rem, 3.2vw, 3.25rem);
 }
 
 .pj-gemstones-wheel__active-box {
@@ -950,7 +978,7 @@ textarea {
   margin-bottom: 1.15rem;
 }
 
-.pj-wheel-hint { color: var(--pj-text-soft); font-size: 0.6rem; letter-spacing: 0.2em; }
+.pj-wheel-hint { color: var(--pj-w-muted, #C8BFB2); font-size: 0.6rem; letter-spacing: 0.2em; }
 .pj-wheel-progress { height: 1px; margin-top: 1.4rem; max-width: 22rem; background: rgba(182, 145, 86, 0.28); position: relative; overflow: hidden; }
 .pj-wheel-progress span { position: absolute; inset: 0; background: var(--pj-accent-gold); transform-origin: left; transform: scaleX(0.05); transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.1, 1); }
 
@@ -977,7 +1005,7 @@ textarea {
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: #3A322A;
+  color: var(--pj-w-muted, #C8BFB2);
 }
 
 /* The curved arrow: drawn from the highlighted stone towards its photograph, in the stone's colour */
@@ -1001,7 +1029,7 @@ textarea {
   stroke-dashoffset: 0;
 }
 
-.pj-gem-arrow circle { fill: var(--pj-gem-bg, #E2D5BE); stroke: var(--gem-c, #B69156); stroke-width: 2; }
+.pj-gem-arrow circle { fill: var(--pj-w-bg, #120E0A); stroke: var(--gem-c, #B69156); stroke-width: 2; }
 
 @media (min-width: 960px) {
   .pj-gem-arrow { display: block; }
@@ -1010,10 +1038,12 @@ textarea {
 /* The diagram: photograph in the middle, four notes around it, each tied back by a fine leader line */
 .pj-gem-diagram {
   position: relative;
-  width: min(100%, 720px);
+  width: min(100%, 760px);
   aspect-ratio: 720 / 540;
   margin-top: 0.75rem;
   transition: opacity 0.26s ease;
+  /* Text is sized against the diagram's own width so the notes never grow into the stone */
+  container-type: inline-size;
 }
 
 .pj-gem-diagram__lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
@@ -1023,9 +1053,9 @@ textarea {
 /* The stone alone: no plate. The photograph is blended into the sand so only the gem and its soft shadow remain. */
 .pj-gem-diagram__photo {
   position: absolute;
-  left: 30%;
-  top: 17.5%;
-  width: 40%;
+  left: 31%;
+  top: 15%;
+  width: 38%;
   aspect-ratio: 1;
   perspective: 900px;
 }
@@ -1034,19 +1064,7 @@ textarea {
   content: '';
   position: absolute;
   inset: -34%;
-  background: radial-gradient(circle, rgba(255, 253, 249, 0.95) 0%, rgba(255, 250, 244, 0.55) 38%, rgba(255, 250, 244, 0) 68%);
-  pointer-events: none;
-}
-
-.pj-gem-diagram__photo::after {
-  content: '';
-  position: absolute;
-  left: 18%;
-  bottom: 9%;
-  width: 64%;
-  height: 9%;
-  background: radial-gradient(ellipse, rgba(38, 28, 20, 0.42) 0%, rgba(38, 28, 20, 0) 70%);
-  filter: blur(4px);
+  background: radial-gradient(circle, rgba(214, 178, 108, 0.2) 0%, rgba(214, 178, 108, 0.08) 40%, rgba(214, 178, 108, 0) 68%);
   pointer-events: none;
 }
 
@@ -1069,7 +1087,7 @@ textarea {
 /* Cut-out stones carry their own edge: no blending, no mask, no zoom */
 .pj-gem-diagram__photo img.is-cutout {
   object-fit: contain;
-  transform: scale(1.18);
+  transform: scale(1.05);
   mix-blend-mode: normal;
   filter: none;
   -webkit-mask-image: none;
@@ -1078,7 +1096,7 @@ textarea {
 }
 
 /* Turning the stone: front, three-quarter left, close on the table, three-quarter right */
-.pj-gem-diagram__photo.is-turning img { animation: pj-gem-turn 14s ease-in-out infinite; }
+.pj-gem-diagram__photo.is-turning img:not(.is-cutout) { animation: pj-gem-turn 14s ease-in-out infinite; }
 
 @keyframes pj-gem-turn {
   0%, 100% { transform: scale(1.55) rotateY(0deg) rotateX(0deg); filter: brightness(1.06) saturate(1.06); }
@@ -1091,16 +1109,16 @@ textarea {
 .pj-gem-diagram__name {
   position: absolute;
   left: 50%;
-  top: 71%;
-  width: 36%;
+  top: 75%;
+  width: 30%;
   transform: translateX(-50%);
   text-align: center;
 }
 
-.pj-gem-diagram__name .pj-gemstones-wheel__planet { margin-bottom: 0.15rem; }
-.pj-gem-diagram__name .pj-gemstones-wheel__title { margin: 0; font-weight: 500; letter-spacing: 0.04em; text-wrap: balance; color: #1A1713; font-size: calc(clamp(1.9rem, 3.1vw, 2.9rem) * var(--pj-hs, 1) * var(--pj-hs-sec, 1)); line-height: 1.04; }
+.pj-gem-diagram__name .pj-gemstones-wheel__planet { margin-bottom: 0.15rem; font-size: calc(max(0.85rem, 2.2cqw) * var(--pj-w-ps, 1)); text-wrap: balance; }
+.pj-gem-diagram__name .pj-gemstones-wheel__title { margin: 0; font-weight: 500; letter-spacing: 0.03em; text-wrap: balance; color: var(--pj-w-text, #F4EBE1); font-size: calc(max(1.55rem, 4.5cqw) * var(--pj-hs, 1) * var(--pj-hs-sec, 1)); line-height: 1.04; }
 
-.pj-gem-note { position: absolute; width: 29%; transition: opacity 0.26s ease, transform 0.26s ease; }
+.pj-gem-note { position: absolute; width: 31%; transition: opacity 0.26s ease, transform 0.26s ease; }
 .pj-gem-note--tl { left: 0; top: 4%; text-align: right; }
 .pj-gem-note--tr { right: 0; top: 4%; }
 .pj-gem-note--bl { left: 0; bottom: 2%; text-align: right; }
@@ -1109,10 +1127,10 @@ textarea {
 .pj-gem-note__title {
   margin: 0 0 0.3rem;
   font-family: var(--pj-font-sans);
-  font-size: 1rem;
+  font-size: calc(max(0.95rem, 2.4cqw) * var(--pj-w-nts, 1));
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: #17130F;
+  color: var(--pj-w-text, #F4EBE1);
   padding-bottom: 0.35rem;
   border-bottom: 2px solid var(--gem-c, #B69156);
   display: inline-block;
@@ -1123,10 +1141,10 @@ textarea {
   margin: 0;
   font-family: var(--pj-font-serif);
   margin-top: 0.55rem;
-  font-size: clamp(1.2rem, 1.55vw, 1.5rem);
+  font-size: calc(max(1.08rem, 3.05cqw) * var(--pj-w-ns, 1));
   font-weight: 500;
-  line-height: 1.35;
-  color: #231E18;
+  line-height: 1.3;
+  color: var(--pj-w-muted, #C8BFB2);
 }
 
 .pj-gem-diagram.is-fading .pj-gem-note,
@@ -1142,6 +1160,8 @@ textarea {
   .pj-gem-diagram__photo, .pj-gem-diagram__name, .pj-gem-note { position: static; transform: none; width: auto; text-align: center; }
   .pj-gem-diagram__photo { width: min(78vw, 320px); }
   .pj-gem-diagram__name { width: 100%; }
+  .pj-gem-note p { font-size: calc(1.3rem * var(--pj-w-ns, 1)); }
+  .pj-gem-diagram__name .pj-gemstones-wheel__title { font-size: calc(2.2rem * var(--pj-hs, 1) * var(--pj-hs-sec, 1)); }
   .pj-gem-diagram.is-fading .pj-gem-diagram__name { transform: none; }
 }
 
@@ -1163,7 +1183,7 @@ textarea {
   font-family: var(--pj-font-serif);
   font-size: clamp(1.08rem, 1.4vw, 1.28rem);
   line-height: 1.45;
-  color: var(--pj-text-muted);
+  color: var(--pj-w-muted, #C8BFB2);
   min-height: 2.8em;
 }
 
@@ -1228,6 +1248,8 @@ textarea {
 
 .pj-wheel-half-clip {
   position: relative;
+  transform: scale(var(--pj-w-wscale, 1));
+  transform-origin: right center;
   width: 370px;
   height: 660px;
   overflow: hidden;
@@ -1329,17 +1351,17 @@ textarea {
   object-fit: contain;
   border-radius: 0;
   mix-blend-mode: normal;
-  filter: drop-shadow(0 8px 8px rgba(26, 24, 21, 0.3));
+  filter: drop-shadow(0 3px 4px rgba(26, 24, 21, 0.28));
 }
 
 .pj-wheel-gem-slot {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 104px;
-  height: 104px;
-  margin-left: -52px;
-  margin-top: -52px;
+  width: 84px;
+  height: 84px;
+  margin-left: -42px;
+  margin-top: -42px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1358,19 +1380,30 @@ textarea {
   opacity: 0.86;
 }
 
-/* The gold setting each stone sits in */
-.pj-wheel-gem-inner::before {
-  content: '';
+/* Four fine gold claws hold each stone to the frame; there is no plate behind it */
+.pj-wheel-claws {
   position: absolute;
-  inset: -9%;
-  z-index: -1;
-  border-radius: 50%;
-  background: conic-gradient(from 210deg, #7a5518, #f4dc94, #b98a35, #fff1bd, #8a5f1e, #e7c46f, #7a5518);
-  box-shadow: inset 0 0 0 2px rgba(255, 246, 210, 0.4), inset 0 0 10px rgba(60, 40, 10, 0.45), 0 6px 10px rgba(60, 40, 10, 0.3);
+  inset: -4%;
+  z-index: 2;
+  pointer-events: none;
 }
 
+.pj-wheel-claws i {
+  position: absolute;
+  width: 7%;
+  height: 17%;
+  border-radius: 50% 50% 40% 40%;
+  background: linear-gradient(100deg, #7a5518, #fff1bd 45%, #b98a35 70%, #6a4915);
+  box-shadow: 0 1px 2px rgba(60, 40, 10, 0.4);
+}
+
+.pj-wheel-claws i:nth-child(1) { left: 14%; top: 14%; transform: translate(-50%, -50%) rotate(-45deg); }
+.pj-wheel-claws i:nth-child(2) { left: 86%; top: 14%; transform: translate(-50%, -50%) rotate(45deg); }
+.pj-wheel-claws i:nth-child(3) { left: 14%; top: 86%; transform: translate(-50%, -50%) rotate(45deg); }
+.pj-wheel-claws i:nth-child(4) { left: 86%; top: 86%; transform: translate(-50%, -50%) rotate(-45deg); }
+
 .pj-wheel-gem-slot.is-active .pj-wheel-gem-inner {
-  --sc: 1.38;
+  --sc: 1.3;
   opacity: 1;
   filter: drop-shadow(0 12px 14px rgba(26, 24, 21, 0.22));
 }

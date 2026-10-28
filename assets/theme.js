@@ -452,14 +452,17 @@
     });
 
     const NUM_SLOTS = 8;
-    const RADIUS = 232;
+    const RADIUS = 230;
     const ROTATE_MS = 2000;
     const slotElements = [];
     const gemUrls = (wheelRotor.getAttribute('data-gem-urls') || '').split('|');
     const views = (wheelRotor.getAttribute('data-gem-views') || '').split('|').map((v) => v.split(',').filter(Boolean));
     const angle2 = (wheelRotor.getAttribute('data-gem-angle2') || '').split('|');
     const angle3 = (wheelRotor.getAttribute('data-gem-angle3') || '').split('|');
-    editPhotos.forEach((u, i) => { if (u) gemUrls[i] = u; });
+    const sideUrls = (wheelRotor.getAttribute('data-gem-side') || '').split('|');
+    editPhotos.forEach((u, i) => { if (u) { gemUrls[i] = u; sideUrls[i] = ''; } });
+    // A side-view photo added for a stone in the editor always wins
+    (wheelRotor.getAttribute('data-gem-side-own') || '').split('|').forEach((u, i) => { if (u) sideUrls[i] = u; });
 
     // Only real photographs go on the wheel: a stone without one is left out until a photo is added in the editor
     for (let i = GEMSTONES.length - 1; i >= 0; i--) {
@@ -467,6 +470,7 @@
         GEMSTONES.splice(i, 1);
         GEM_NOTES.splice(i, 1);
         gemUrls.splice(i, 1);
+        sideUrls.splice(i, 1);
         views.splice(i, 1);
         angle2.splice(i, 1);
         angle3.splice(i, 1);
@@ -475,7 +479,7 @@
     const infoBox = document.getElementById('pj-wheel-info-box');
 
     // Preload all gem photos so rotation never flickers
-    gemUrls.concat(angle2, angle3, [].concat(...views)).filter(Boolean).forEach((url) => {
+    gemUrls.concat(sideUrls, angle2, angle3, [].concat(...views)).filter(Boolean).forEach((url) => {
       const img = new Image();
       img.src = url;
     });
@@ -499,6 +503,10 @@
       img.width = 120;
       img.height = 120;
       inner.appendChild(img);
+      const claws = document.createElement('span');
+      claws.className = 'pj-wheel-claws';
+      claws.innerHTML = '<i></i><i></i><i></i><i></i>';
+      inner.appendChild(claws);
       slot.appendChild(inner);
 
       wheelRotor.appendChild(slot);
@@ -541,8 +549,8 @@
       if (!photoImg || !photoWrap || idx === shownStone) return;
       shownStone = idx;
       clearInterval(angleTimer);
-      const own = views[idx] || [];
-      const sequence = own.length ? own.concat([angle2[idx], angle3[idx]].filter(Boolean)) : [gemUrls[idx], angle2[idx], angle3[idx]].filter(Boolean);
+      // The big stone is shown from the side, standing upright; a photo added in the editor takes its place, and extra angles follow
+      const sequence = [sideUrls[idx] || gemUrls[idx], angle2[idx], angle3[idx]].filter(Boolean);
       const isCut = (u) => /\.webp/.test(u || '');
       photoImg.classList.remove('is-swapping');
       photoImg.classList.toggle('is-cutout', isCut(sequence[0]));
@@ -567,9 +575,22 @@
       const box = arrowSvg.getBoundingClientRect();
       const halo = wheelHalo.getBoundingClientRect();
       const photo = photoWrap.getBoundingClientRect();
-      const sx = halo.left + halo.width / 2 - box.left - 90;
+      // The line starts a fixed 3 mm (about 12 px) clear of the chosen stone's left edge, so it is longer or shorter with the stone's width
+      const activeEntry = slotElements.find((entry) => entry.slot.classList.contains('is-active'));
+      const assembly = wheelHalo.parentElement.getBoundingClientRect();
+      const gemW = activeEntry ? activeEntry.inner.offsetWidth : 84;
+      const img = activeEntry ? activeEntry.img : null;
+      const aspect = img && img.naturalWidth && img.naturalHeight ? Math.min(1, img.naturalWidth / img.naturalHeight) : 1;
+      const wheelScale = assembly.width / 560;
+      const halfGem = (gemW * 1.3 * aspect * wheelScale) / 2;
+      const MIN_GAP = 12;
+      const DOT_R = 5;
+      const sx = assembly.left + (280 - RADIUS) * wheelScale - box.left - halfGem - MIN_GAP - DOT_R;
       const sy = halo.top + halo.height / 2 - box.top;
-      const ex = photo.left + photo.width / 2 - box.left + photo.width * 0.47;
+      // The head stops 14 px (the tip reaches about 11 px) short of the big stone's right edge, whatever its width
+      const nat = photoImg && photoImg.naturalWidth && photoImg.naturalHeight ? photoImg.naturalWidth / photoImg.naturalHeight : 1;
+      const seenHalf = (photo.width * 1.05 * Math.min(1, nat) * 0.97) / 2;
+      const ex = photo.left + photo.width / 2 - box.left + seenHalf + 14;
       const ey = photo.top + photo.height / 2 - box.top;
       const reach = Math.max(80, sx - ex);
       const lift = Math.min(150, reach * 0.3);
@@ -587,6 +608,7 @@
     };
     window.addEventListener('resize', () => placeArrow(false), { passive: true });
     window.addEventListener('load', () => placeArrow(true));
+    if (photoImg) photoImg.addEventListener('load', () => placeArrow(false));
 
     const updateInfo = (animate) => {
       const currentStone = GEMSTONES[activeStoneIndex];
@@ -601,9 +623,7 @@
         }
         if (wheelSection) {
           // Pale stones (diamond, pearl, white sapphire) take their deeper tone so the line stays visible on the sand
-          const hex = currentStone.c2.replace('#', '');
-          const lum = (0.2126 * parseInt(hex.slice(0, 2), 16) + 0.7152 * parseInt(hex.slice(2, 4), 16) + 0.0722 * parseInt(hex.slice(4, 6), 16)) / 255;
-          wheelSection.style.setProperty('--gem-c', lum > 0.68 ? currentStone.c3 : currentStone.c2);
+          if (!wheelSection.hasAttribute('data-fixed-accent')) wheelSection.style.setProperty('--gem-c', currentStone.c1);
         }
         const notes = GEM_NOTES[activeStoneIndex] || ['', '', ''];
         if (noteFeatures) noteFeatures.textContent = notes[0];

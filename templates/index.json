@@ -66,16 +66,32 @@
             "step_number": "01",
             "title": "CHOOSE A DESIGN",
             "image": "shopify://shop_images/04f624ad-2f13-4528-9ad8-4e219a99374d.png",
-            "description": "Select from our eight signature designs or create a custom piece."
+            "description": "Select from our eight signature designs or create a custom piece.",
+            "custom_title_size": 140,
+            "custom_desc_size": 135,
+            "custom_num_size": 95,
+            "custom_title_color": "",
+            "custom_desc_color": "",
+            "custom_num_color": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "step_2": {
           "type": "step",
           "settings": {
             "step_number": "02",
-            "title": "SHARE YOUR BIRTH DETAILS",
+            "title": "YOUR BIRTH DETAILS",
             "image": "shopify://shop_images/6e39416d-3bf1-41de-b05b-83bcb07800c9.png",
-            "description": "Provide your birth date, exact time and place of birth so we can create your personal gemstone prescription."
+            "description": "Provide your birth date, exact time and place of birth so we can create your personal gemstone prescription.",
+            "custom_title_size": 140,
+            "custom_desc_size": 135,
+            "custom_num_size": 100,
+            "custom_title_color": "",
+            "custom_desc_color": "",
+            "custom_num_color": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "step_3": {
@@ -84,7 +100,15 @@
             "step_number": "03",
             "title": "YOUR PRESCRIPTION",
             "image": "shopify://shop_images/6fac5ae6-c6b4-43ef-a67d-9dfdf9257664.png",
-            "description": "Our Vedic astrology process identifies the gemstones that best support your unique energy."
+            "description": "Our Vedic astrology process identifies the gemstones that best support your unique energy.",
+            "custom_title_size": 140,
+            "custom_desc_size": 135,
+            "custom_num_size": 100,
+            "custom_title_color": "",
+            "custom_desc_color": "",
+            "custom_num_color": "",
+            "link_label": "",
+            "link_url": ""
           }
         },
         "step_4": {
@@ -93,7 +117,15 @@
             "step_number": "04",
             "title": "CRAFTED FOR YOU",
             "image": "shopify://shop_images/9ee593af6d089225aeca9870c113ea20.jpg",
-            "description": "Your jewelry is thoughtfully crafted in fine materials, with gemstones prescribed just for you."
+            "description": "Your jewelry is thoughtfully crafted in fine materials, with gemstones prescribed just for you.",
+            "custom_title_size": 140,
+            "custom_desc_size": 135,
+            "custom_num_size": 100,
+            "custom_title_color": "",
+            "custom_desc_color": "",
+            "custom_num_color": "",
+            "link_label": "",
+            "link_url": ""
           }
         }
       },
@@ -105,10 +137,29 @@
       ],
       "settings": {
         "eyebrow": "THE PROCESS",
+        "eyebrow_size": 100,
+        "eyebrow_color": "#b69156",
         "heading": "A PIECE THAT'S TRULY YOURS",
-        "heading_size": 115,
+        "heading_size": 105,
+        "heading_color": "#f4ebe1",
+        "header_align": "center",
+        "step_num_size": 100,
+        "step_num_color": "#b69156",
+        "step_title_size": 100,
+        "step_title_color": "#f4ebe1",
+        "step_desc_size": 100,
+        "step_desc_color": "#c8bfb2",
+        "step_desc_align": "left",
+        "image_aspect_ratio": "1 / 1",
+        "image_radius": 0,
+        "image_border_color": "#f4ebe11f",
+        "card_bg": "rgba(0,0,0,0)",
+        "card_padding": 8,
+        "bg_color": "#120e0a",
         "veil": 60,
         "veil_color": "#120e0a",
+        "max_width": 1300,
+        "grid_gap": 40,
         "padding_top": 72,
         "padding_bottom": 72
       }
@@ -283,6 +334,7 @@
     },
     "closing_split": {
       "type": "closing-split",
+      "disabled": true,
       "settings": {
         "image": "shopify://shop_images/317bcbd8bd05341d74dd87c3280a5756.jpg",
         "statement": "Personal.\nTimeless.\nYours.",
@@ -508,8 +560,23 @@
         "gem18"
       ],
       "settings": {
-        "bg_color": "#f5e9de",
-        "heading_size": 100
+        "height": 90,
+        "wheel_size": 100,
+        "veil": 25,
+        "veil_color": "#120e0a",
+        "glow_color": "#d9a25a",
+        "glow_strength": 30,
+        "text_color": "#f4ebe1",
+        "muted_color": "#d9cfc2",
+        "use_stone_color": true,
+        "accent_color": "#c9a15b",
+        "use_custom_fonts": false,
+        "font_heading": "cormorant_n5",
+        "font_body": "jost_n5",
+        "heading_size": 100,
+        "planet_size": 100,
+        "note_title_size": 100,
+        "notes_size": 100
       }
     },
     "editorial_story": {
