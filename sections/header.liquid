@@ -37,25 +37,36 @@
     --pj-hdr-py: {{ s.header_padding_y | default: 18 }}px;
     --pj-hdr-max-w: {{ s.max_width | default: 1400 }}px;
     --pj-hdr-logo-size: {{ s.logo_font_size | default: 100 | divided_by: 100.0 }};
-    --pj-hdr-logo-spacing: {{ s.logo_letter_spacing | default: 18 | divided_by: 100.0 }}em;
+    --pj-hdr-logo-spacing: {{ s.logo_letter_spacing | default: 22 | divided_by: 100.0 }}em;
+    --pj-hdr-logo-sub-spacing: {{ s.logo_sub_letter_spacing | default: 44 | divided_by: 100.0 }}em;
+    --pj-hdr-logo-sub-ratio: {{ s.logo_sub_ratio | default: 46 | divided_by: 100.0 }};
     --pj-hdr-nav-size: {{ s.nav_text_size | default: 100 | divided_by: 100.0 }};
     --pj-hdr-nav-gap: {{ s.nav_spacing | default: 32 }}px;
+    --pj-hdr-nav-spacing: {{ s.nav_letter_spacing | default: 6 | divided_by: 100.0 }}em;
+    --pj-hdr-cart-size: {{ s.cart_text_size | default: 100 | divided_by: 100.0 }};
   "
 >
   <div class="pj-container pj-header__inner">
-    <!-- Left: Brand Logo / Text -->
+    <!-- Left: Brand Logo / Stacked Wordmark / Text -->
     <div class="pj-header__brand">
       <a href="{{ routes.root_url }}" class="pj-header__brand-link" aria-label="{{ shop.name | default: 'Prescribed Jewels' }}">
         {%- if s.logo != blank -%}
           {{ s.logo | image_url: width: 440 | image_tag: class: 'pj-header__logo-img', alt: shop.name }}
+        {%- elsif s.logo_layout == 'single' -%}
+          <span class="pj-header__logo-text pj-header__logo-text--{{ s.logo_font | default: 'serif' }}">
+            {{ s.logo_text | default: 'PRESCRIBED JEWELS' }}
+          </span>
         {%- else -%}
-          <span class="pj-header__logo-text">{{ s.logo_text | default: 'PRESCRIBED JEWELS' }}</span>
+          <span class="pj-header__wordmark pj-header__wordmark--{{ s.logo_font | default: 'serif' }}">
+            <span class="pj-header__wordmark-main">{{ s.logo_text_main | default: 'PRESCRIBED' }}</span>
+            <span class="pj-header__wordmark-sub">{{ s.logo_text_sub | default: 'JEWELS' }}</span>
+          </span>
         {%- endif -%}
       </a>
     </div>
 
     <!-- Center: Navigation Links -->
-    <nav class="pj-header__nav" aria-label="Primary Navigation">
+    <nav class="pj-header__nav pj-header__nav--{{ s.nav_font | default: 'sans' }}" aria-label="Primary Navigation">
       {%- if s.menu != blank and linklists[s.menu].links.size > 0 -%}
         {%- for link in linklists[s.menu].links -%}
           <a href="{{ link.url }}" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">{{ link.title }}</a>
@@ -65,10 +76,10 @@
           <a href="{{ block.settings.link | default: '#' }}" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
         {%- endfor -%}
       {%- else -%}
-        <a href="#pj-process" class="pj-header__link pj-header__link--titlecase">The Process</a>
-        <a href="#pj-designs" class="pj-header__link pj-header__link--titlecase">The Designs</a>
-        <a href="#pj-story" class="pj-header__link pj-header__link--titlecase">Our Philosophy</a>
-        <a href="/blogs/journal" class="pj-header__link pj-header__link--titlecase">Journal</a>
+        <a href="#pj-process" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">The Process</a>
+        <a href="#pj-designs" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">The Designs</a>
+        <a href="#pj-story" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">Our Philosophy</a>
+        <a href="/blogs/journal" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">Journal</a>
       {%- endif -%}
     </nav>
 
@@ -76,7 +87,7 @@
     <div class="pj-header__actions">
       <a
         href="{{ routes.cart_url }}"
-        class="pj-header__cart-link"
+        class="pj-header__cart-link pj-header__cart-link--{{ s.cart_font | default: 'sans' }}"
         {% if s.cart_action == 'drawer' %}data-open-prescription data-design="01 — The Classic (Signature Ring)"{% endif %}
         aria-label="Shopping Cart with {{ cart.item_count }} items"
       >
@@ -117,7 +128,7 @@
         <a href="#pj-story" class="pj-mobile-nav__link">Our Philosophy</a>
         <a href="/blogs/journal" class="pj-mobile-nav__link">Journal</a>
       {%- endif -%}
-      <a href="{{ routes.cart_url }}" class="pj-mobile-nav__link pj-mobile-nav__cart">{{ s.cart_label | default: 'Cart' }} ({{ cart.item_count }})</a>
+      <a href="{{ routes.cart_url }}" class="pj-mobile-nav__link pj-mobile-nav__cart">{{ s.cart_label | default: 'Cart' }}{% if s.show_cart_count %} ({{ cart.item_count }}){% endif %}</a>
     </nav>
   </div>
 </header>
@@ -129,13 +140,47 @@
   "settings": [
     {
       "type": "header",
-      "content": "Brand / Logo"
+      "content": "Brand & Logo"
+    },
+    {
+      "type": "select",
+      "id": "logo_layout",
+      "label": "Logo Style",
+      "options": [
+        { "value": "stacked", "label": "Stacked Wordmark (PRESCRIBED / JEWELS)" },
+        { "value": "single", "label": "Single Line Text" }
+      ],
+      "default": "stacked",
+      "info": "Matches official brand wordmark"
+    },
+    {
+      "type": "select",
+      "id": "logo_font",
+      "label": "Logo Font Family",
+      "options": [
+        { "value": "serif", "label": "Luxury Serif (Cormorant Garamond)" },
+        { "value": "sans", "label": "Modern Clean Sans" }
+      ],
+      "default": "serif"
+    },
+    {
+      "type": "text",
+      "id": "logo_text_main",
+      "label": "Logo Line 1 (Main)",
+      "default": "PRESCRIBED"
+    },
+    {
+      "type": "text",
+      "id": "logo_text_sub",
+      "label": "Logo Line 2 (Sub)",
+      "default": "JEWELS"
     },
     {
       "type": "text",
       "id": "logo_text",
-      "label": "Logo Text",
-      "default": "PRESCRIBED JEWELS"
+      "label": "Single-line Logo Text",
+      "default": "PRESCRIBED JEWELS",
+      "info": "Used when Logo Style is Single Line Text"
     },
     {
       "type": "image_picker",
@@ -146,8 +191,8 @@
     {
       "type": "range",
       "id": "logo_font_size",
-      "label": "Logo Text Size",
-      "min": 70,
+      "label": "Logo Overall Size",
+      "min": 60,
       "max": 200,
       "step": 5,
       "unit": "%",
@@ -156,13 +201,35 @@
     {
       "type": "range",
       "id": "logo_letter_spacing",
-      "label": "Logo Letter Spacing",
-      "min": 0,
+      "label": "Logo Line 1 Spacing",
+      "min": 5,
       "max": 40,
+      "step": 1,
+      "unit": "em",
+      "default": 22,
+      "info": "22 = 0.22em"
+    },
+    {
+      "type": "range",
+      "id": "logo_sub_letter_spacing",
+      "label": "Logo Line 2 Spacing",
+      "min": 10,
+      "max": 60,
       "step": 2,
       "unit": "em",
-      "default": 18,
-      "info": "18 = 0.18em"
+      "default": 44,
+      "info": "44 = 0.44em tracking"
+    },
+    {
+      "type": "range",
+      "id": "logo_sub_ratio",
+      "label": "Logo Line 2 Proportion",
+      "min": 30,
+      "max": 80,
+      "step": 2,
+      "unit": "%",
+      "default": 46,
+      "info": "Size of Line 2 relative to Line 1"
     },
     {
       "type": "header",
@@ -173,6 +240,16 @@
       "id": "menu",
       "label": "Navigation Menu",
       "info": "Select a Shopify navigation menu or use the blocks below"
+    },
+    {
+      "type": "select",
+      "id": "nav_font",
+      "label": "Menu Font Family",
+      "options": [
+        { "value": "sans", "label": "Modern Clean Sans" },
+        { "value": "serif", "label": "Luxury Serif" }
+      ],
+      "default": "sans"
     },
     {
       "type": "select",
@@ -197,10 +274,21 @@
     },
     {
       "type": "range",
+      "id": "nav_letter_spacing",
+      "label": "Menu Letter Spacing",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "em",
+      "default": 6,
+      "info": "6 = 0.06em"
+    },
+    {
+      "type": "range",
       "id": "nav_spacing",
       "label": "Space Between Links",
       "min": 14,
-      "max": 54,
+      "max": 60,
       "step": 2,
       "unit": "px",
       "default": 32
@@ -220,6 +308,26 @@
       "id": "show_cart_count",
       "label": "Show Item Count",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "cart_font",
+      "label": "Cart Font Family",
+      "options": [
+        { "value": "sans", "label": "Modern Clean Sans" },
+        { "value": "serif", "label": "Luxury Serif" }
+      ],
+      "default": "sans"
+    },
+    {
+      "type": "range",
+      "id": "cart_text_size",
+      "label": "Cart Text Size",
+      "min": 70,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "default": 100
     },
     {
       "type": "select",

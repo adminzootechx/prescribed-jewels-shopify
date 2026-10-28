@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    PRESCRIBED JEWELS â€” IVORY & BEIGE LUXURY EDITORIAL THEME
    ========================================================================== */
 
@@ -244,8 +244,53 @@ textarea {
   display: block;
 }
 
+.pj-header__wordmark {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  line-height: 1.02;
+  text-decoration: none;
+  color: var(--pj-hdr-text, #F4EBE1);
+  user-select: none;
+  transition: opacity 0.25s ease;
+}
+
+.pj-header__wordmark:hover {
+  opacity: 0.88;
+}
+
+.pj-header__wordmark--serif {
+  font-family: var(--pj-font-serif, 'Cormorant Garamond', Georgia, serif);
+}
+
+.pj-header__wordmark--sans {
+  font-family: var(--pj-font-sans, system-ui, -apple-system, sans-serif);
+}
+
+.pj-header__wordmark-main {
+  font-size: calc(1.2rem * var(--pj-hdr-logo-size, 1));
+  font-weight: 500;
+  letter-spacing: var(--pj-hdr-logo-spacing, 0.22em);
+  text-indent: var(--pj-hdr-logo-spacing, 0.22em);
+  text-transform: uppercase;
+  white-space: nowrap;
+  display: block;
+}
+
+.pj-header__wordmark-sub {
+  font-size: calc(1.2rem * var(--pj-hdr-logo-size, 1) * var(--pj-hdr-logo-sub-ratio, 0.46));
+  font-weight: 400;
+  letter-spacing: var(--pj-hdr-logo-sub-spacing, 0.44em);
+  text-indent: var(--pj-hdr-logo-sub-spacing, 0.44em);
+  text-transform: uppercase;
+  margin-top: calc(0.24rem * var(--pj-hdr-logo-size, 1));
+  opacity: 0.88;
+  white-space: nowrap;
+  display: block;
+}
+
 .pj-header__logo-text {
-  font-family: var(--pj-font-sans);
   font-size: calc(0.95rem * var(--pj-hdr-logo-size, 1));
   font-weight: 600;
   letter-spacing: var(--pj-hdr-logo-spacing, 0.18em);
@@ -254,12 +299,29 @@ textarea {
   white-space: nowrap;
 }
 
+.pj-header__logo-text--serif {
+  font-family: var(--pj-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-weight: 500;
+}
+
+.pj-header__logo-text--sans {
+  font-family: var(--pj-font-sans, system-ui, -apple-system, sans-serif);
+}
+
 .pj-header__nav {
   display: none;
   align-items: center;
   justify-content: center;
   gap: var(--pj-hdr-nav-gap, 32px);
   flex: 1 1 auto;
+}
+
+.pj-header__nav--serif {
+  font-family: var(--pj-font-serif, 'Cormorant Garamond', Georgia, serif);
+}
+
+.pj-header__nav--sans {
+  font-family: var(--pj-font-sans, system-ui, -apple-system, sans-serif);
 }
 
 @media (min-width: 900px) {
@@ -272,12 +334,12 @@ textarea {
 }
 
 .pj-header__link {
-  font-family: var(--pj-font-sans);
+  font-family: inherit;
   font-size: calc(0.86rem * var(--pj-hdr-nav-size, 1));
   font-weight: 400;
   color: var(--pj-hdr-text, #F4EBE1);
   text-decoration: none;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--pj-hdr-nav-spacing, 0.06em);
   opacity: 0.9;
   transition: opacity 0.2s ease, color 0.2s ease;
   white-space: nowrap;
@@ -289,7 +351,7 @@ textarea {
 
 .pj-header__link--uppercase {
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: calc(var(--pj-hdr-nav-spacing, 0.06em) + 0.08em);
   font-size: calc(0.78rem * var(--pj-hdr-nav-size, 1));
 }
 
@@ -313,8 +375,7 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  font-family: var(--pj-font-sans);
-  font-size: calc(0.86rem * var(--pj-hdr-nav-size, 1));
+  font-size: calc(0.86rem * var(--pj-hdr-cart-size, 1));
   font-weight: 400;
   color: var(--pj-hdr-text, #F4EBE1);
   text-decoration: none;
@@ -326,6 +387,14 @@ textarea {
   background: none;
   border: none;
   padding: 0;
+}
+
+.pj-header__cart-link--serif {
+  font-family: var(--pj-font-serif, 'Cormorant Garamond', Georgia, serif);
+}
+
+.pj-header__cart-link--sans {
+  font-family: var(--pj-font-sans, system-ui, -apple-system, sans-serif);
 }
 
 .pj-header__cart-link:hover {
