@@ -109,9 +109,6 @@
         "heading_size": 115,
         "veil": 60,
         "veil_color": "#120e0a",
-        "text_color": "#f4ebe1",
-        "accent_color": "#b69156",
-        "desc_color": "#c8bfb2",
         "padding_top": 72,
         "padding_bottom": 72
       }
