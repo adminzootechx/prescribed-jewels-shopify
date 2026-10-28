@@ -471,8 +471,47 @@ textarea {
 }
 
 .pj-hero__content {
-  max-width: 520px;
+  max-width: var(--pj-hero-content-w, 540px);
+  margin-left: var(--pj-hero-content-x, 80px);
+  transform: translateY(var(--pj-hero-content-y, 0px));
+  text-align: var(--pj-hero-align, left);
   color: var(--pj-hero-text, inherit);
+  transition: margin 0.3s ease, transform 0.3s ease;
+}
+
+.pj-hero__content--center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center;
+}
+
+.pj-hero__content--center .pj-hero__lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pj-hero__content--center .pj-hero__actions {
+  display: flex;
+  justify-content: center;
+}
+
+.pj-hero__content--right {
+  margin-left: auto !important;
+  margin-right: var(--pj-hero-content-x, 80px);
+  text-align: right;
+}
+
+.pj-hero__content--right .pj-hero__lead {
+  margin-left: auto;
+}
+
+.pj-hero__content--right .pj-hero__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pj-hero .pj-eyebrow {
+  font-size: calc(0.68rem * var(--pj-hero-eyebrow-s, 1));
 }
 
 .pj-hero__title {
@@ -487,7 +526,7 @@ textarea {
 .pj-hero__lead {
   margin: 0 0 1.25rem;
   font-family: var(--pj-font-serif);
-  font-size: clamp(1.08rem, 1.35vw, 1.25rem);
+  font-size: calc(clamp(1.08rem, 1.35vw, 1.25rem) * var(--pj-hero-lead-s, 1));
   color: var(--pj-text-muted);
   max-width: 36ch;
   line-height: 1.4;
@@ -499,10 +538,16 @@ textarea {
 
 .pj-hero__mantra {
   margin: 0;
-  font-size: 0.6rem;
+  font-size: calc(0.6rem * var(--pj-hero-mantra-s, 1));
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--pj-text-soft);
+}
+
+@media (max-width: 749px) {
+  .pj-hero__content {
+    margin-left: clamp(0.5rem, 4vw, var(--pj-hero-content-x, 80px));
+  }
 }
 
 /* ==========================================================================

@@ -5,7 +5,19 @@
   class="pj-hero"
   aria-labelledby="pj-hero-heading"
   data-interval="{{ s.slide_seconds | times: 1000 }}"
-  style="--pj-hero-h: {{ s.height }}vh; --pj-hs-sec: {{ s.title_size | divided_by: 100.0 }}; --pj-veil: {{ s.veil | divided_by: 100.0 }};{% if s.text_color != blank %} --pj-hero-text: {{ s.text_color }};{% endif %}"
+  style="
+    --pj-hero-h: {{ s.height }}vh;
+    --pj-hs-sec: {{ s.title_size | divided_by: 100.0 }};
+    --pj-veil: {{ s.veil | divided_by: 100.0 }};
+    --pj-hero-content-x: {{ s.content_offset_x | default: 80 }}px;
+    --pj-hero-content-y: {{ s.content_offset_y | default: 0 }}px;
+    --pj-hero-content-w: {{ s.content_max_width | default: 540 }}px;
+    --pj-hero-align: {{ s.content_align | default: 'left' }};
+    --pj-hero-eyebrow-s: {{ s.eyebrow_size | default: 100 | divided_by: 100.0 }};
+    --pj-hero-lead-s: {{ s.lead_size | default: 100 | divided_by: 100.0 }};
+    --pj-hero-mantra-s: {{ s.mantra_size | default: 100 | divided_by: 100.0 }};
+    {% if s.text_color != blank %} --pj-hero-text: {{ s.text_color }};{% endif %}
+  "
 >
   <div class="pj-hero__media" aria-hidden="true">
     <div class="pj-hero__slider-track" id="pj-hero-slider-track">
@@ -23,7 +35,7 @@
   </div>
 
   <div class="pj-container pj-hero__overlay">
-    <div class="pj-hero__content">
+    <div class="pj-hero__content pj-hero__content--{{ s.content_align | default: 'left' }}">
       {%- if s.eyebrow != blank -%}<p class="pj-eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
       <h1 id="pj-hero-heading" class="pj-hero__title">{{ s.heading | escape | newline_to_br }}</h1>
       {%- if s.subtext != blank -%}<p class="pj-hero__lead">{{ s.subtext }}</p>{%- endif -%}
@@ -53,15 +65,34 @@
     { "type": "image_picker", "id": "image_2", "label": "Slide 2" },
     { "type": "range", "id": "slide_seconds", "label": "Seconds per slide", "min": 3, "max": 12, "step": 1, "unit": "s", "default": 5 },
     { "type": "range", "id": "veil", "label": "Light veil behind the text", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100, "info": "0 shows the photograph untouched. Raise it if the words are hard to read." },
-    { "type": "header", "content": "Text" },
+    { "type": "header", "content": "Text Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "ANCIENT WISDOM. MODERN JEWELLERY." },
     { "type": "textarea", "id": "heading", "label": "Heading", "info": "Press Enter for a new line.", "default": "JEWELLERY\nTHAT FINDS\nYOU" },
-    { "type": "range", "id": "title_size", "label": "Heading size", "min": 50, "max": 140, "step": 5, "unit": "%", "default": 100 },
     { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "Thoughtfully designed pieces with a gemstone prescribed from your birth details." },
     { "type": "text", "id": "cta_label", "label": "Button label", "default": "EXPLORE DESIGNS" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
     { "type": "text", "id": "mantra", "label": "Line under the button", "default": "YOUR BIRTHPLACE. YOUR TIME. YOUR GEMSTONE. YOUR STORY." },
     { "type": "color", "id": "text_color", "label": "Text color", "info": "Leave empty to use the theme text color." },
+    { "type": "header", "content": "Content Position & Alignment" },
+    { "type": "range", "id": "content_offset_x", "label": "Move Left / Right (X Position)", "min": -50, "max": 400, "step": 10, "unit": "px", "default": 80, "info": "Higher value moves the text block to the right" },
+    { "type": "range", "id": "content_offset_y", "label": "Move Up / Down (Y Position)", "min": -150, "max": 150, "step": 10, "unit": "px", "default": 0, "info": "Negative moves up, positive moves down" },
+    { "type": "range", "id": "content_max_width", "label": "Content Box Max Width", "min": 380, "max": 750, "step": 10, "unit": "px", "default": 540 },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    { "type": "header", "content": "Text Sizes" },
+    { "type": "range", "id": "title_size", "label": "Heading size", "min": 50, "max": 160, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "eyebrow_size", "label": "Eyebrow Text Size", "min": 70, "max": 160, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "lead_size", "label": "Subtext Size", "min": 70, "max": 160, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "mantra_size", "label": "Mantra Line Size", "min": 70, "max": 160, "step": 5, "unit": "%", "default": 100 },
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "height", "label": "Height", "min": 50, "max": 100, "step": 5, "unit": "vh", "default": 100 }
   ],

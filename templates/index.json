@@ -30,7 +30,14 @@
         "cta_link": "",
         "mantra": "YOUR BIRTHPLACE. YOUR TIME. YOUR GEMSTONE. YOUR STORY.",
         "text_color": "#f0e4c8",
-        "height": 100
+        "height": 100,
+        "content_offset_x": 80,
+        "content_offset_y": 0,
+        "content_max_width": 540,
+        "content_align": "left",
+        "eyebrow_size": 100,
+        "lead_size": 100,
+        "mantra_size": 100
       }
     },
     "personal_by_design": {
