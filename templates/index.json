@@ -562,6 +562,10 @@
       "settings": {
         "height": 90,
         "wheel_size": 100,
+        "heading_size": 100,
+        "planet_size": 100,
+        "note_title_size": 100,
+        "notes_size": 100,
         "bg_image": "shopify://shop_images/73437e2c-0127-4dac-ba62-678b9b8bd98d.png",
         "veil": 25,
         "veil_color": "#120e0a",
@@ -570,14 +574,7 @@
         "text_color": "#f4ebe1",
         "muted_color": "#d9cfc2",
         "use_stone_color": true,
-        "accent_color": "#c9a15b",
-        "use_custom_fonts": false,
-        "font_heading": "cormorant_n5",
-        "font_body": "jost_n5",
-        "heading_size": 100,
-        "planet_size": 100,
-        "note_title_size": 100,
-        "notes_size": 100
+        "accent_color": "#c9a15b"
       }
     },
     "editorial_story": {
