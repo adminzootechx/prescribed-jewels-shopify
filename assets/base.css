@@ -2177,7 +2177,7 @@ textarea {
 
 .pj-process-step__num {
   font-family: var(--pj-font-sans);
-  font-size: calc(0.65rem * var(--pj-ps-step-num-size, 1));
+  font-size: calc(0.65rem * var(--pj-block-num-size, var(--pj-ps-step-num-size, 1)));
   letter-spacing: 0.2em;
   color: var(--pj-ps-step-num-color, #B69156);
   font-weight: 500;
@@ -2186,7 +2186,7 @@ textarea {
 .pj-process-step__name {
   margin: 0;
   font-family: var(--pj-font-sans);
-  font-size: calc(0.74rem * var(--pj-ps-step-title-size, 1));
+  font-size: calc(0.74rem * var(--pj-block-title-size, var(--pj-ps-step-title-size, 1)));
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2227,7 +2227,7 @@ textarea {
 .pj-process-step__desc {
   margin: 0;
   font-family: var(--pj-font-sans);
-  font-size: calc(clamp(0.78rem, 0.95vw, 0.86rem) * var(--pj-ps-step-desc-size, 1));
+  font-size: calc(clamp(0.78rem, 0.95vw, 0.86rem) * var(--pj-block-desc-size, var(--pj-ps-step-desc-size, 1)));
   line-height: 1.55;
   color: var(--pj-ps-step-desc-color, #C8BFB2);
   text-align: var(--pj-ps-step-desc-align, left);
