@@ -1,5 +1,5 @@
-/* ==========================================================================
-   PRESCRIBED JEWELS — IVORY & BEIGE LUXURY EDITORIAL THEME
+﻿/* ==========================================================================
+   PRESCRIBED JEWELS â€” IVORY & BEIGE LUXURY EDITORIAL THEME
    ========================================================================== */
 
 *,
@@ -1413,6 +1413,76 @@ textarea {
 }
 .pj-story .pj-btn--primary:hover { filter: brightness(0.94); }
 .pj-story .pj-btn:focus-visible { outline: 2px solid var(--pj-s-text, #FBF6EC); outline-offset: 3px; }
+
+/* Card Mode (matches Image 3 on top of Image 1) */
+.pj-story--has-card {
+  padding: clamp(3rem, 6.5vh, 5.5rem) 0;
+}
+
+.pj-story--has-card .pj-story__card {
+  background: var(--pj-story-card-bg, rgba(255, 255, 255, 0.94));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(182, 145, 86, 0.35);
+  box-shadow: 0 20px 50px rgba(22, 18, 14, 0.1);
+  padding: clamp(2.5rem, 5.5vw, 4.2rem) clamp(1.5rem, 4.5vw, 4rem);
+  max-width: 1080px;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.pj-story--has-card .pj-story__monogram {
+  color: var(--pj-text-primary, #1A1815);
+  margin-bottom: 1.15rem;
+}
+
+.pj-story--has-card .pj-eyebrow {
+  color: var(--pj-text-soft, #7A7265);
+  font-family: var(--pj-font-sans);
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  margin-bottom: 0.85rem;
+  opacity: 1;
+}
+
+.pj-story--has-card .pj-story__title {
+  color: var(--pj-text-primary, #1A1815);
+  font-family: var(--pj-font-serif);
+  font-size: calc(clamp(2.2rem, 4vw, 3.3rem) * var(--pj-hs, 1) * var(--pj-s-hs, 1));
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0 0 1.2rem;
+}
+
+.pj-story--has-card .pj-story__text {
+  color: var(--pj-text-muted, #4A4237);
+  font-family: var(--pj-font-serif);
+  font-size: clamp(1.1rem, 1.4vw, 1.25rem);
+  line-height: 1.65;
+  max-width: 58ch;
+  margin: 0 auto 2.2rem;
+}
+
+.pj-story--has-card .pj-btn--primary {
+  background-color: var(--pj-s-accent, #12261E);
+  border-color: var(--pj-s-accent, #12261E);
+  color: #FFFFFF;
+  padding: 0.95rem 2.2rem;
+  letter-spacing: 0.16em;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pj-story--has-card .pj-btn--primary:hover {
+  background-color: var(--pj-accent-forest-hover, #1D3B2F);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
 
 /* ==========================================================================
    ABOUT BANNER: PHOTOGRAPH LEFT, THE STORY RIGHT

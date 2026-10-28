@@ -3,20 +3,20 @@
 
 <section
   id="pj-story"
-  class="pj-story pj-section pj-story--{{ s.align }}"
+  class="pj-story pj-section pj-story--{{ s.align }}{% if s.show_card %} pj-story--has-card{% endif %}"
   aria-labelledby="pj-story-heading"
-  style="--pj-hs-sec: {{ s.heading_size | divided_by: 100.0 }}; --pj-story-veil: {{ s.veil }}%; --pj-story-veil-color: {{ s.veil_color | default: '#2A1C10' }}; --pj-story-min: {{ s.min_height }}px; --pj-story-focus: {{ s.focus_x }}% {{ s.focus_y }}%;{% if s.card_color != blank %} --pj-bg-primary: {{ s.card_color }};{% endif %}"
+  style="--pj-hs-sec: {{ s.heading_size | divided_by: 100.0 }}; --pj-story-veil: {{ s.veil }}%; --pj-story-veil-color: {{ s.veil_color | default: '#2A1C10' }}; --pj-story-min: {{ s.min_height }}px; --pj-story-focus: {{ s.focus_x }}% {{ s.focus_y }}%;{% if s.card_color != blank %} --pj-story-card-bg: {{ s.card_color }};{% endif %}"
 >
   <div class="pj-story__bg" aria-hidden="true">
     {%- if s.image != blank -%}
-      {{ s.image | image_url: width: 2400 | image_tag: class: 'pj-story__bg-img', widths: '1200, 1800, 2400', sizes: '100vw', alt: '', loading: 'lazy' }}
+      {{ s.image | image_url: width: 2400 | image_tag: class: 'pj-story__bg-img', widths: '1200, 1800, 2400', sizes: '100vw', alt: s.heading, loading: 'lazy' }}
     {%- else -%}
-      <img class="pj-story__bg-img" src="{{ 'hero-banner-2.jpg' | asset_url }}" alt="" width="1408" height="768" loading="lazy">
+      <img class="pj-story__bg-img" src="{{ 'story-jewels-silk.png' | asset_url }}" alt="Prescribed Jewels silk drape with gold necklace and rings" width="1920" height="1080" loading="lazy">
     {%- endif -%}
   </div>
 
   <div class="pj-container pj-story__layout">
-    <div class="pj-story__content">
+    <div class="pj-story__card">
       {%- if s.show_monogram -%}
         <div class="pj-story__monogram">
           {% render 'pj-monogram', variant: 'monogram' %}
@@ -56,23 +56,24 @@
     { "type": "textarea", "id": "body_text", "label": "Body Text", "default": "Prescribed Jewels is born from the belief that fine jewellery should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details." },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "BEGIN YOUR PRESCRIPTION" },
     { "type": "checkbox", "id": "show_monogram", "label": "Show the PJ monogram", "default": true },
+    { "type": "checkbox", "id": "show_card", "label": "Show framed card over image", "default": true, "info": "When on, frames text inside an elegant ivory card over the jewelry photo (as in design preview)." },
 
     { "type": "header", "content": "Background image" },
-    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Leave empty to use the built-in travertine and ruby photograph." },
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Leave empty to use the built-in silk drape with gold necklace and rings." },
     { "type": "range", "id": "focus_x", "label": "Image focus, across", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
     { "type": "range", "id": "focus_y", "label": "Image focus, down", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
     { "type": "color", "id": "veil_color", "label": "Tint over the image", "default": "#2A1C10" },
-    { "type": "range", "id": "veil", "label": "Tint strength", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 45, "info": "Raise it if the text is hard to read." },
+    { "type": "range", "id": "veil", "label": "Tint strength", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 20, "info": "Raise it if you want the background photo darker." },
 
     { "type": "header", "content": "Layout" },
-    { "type": "select", "id": "align", "label": "Text position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" }, { "value": "right", "label": "Right" } ] },
-    { "type": "range", "id": "min_height", "label": "Minimum height", "min": 360, "max": 900, "step": 20, "unit": "px", "default": 620 },
+    { "type": "select", "id": "align", "label": "Text position", "default": "center", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" }, { "value": "right", "label": "Right" } ] },
+    { "type": "range", "id": "min_height", "label": "Minimum height", "min": 360, "max": 900, "step": 20, "unit": "px", "default": 640 },
 
     { "type": "header", "content": "Colours" },
-    { "type": "color", "id": "text_color", "label": "Heading and label", "default": "#FBF6EC" },
-    { "type": "color", "id": "muted_color", "label": "Body text", "default": "#F3E9D8" },
-    { "type": "color", "id": "accent_color", "label": "Button", "default": "#FBF6EC", "info": "Fill colour of the button." },
-    { "type": "color", "id": "card_color", "label": "Theme background override", "info": "Only used behind the image while it loads. Leave empty for the theme background." },
+    { "type": "color", "id": "card_color", "label": "Card background color", "info": "Leave empty for translucent warm white." },
+    { "type": "color", "id": "text_color", "label": "Heading and label", "default": "#1A1815" },
+    { "type": "color", "id": "muted_color", "label": "Body text", "default": "#4A4237" },
+    { "type": "color", "id": "accent_color", "label": "Button background", "default": "#12261E", "info": "Fill colour of the button." },
 
     { "type": "header", "content": "Fonts and sizes" },
     { "type": "checkbox", "id": "use_custom_fonts", "label": "Use the fonts chosen below", "default": false, "info": "Off: the theme fonts." },
