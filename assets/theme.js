@@ -453,7 +453,7 @@
 
     const NUM_SLOTS = 8;
     const RADIUS = 230;
-    const ROTATE_MS = 4500;
+    const ROTATE_MS = 2000;
     const slotElements = [];
     const gemUrls = (wheelRotor.getAttribute('data-gem-urls') || '').split('|');
     const views = (wheelRotor.getAttribute('data-gem-views') || '').split('|').map((v) => v.split(',').filter(Boolean));
@@ -510,17 +510,6 @@
       slot.appendChild(inner);
 
       wheelRotor.appendChild(slot);
-      slot.addEventListener('click', () => {
-        const activeSlot = ((wheelStep % NUM_SLOTS) + NUM_SLOTS) % NUM_SLOTS;
-        const diff = (s - activeSlot + NUM_SLOTS) % NUM_SLOTS;
-        const stepDiff = diff > 4 ? diff - NUM_SLOTS : diff;
-        if (stepDiff !== 0) {
-          activeStoneIndex = (((activeStoneIndex + stepDiff) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
-          wheelStep += stepDiff;
-          renderWheelState(true);
-          restartAuto();
-        }
-      });
       slotElements.push({ slot, inner, img });
     }
 
@@ -547,7 +536,6 @@
     const arrowSvg = document.getElementById('pj-gem-arrow');
     const arrowPath = document.getElementById('pj-gem-arrow-path');
     const arrowDot = document.getElementById('pj-gem-arrow-dot');
-    const arrowHead = document.getElementById('pj-gem-arrow-head');
     const photoWrap = document.getElementById('pj-gem-photo-wrap');
     const photoImg = document.getElementById('pj-gem-photo');
     const noteFeatures = document.getElementById('pj-gem-features');
@@ -581,153 +569,46 @@
       }
     };
 
-    // A curved arrow: starts when the wheel arrives and stops (and the gem pops up), moves from the ring gem to the big gem, and points into it
-    const ROTATE_DURATION_MS = 820;
-    let wheelTransitionTimer = null;
-    let arrowAnimFrame = null;
-
-    const hideArrow = () => {
-      if (arrowAnimFrame) {
-        cancelAnimationFrame(arrowAnimFrame);
-        arrowAnimFrame = null;
-      }
-      if (arrowSvg) {
-        arrowSvg.classList.remove('is-visible');
-        arrowSvg.style.opacity = '0';
-      }
-      if (arrowPath) {
-        arrowPath.style.strokeDashoffset = '9999';
-      }
-      if (arrowHead) {
-        arrowHead.style.opacity = '0';
-      }
-    };
-
-    const placeArrow = (animate = true) => {
-      if (!arrowSvg || !arrowPath || !photoWrap || window.innerWidth < 960) return;
+    // A curved arrow from the left edge of the highlighted stone to the photograph, then drawn in
+    const placeArrow = (redraw) => {
+      if (!arrowSvg || !arrowPath || !wheelHalo || !photoWrap || window.innerWidth < 960) return;
       const box = arrowSvg.getBoundingClientRect();
-      if (box.width === 0 || box.height === 0) return;
-
+      const halo = wheelHalo.getBoundingClientRect();
+      const photo = photoWrap.getBoundingClientRect();
+      // The line starts a fixed 3 mm (about 12 px) clear of the chosen stone's left edge, so it is longer or shorter with the stone's width
       const activeEntry = slotElements.find((entry) => entry.slot.classList.contains('is-active'));
-      if (!activeEntry) return;
-
-      // Settings from Shopify Theme Editor
-      const sec = wheelSection;
-      const startOffX = parseFloat(sec?.dataset.arrowStartX || '0') || 0;
-      const startOffY = parseFloat(sec?.dataset.arrowStartY || '0') || 0;
-      const endOffX = parseFloat(sec?.dataset.arrowEndX || '0') || 0;
-      const endOffY = parseFloat(sec?.dataset.arrowEndY || '0') || 0;
-      const customLift = parseFloat(sec?.dataset.arrowLift || '32');
-
-      // 1. Source: The active gemstone on the rotating ring (popped up and resting)
-      const gemTarget = (activeEntry.img && activeEntry.img.offsetWidth > 0 && !activeEntry.img.hidden)
-        ? activeEntry.img
-        : activeEntry.inner;
-      const gemRect = gemTarget.getBoundingClientRect();
-
-      // Start at the gem on the ring (inner edge facing the big gem)
-      const sx = gemRect.left - box.left + 4 + startOffX;
-      const sy = gemRect.top + (gemRect.height / 2) - box.top + startOffY;
-
-      // 2. Target: The big gemstone photograph on the left
-      const photoTarget = (photoImg && photoImg.offsetWidth > 0 && !photoImg.hidden)
-        ? photoImg
-        : photoWrap;
-      const photoRect = photoTarget.getBoundingClientRect();
-
-      // Point directly into the outer right contour/facet of the big stone
-      const ex = (photoRect.right - box.left) - 8 + endOffX;
-      const ey = photoRect.top + (photoRect.height / 2) - box.top + endOffY;
-
-      // 3. Smooth, elegant curve
-      const dx = sx - ex;
-      const lift = customLift;
-      const c1x = sx - dx * 0.42;
-      const c1y = sy - lift;
-      const c2x = ex + dx * 0.32;
-      const c2y = ey - (lift * 0.4);
-
-      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      const assembly = wheelHalo.parentElement.getBoundingClientRect();
+      const gemW = activeEntry ? activeEntry.inner.offsetWidth : 84;
+      const img = activeEntry ? activeEntry.img : null;
+      const aspect = img && img.naturalWidth && img.naturalHeight ? Math.min(1, img.naturalWidth / img.naturalHeight) : 1;
+      const wheelScale = assembly.width / 560;
+      const halfGem = (gemW * 1.3 * aspect * wheelScale) / 2;
+      const MIN_GAP = 12;
+      const DOT_R = 5;
+      const sx = assembly.left + (280 - RADIUS) * wheelScale - box.left - halfGem - MIN_GAP - DOT_R;
+      const sy = halo.top + halo.height / 2 - box.top;
+      // The head stops 14 px (the tip reaches about 11 px) short of the big stone's right edge, whatever its width
+      const nat = photoImg && photoImg.naturalWidth && photoImg.naturalHeight ? photoImg.naturalWidth / photoImg.naturalHeight : 1;
+      const seenHalf = (photo.width * 1.05 * Math.min(1, nat) * 0.97) / 2;
+      const ex = photo.left + photo.width / 2 - box.left + seenHalf + 14;
+      const ey = photo.top + photo.height / 2 - box.top;
+      const reach = Math.max(80, sx - ex);
+      const lift = Math.min(150, reach * 0.3);
+      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${(sx - reach * 0.38).toFixed(1)} ${(sy + lift).toFixed(1)}, ${(ex + reach * 0.34).toFixed(1)} ${(ey - lift).toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
       arrowPath.setAttribute('d', d);
-      if (arrowDot) {
-        arrowDot.setAttribute('cx', sx.toFixed(1));
-        arrowDot.setAttribute('cy', sy.toFixed(1));
-      }
-
-      const totalLength = arrowPath.getTotalLength();
-      if (!totalLength) return;
-
-      if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        arrowSvg.classList.add('is-visible');
-        arrowSvg.style.opacity = '1';
-        arrowPath.style.strokeDasharray = 'none';
+      arrowDot.setAttribute('cx', sx.toFixed(1));
+      arrowDot.setAttribute('cy', sy.toFixed(1));
+      if (redraw) {
+        arrowPath.style.transition = 'none';
+        arrowPath.style.strokeDashoffset = '1';
+        void arrowPath.getBoundingClientRect();
+        arrowPath.style.transition = 'stroke-dashoffset 0.9s cubic-bezier(0.2, 0.7, 0.1, 1)';
         arrowPath.style.strokeDashoffset = '0';
-        if (arrowHead) {
-          const endPt = arrowPath.getPointAtLength(totalLength);
-          const prevEnd = arrowPath.getPointAtLength(Math.max(0, totalLength - 2));
-          const endAngle = Math.atan2(endPt.y - prevEnd.y, endPt.x - prevEnd.x) * (180 / Math.PI);
-          arrowHead.setAttribute('transform', `translate(${endPt.x.toFixed(1)}, ${endPt.y.toFixed(1)}) rotate(${endAngle.toFixed(1)})`);
-          arrowHead.style.opacity = '1';
-        }
-        return;
       }
-
-      // Animate arrow moving from ring gem across to bigger gem and then pointing
-      if (arrowAnimFrame) cancelAnimationFrame(arrowAnimFrame);
-
-      arrowSvg.classList.add('is-visible');
-      arrowSvg.style.opacity = '1';
-      arrowPath.style.strokeDasharray = `${totalLength}`;
-      arrowPath.style.strokeDashoffset = `${totalLength}`;
-      if (arrowHead) arrowHead.style.opacity = '0';
-
-      const duration = 650; // ms to travel across
-      const startTime = performance.now();
-
-      const step = (now) => {
-        const elapsed = now - startTime;
-        const rawProgress = Math.min(1, elapsed / duration);
-        // Smooth ease-out cubic
-        const progress = 1 - Math.pow(1 - rawProgress, 3);
-        const currentDist = progress * totalLength;
-
-        arrowPath.style.strokeDashoffset = `${(1 - progress) * totalLength}`;
-
-        if (arrowHead && progress > 0.02) {
-          const pt = arrowPath.getPointAtLength(currentDist);
-          const prevPt = arrowPath.getPointAtLength(Math.max(0, currentDist - 2));
-          const angle = Math.atan2(pt.y - prevPt.y, pt.x - prevPt.x) * (180 / Math.PI);
-          arrowHead.setAttribute('transform', `translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)}) rotate(${angle.toFixed(1)})`);
-          arrowHead.style.opacity = '1';
-        }
-
-        if (rawProgress < 1) {
-          arrowAnimFrame = requestAnimationFrame(step);
-        } else {
-          // Reached the big gem! Locked in place pointing directly into the gem
-          const endPt = arrowPath.getPointAtLength(totalLength);
-          const prevEnd = arrowPath.getPointAtLength(Math.max(0, totalLength - 2));
-          const endAngle = Math.atan2(endPt.y - prevEnd.y, endPt.x - prevEnd.x) * (180 / Math.PI);
-          if (arrowHead) {
-            arrowHead.setAttribute('transform', `translate(${endPt.x.toFixed(1)}, ${endPt.y.toFixed(1)}) rotate(${endAngle.toFixed(1)})`);
-            arrowHead.style.opacity = '1';
-          }
-          arrowPath.style.strokeDashoffset = '0';
-          arrowAnimFrame = null;
-        }
-      };
-
-      arrowAnimFrame = requestAnimationFrame(step);
     };
-
     window.addEventListener('resize', () => placeArrow(false), { passive: true });
     window.addEventListener('load', () => placeArrow(true));
     if (photoImg) photoImg.addEventListener('load', () => placeArrow(false));
-    document.addEventListener('shopify:section:load', (e) => {
-      if (e.target && (e.target.contains(wheelSection) || e.target === wheelSection)) {
-        placeArrow(true);
-      }
-    });
 
     const updateInfo = (animate) => {
       const currentStone = GEMSTONES[activeStoneIndex];
@@ -736,7 +617,7 @@
         wheelDesc.textContent = currentStone.desc;
         if (wheelCounter) wheelCounter.textContent = currentStone.num;
         if (wheelPlanet) {
-          const cap = (t) => t.toLowerCase().replace(/(^|[s-])([a-z])/g, (m, s, ch) => s + ch.toUpperCase());
+          const cap = (t) => t.toLowerCase().replace(/(^|[\s-])([a-z])/g, (m, s, ch) => s + ch.toUpperCase());
           const [body, tradition] = currentStone.planet.split(' · ');
           wheelPlanet.textContent = `Ruled by ${cap(body)}${tradition ? ' (' + cap(tradition) + ')' : ''}`;
         }
@@ -749,6 +630,7 @@
         if (noteUses) noteUses.textContent = notes[1];
         if (noteWear) noteWear.textContent = notes[2];
         showStone(activeStoneIndex);
+        placeArrow(true);
         if (wheelBar) wheelBar.style.transform = `scaleX(${((activeStoneIndex + 1) / GEMSTONES.length).toFixed(3)})`;
         infoBox?.classList.remove('is-fading');
       };
@@ -761,51 +643,21 @@
     };
 
     const renderWheelState = (animate = true) => {
-      clearTimeout(wheelTransitionTimer);
-      hideArrow();
-
       const activeSlot = ((wheelStep % NUM_SLOTS) + NUM_SLOTS) % NUM_SLOTS;
       wheelRotor.style.transform = `rotate(${-wheelStep * 45}deg)`;
       if (wheelFrameSpin) wheelFrameSpin.style.transform = `rotate(${-wheelStep * 45}deg)`;
       // Counter-turn each stone by the wheel's rotation so it always reads upright
       slotElements.forEach((entry) => entry.inner.style.setProperty('--ur', `${wheelStep * 45}deg`));
 
-      if (animate) {
-        // While rotating: un-pop gems and fade info so NO arrow connects during rotation
-        slotElements.forEach((entry) => entry.slot.classList.remove('is-active'));
-        if (infoBox) infoBox.classList.add('is-fading');
+      [-3, -2, -1, 0, 1, 2, 3, 4].forEach((rel) => {
+        const slotIdx = (activeSlot + rel + NUM_SLOTS) % NUM_SLOTS;
+        const stoneIdx = (((activeStoneIndex + rel) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
+        const entry = slotElements[slotIdx];
+        entry.slot.classList.toggle('is-active', rel === 0);
+        setSlotGem(entry, stoneIdx, slotIdx);
+      });
 
-        [-3, -2, -1, 0, 1, 2, 3, 4].forEach((rel) => {
-          const slotIdx = (activeSlot + rel + NUM_SLOTS) % NUM_SLOTS;
-          const stoneIdx = (((activeStoneIndex + rel) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
-          const entry = slotElements[slotIdx];
-          setSlotGem(entry, stoneIdx, slotIdx);
-        });
-
-        // When the wheel arrives and STOPS:
-        wheelTransitionTimer = setTimeout(() => {
-          // 1. Arrived gem pops up!
-          const activeEntry = slotElements[activeSlot];
-          if (activeEntry) activeEntry.slot.classList.add('is-active');
-
-          // 2. Info updates and reveals
-          updateInfo(false);
-
-          // 3. Arrow starts moving from the popped-up ring gem to the bigger gem and points
-          placeArrow(true);
-        }, ROTATE_DURATION_MS);
-      } else {
-        // Instant (first load)
-        [-3, -2, -1, 0, 1, 2, 3, 4].forEach((rel) => {
-          const slotIdx = (activeSlot + rel + NUM_SLOTS) % NUM_SLOTS;
-          const stoneIdx = (((activeStoneIndex + rel) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
-          const entry = slotElements[slotIdx];
-          entry.slot.classList.toggle('is-active', rel === 0);
-          setSlotGem(entry, stoneIdx, slotIdx);
-        });
-        updateInfo(false);
-        placeArrow(true);
-      }
+      updateInfo(animate);
     };
 
     const advance = () => {
