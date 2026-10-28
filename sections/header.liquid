@@ -1,121 +1,114 @@
-{%- liquid
-  assign s = section.settings
-  assign text_color = s.text_color | default: '#F4EBE1'
-  assign accent_color = s.accent_color | default: '#B69156'
-  assign bg_scrolled = s.bg_color_scrolled | default: '#120E0A'
--%}
+{%- assign hs = section.settings -%}
+{%- if hs.custom_font != blank -%}<style>{{ hs.custom_font | font_face: font_display: 'swap' }}</style>{%- endif -%}
+{%- assign custom_fam = hs.custom_font.family | append: ', ' | append: hs.custom_font.fallback_families -%}
+{%- capture logo_font_css -%}{%- if hs.logo_font == 'custom' -%}font-family: {{ custom_fam }};{%- endif -%}{%- endcapture -%}
+{%- capture nav_font_css -%}{%- if hs.nav_font == 'custom' -%}font-family: {{ custom_fam }};{%- endif -%}{%- endcapture -%}
+{%- capture cart_font_css -%}{%- if hs.cart_font == 'custom' -%}font-family: {{ custom_fam }};{%- endif -%}{%- endcapture -%}
+{%- assign logo_font_cls = hs.logo_font | default: 'serif' -%}
+{%- assign nav_font_cls = hs.nav_font | default: 'sans' -%}
+{%- assign cart_font_cls = hs.cart_font | default: 'sans' -%}
+{%- assign nav_case_cls = hs.nav_case | default: 'titlecase' -%}
 
-{%- if s.overlay_hero -%}
+{%- if hs.overlay_hero -%}
 <style>
-  @media (min-width: 900px) {
-    .template-index .pj-header--overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-    }
-    .template-index .pj-header--overlay.is-scrolled {
-      position: fixed;
-    }
-    .template-index .pj-hero {
-      height: var(--pj-hero-h, 100vh);
-      padding-top: calc(var(--pj-hdr-py, 18px) * 2 + 36px);
-    }
+  .template-index .pj-header--overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 100;
+  }
+  .template-index .pj-header--overlay.is-scrolled {
+    position: fixed;
+  }
+  .template-index .pj-hero {
+    padding-top: calc(var(--pj-hdr-py, 18px) * 2 + 36px);
   }
 </style>
 {%- endif -%}
 
 <header
-  class="pj-header{% if s.overlay_hero %} pj-header--overlay{% endif %}{% if s.enable_sticky %} pj-header--sticky{% endif %}"
+  class="pj-header{% if hs.overlay_hero %} pj-header--overlay{% endif %}{% if hs.enable_sticky %} pj-header--sticky{% endif %}"
   data-sticky-header
   style="
-    --pj-hdr-text: {{ text_color }};
-    --pj-hdr-accent: {{ accent_color }};
-    --pj-hdr-bg-scrolled: {{ bg_scrolled }};
-    --pj-hdr-bg-opacity: {{ s.bg_opacity_scrolled | default: 85 | divided_by: 100.0 }};
-    --pj-hdr-py: {{ s.header_padding_y | default: 18 }}px;
-    --pj-hdr-max-w: {{ s.max_width | default: 1400 }}px;
-    --pj-hdr-logo-size: {{ s.logo_font_size | default: 100 | divided_by: 100.0 }};
-    --pj-hdr-logo-spacing: {{ s.logo_letter_spacing | default: 22 | divided_by: 100.0 }}em;
-    --pj-hdr-logo-sub-spacing: {{ s.logo_sub_letter_spacing | default: 44 | divided_by: 100.0 }}em;
-    --pj-hdr-logo-sub-ratio: {{ s.logo_sub_ratio | default: 46 | divided_by: 100.0 }};
-    --pj-hdr-nav-size: {{ s.nav_text_size | default: 100 | divided_by: 100.0 }};
-    --pj-hdr-nav-gap: {{ s.nav_spacing | default: 32 }}px;
-    --pj-hdr-nav-spacing: {{ s.nav_letter_spacing | default: 6 | divided_by: 100.0 }}em;
-    --pj-hdr-cart-size: {{ s.cart_text_size | default: 100 | divided_by: 100.0 }};
+    --pj-hdr-text: {{ hs.text_color | default: '#e9d2af' }};
+    --pj-hdr-text-dark: {{ hs.text_color | default: '#e9d2af' }};
+    --pj-hdr-text-light: {{ hs.text_color_light | default: '#2b241c' }};
+    --pj-hdr-accent: {{ hs.accent_color | default: '#f0e4d1' }};
+    --pj-hdr-bg-scrolled: {{ hs.bg_color_scrolled | default: '#120e0a' }};
+    --pj-hdr-bar-dark: {{ hs.bg_color_scrolled | default: '#120e0a' }};
+    --pj-hdr-bar-light: {{ hs.bar_color_light | default: '#f3ece0' }};
+    --pj-hdr-bg-opacity: {{ hs.bg_opacity_scrolled | default: 85 | divided_by: 100.0 }};
+    --pj-hdr-py: {{ hs.header_padding_y | default: 18 }}px;
+    --pj-hdr-max-w: {{ hs.max_width | default: 1400 }}px;
+    --pj-hdr-logo-size: {{ hs.logo_font_size | default: 100 | divided_by: 100.0 }};
+    --pj-hdr-logo-spacing: {{ hs.logo_letter_spacing | default: 22 | divided_by: 100.0 }}em;
+    --pj-hdr-logo-sub-spacing: {{ hs.logo_sub_letter_spacing | default: 44 | divided_by: 100.0 }}em;
+    --pj-hdr-logo-sub-ratio: {{ hs.logo_sub_ratio | default: 44 | divided_by: 100.0 }};
+    --pj-hdr-nav-size: {{ hs.nav_text_size | default: 110 | divided_by: 100.0 }};
+    --pj-hdr-nav-spacing: {{ hs.nav_letter_spacing | default: 6 | divided_by: 100.0 }}em;
+    --pj-hdr-nav-gap: {{ hs.nav_spacing | default: 34 }}px;
+    --pj-hdr-cart-size: {{ hs.cart_text_size | default: 110 | divided_by: 100.0 }};
   "
 >
   <div class="pj-container pj-header__inner">
-    <!-- Left: Brand Logo / Stacked Wordmark / Text -->
     <div class="pj-header__brand">
       <a href="{{ routes.root_url }}" class="pj-header__brand-link" aria-label="{{ shop.name | default: 'Prescribed Jewels' }}">
-        {%- if s.logo != blank -%}
-          {{ s.logo | image_url: width: 440 | image_tag: class: 'pj-header__logo-img', alt: shop.name }}
-        {%- elsif s.logo_layout == 'single' -%}
-          <span class="pj-header__logo-text pj-header__logo-text--{{ s.logo_font | default: 'serif' }}">
-            {{ s.logo_text | default: 'PRESCRIBED JEWELS' }}
+        {%- if hs.logo_image != blank -%}
+          {{ hs.logo_image | image_url: width: 400 | image_tag: class: 'pj-header__logo-img', widths: '200, 400', alt: shop.name, loading: 'eager' }}
+        {%- elsif hs.logo_layout == 'stacked' -%}
+          <span class="pj-header__wordmark pj-header__wordmark--{{ logo_font_cls }}" style="{{ logo_font_css }}">
+            <span class="pj-header__wordmark-main">{{ hs.logo_text_main | default: 'PRESCRIBED' }}</span>
+            <span class="pj-header__wordmark-sub">{{ hs.logo_text_sub | default: 'JEWELS' }}</span>
           </span>
         {%- else -%}
-          <span class="pj-header__wordmark pj-header__wordmark--{{ s.logo_font | default: 'serif' }}">
-            <span class="pj-header__wordmark-main">{{ s.logo_text_main | default: 'PRESCRIBED' }}</span>
-            <span class="pj-header__wordmark-sub">{{ s.logo_text_sub | default: 'JEWELS' }}</span>
-          </span>
+          <span class="pj-header__logo-text pj-header__logo-text--{{ logo_font_cls }}" style="{{ logo_font_css }}">{{ hs.logo_text | default: 'PRESCRIBED JEWELS' }}</span>
         {%- endif -%}
       </a>
     </div>
 
-    <!-- Center: Navigation Links -->
-    <nav class="pj-header__nav pj-header__nav--{{ s.nav_font | default: 'sans' }}" aria-label="Primary Navigation">
-      {%- if s.menu != blank and linklists[s.menu].links.size > 0 -%}
-        {%- for link in linklists[s.menu].links -%}
-          <a href="{{ link.url }}" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">{{ link.title }}</a>
+    <nav class="pj-header__nav pj-header__nav--{{ nav_font_cls }}" style="{{ nav_font_css }}" aria-label="Primary Navigation">
+      {%- if hs.menu != blank and hs.menu.links.size > 0 -%}
+        {%- for link in hs.menu.links -%}
+          <a href="{{ link.url }}" class="pj-header__link pj-header__link--{{ nav_case_cls }}">{{ link.title }}</a>
         {%- endfor -%}
       {%- elsif section.blocks.size > 0 -%}
         {%- for block in section.blocks -%}
-          <a href="{{ block.settings.link | default: '#' }}" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+          <a href="{{ block.settings.link | default: '#' }}" class="pj-header__link pj-header__link--{{ nav_case_cls }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
         {%- endfor -%}
       {%- else -%}
-        <a href="#pj-process" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">The Process</a>
-        <a href="#pj-designs" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">The Designs</a>
-        <a href="#pj-story" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">Our Philosophy</a>
-        <a href="/blogs/journal" class="pj-header__link pj-header__link--{{ s.nav_case | default: 'titlecase' }}">Journal</a>
+        <a href="#pj-process" class="pj-header__link pj-header__link--{{ nav_case_cls }}">The Process</a>
+        <a href="#pj-designs" class="pj-header__link pj-header__link--{{ nav_case_cls }}">The Designs</a>
+        <a href="#pj-story" class="pj-header__link pj-header__link--{{ nav_case_cls }}">Our Philosophy</a>
+        <a href="/blogs/journal" class="pj-header__link pj-header__link--{{ nav_case_cls }}">Journal</a>
       {%- endif -%}
     </nav>
 
-    <!-- Right: Cart Action & Mobile Toggle -->
     <div class="pj-header__actions">
       <a
         href="{{ routes.cart_url }}"
-        class="pj-header__cart-link pj-header__cart-link--{{ s.cart_font | default: 'sans' }}"
-        {% if s.cart_action == 'drawer' %}data-open-prescription data-design="01 — The Classic (Signature Ring)"{% endif %}
+        class="pj-header__cart-link pj-header__cart-link--{{ cart_font_cls }}"
+        style="{{ cart_font_css }}"
+        {% if hs.cart_action == 'drawer' %}data-open-prescription data-design="01 — The Classic (Signature Ring)"{% endif %}
         aria-label="Shopping Cart with {{ cart.item_count }} items"
       >
-        <span class="pj-header__cart-label">{{ s.cart_label | default: 'Cart' }}</span>
-        {%- if s.show_cart_count -%}
+        <span class="pj-header__cart-label">{{ hs.cart_label | default: 'Cart' }}</span>
+        {%- if hs.show_cart_count -%}
           <span class="pj-header__cart-count">({{ cart.item_count }})</span>
         {%- endif -%}
       </a>
 
-      <button
-        type="button"
-        class="pj-header__mobile-toggle"
-        aria-expanded="false"
-        aria-controls="pj-mobile-nav"
-        aria-label="Toggle navigation menu"
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-          <path d="M3 7h18M3 12h18M3 17h18" stroke-linecap="round"/>
-        </svg>
+      <button type="button" class="pj-header__mobile-toggle" aria-expanded="false" aria-controls="pj-mobile-nav" aria-label="Toggle navigation menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 7h18M3 12h18M3 17h12" stroke-linecap="round"/></svg>
       </button>
     </div>
   </div>
 
-  <!-- Mobile Drawer Menu -->
   <div id="pj-mobile-nav" class="pj-mobile-nav" hidden>
     <nav class="pj-container pj-mobile-nav__inner" aria-label="Mobile Navigation">
-      {%- if s.menu != blank and linklists[s.menu].links.size > 0 -%}
-        {%- for link in linklists[s.menu].links -%}
+      {%- if hs.menu != blank and hs.menu.links.size > 0 -%}
+        {%- for link in hs.menu.links -%}
           <a href="{{ link.url }}" class="pj-mobile-nav__link">{{ link.title }}</a>
         {%- endfor -%}
       {%- elsif section.blocks.size > 0 -%}
@@ -128,7 +121,7 @@
         <a href="#pj-story" class="pj-mobile-nav__link">Our Philosophy</a>
         <a href="/blogs/journal" class="pj-mobile-nav__link">Journal</a>
       {%- endif -%}
-      <a href="{{ routes.cart_url }}" class="pj-mobile-nav__link pj-mobile-nav__cart">{{ s.cart_label | default: 'Cart' }}{% if s.show_cart_count %} ({{ cart.item_count }}){% endif %}</a>
+      <a href="{{ routes.cart_url }}" class="pj-mobile-nav__link pj-mobile-nav__cart">{{ hs.cart_label | default: 'Cart' }}{% if hs.show_cart_count %} ({{ cart.item_count }}){% endif %}</a>
     </nav>
   </div>
 </header>
@@ -138,288 +131,57 @@
   "name": "Header",
   "class": "pj-section-header",
   "settings": [
-    {
-      "type": "header",
-      "content": "Brand & Logo"
-    },
-    {
-      "type": "select",
-      "id": "logo_layout",
-      "label": "Logo Style",
-      "options": [
-        { "value": "stacked", "label": "Stacked Wordmark (PRESCRIBED / JEWELS)" },
-        { "value": "single", "label": "Single Line Text" }
-      ],
-      "default": "stacked",
-      "info": "Matches official brand wordmark"
-    },
-    {
-      "type": "select",
-      "id": "logo_font",
-      "label": "Logo Font Family",
-      "options": [
-        { "value": "serif", "label": "Luxury Serif (Cormorant Garamond)" },
-        { "value": "sans", "label": "Modern Clean Sans" }
-      ],
-      "default": "serif"
-    },
-    {
-      "type": "text",
-      "id": "logo_text_main",
-      "label": "Logo Line 1 (Main)",
-      "default": "PRESCRIBED"
-    },
-    {
-      "type": "text",
-      "id": "logo_text_sub",
-      "label": "Logo Line 2 (Sub)",
-      "default": "JEWELS"
-    },
-    {
-      "type": "text",
-      "id": "logo_text",
-      "label": "Single-line Logo Text",
-      "default": "PRESCRIBED JEWELS",
-      "info": "Used when Logo Style is Single Line Text"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Custom Logo Image",
-      "info": "Overrides text if uploaded"
-    },
-    {
-      "type": "range",
-      "id": "logo_font_size",
-      "label": "Logo Overall Size",
-      "min": 60,
-      "max": 200,
-      "step": 5,
-      "unit": "%",
-      "default": 100
-    },
-    {
-      "type": "range",
-      "id": "logo_letter_spacing",
-      "label": "Logo Line 1 Spacing",
-      "min": 5,
-      "max": 40,
-      "step": 1,
-      "unit": "em",
-      "default": 22,
-      "info": "22 = 0.22em"
-    },
-    {
-      "type": "range",
-      "id": "logo_sub_letter_spacing",
-      "label": "Logo Line 2 Spacing",
-      "min": 10,
-      "max": 60,
-      "step": 2,
-      "unit": "em",
-      "default": 44,
-      "info": "44 = 0.44em tracking"
-    },
-    {
-      "type": "range",
-      "id": "logo_sub_ratio",
-      "label": "Logo Line 2 Proportion",
-      "min": 30,
-      "max": 80,
-      "step": 2,
-      "unit": "%",
-      "default": 46,
-      "info": "Size of Line 2 relative to Line 1"
-    },
-    {
-      "type": "header",
-      "content": "Navigation Menu"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Navigation Menu",
-      "info": "Select a Shopify navigation menu or use the blocks below"
-    },
-    {
-      "type": "select",
-      "id": "nav_font",
-      "label": "Menu Font Family",
-      "options": [
-        { "value": "sans", "label": "Modern Clean Sans" },
-        { "value": "serif", "label": "Luxury Serif" }
-      ],
-      "default": "sans"
-    },
-    {
-      "type": "select",
-      "id": "nav_case",
-      "label": "Menu Text Case",
-      "options": [
-        { "value": "titlecase", "label": "Title Case (e.g. The Process)" },
-        { "value": "uppercase", "label": "Uppercase (e.g. THE PROCESS)" },
-        { "value": "normal", "label": "As Entered" }
-      ],
-      "default": "titlecase"
-    },
-    {
-      "type": "range",
-      "id": "nav_text_size",
-      "label": "Menu Text Size",
-      "min": 70,
-      "max": 150,
-      "step": 5,
-      "unit": "%",
-      "default": 100
-    },
-    {
-      "type": "range",
-      "id": "nav_letter_spacing",
-      "label": "Menu Letter Spacing",
-      "min": 0,
-      "max": 30,
-      "step": 1,
-      "unit": "em",
-      "default": 6,
-      "info": "6 = 0.06em"
-    },
-    {
-      "type": "range",
-      "id": "nav_spacing",
-      "label": "Space Between Links",
-      "min": 14,
-      "max": 60,
-      "step": 2,
-      "unit": "px",
-      "default": 32
-    },
-    {
-      "type": "header",
-      "content": "Cart"
-    },
-    {
-      "type": "text",
-      "id": "cart_label",
-      "label": "Cart Label",
-      "default": "Cart"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cart_count",
-      "label": "Show Item Count",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "cart_font",
-      "label": "Cart Font Family",
-      "options": [
-        { "value": "sans", "label": "Modern Clean Sans" },
-        { "value": "serif", "label": "Luxury Serif" }
-      ],
-      "default": "sans"
-    },
-    {
-      "type": "range",
-      "id": "cart_text_size",
-      "label": "Cart Text Size",
-      "min": 70,
-      "max": 160,
-      "step": 5,
-      "unit": "%",
-      "default": 100
-    },
-    {
-      "type": "select",
-      "id": "cart_action",
-      "label": "Cart Click Action",
-      "options": [
-        { "value": "drawer", "label": "Open Prescription Drawer" },
-        { "value": "page", "label": "Go to Cart Page" }
-      ],
-      "default": "drawer"
-    },
-    {
-      "type": "header",
-      "content": "Header Layout & Colors"
-    },
-    {
-      "type": "checkbox",
-      "id": "overlay_hero",
-      "label": "Overlay Transparently on Hero Banner",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_sticky",
-      "label": "Sticky Header on Scroll",
-      "default": true
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#F4EBE1"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Hover / Accent Color",
-      "default": "#B69156"
-    },
-    {
-      "type": "color",
-      "id": "bg_color_scrolled",
-      "label": "Background Color (When Scrolled)",
-      "default": "#120E0A"
-    },
-    {
-      "type": "range",
-      "id": "bg_opacity_scrolled",
-      "label": "Background Opacity (When Scrolled)",
-      "min": 30,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 85
-    },
-    {
-      "type": "range",
-      "id": "header_padding_y",
-      "label": "Vertical Padding",
-      "min": 8,
-      "max": 36,
-      "step": 2,
-      "unit": "px",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "max_width",
-      "label": "Container Max Width",
-      "min": 1000,
-      "max": 1800,
-      "step": 50,
-      "unit": "px",
-      "default": 1400
-    }
+    { "type": "header", "content": "Logo" },
+    { "type": "image_picker", "id": "logo_image", "label": "Logo image", "info": "Optional. Replaces the text logo." },
+    { "type": "select", "id": "logo_layout", "label": "Logo layout", "options": [{ "value": "inline", "label": "One line" }, { "value": "stacked", "label": "Two lines" }], "default": "stacked" },
+    { "type": "text", "id": "logo_text", "label": "Logo text (one line)", "default": "PRESCRIBED JEWELS" },
+    { "type": "text", "id": "logo_text_main", "label": "Top line (two lines)", "default": "PRESCRIBED" },
+    { "type": "text", "id": "logo_text_sub", "label": "Bottom line (two lines)", "default": "JEWELS" },
+    { "type": "select", "id": "logo_font", "label": "Logo font", "options": [{ "value": "serif", "label": "Theme serif" }, { "value": "sans", "label": "Theme sans" }, { "value": "custom", "label": "Custom font (below)" }], "default": "serif" },
+    { "type": "range", "id": "logo_font_size", "label": "Logo size", "min": 60, "max": 200, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "logo_letter_spacing", "label": "Logo letter spacing", "min": 0, "max": 60, "step": 1, "default": 22 },
+    { "type": "range", "id": "logo_sub_letter_spacing", "label": "Bottom line letter spacing", "min": 0, "max": 80, "step": 1, "default": 44 },
+    { "type": "range", "id": "logo_sub_ratio", "label": "Bottom line size", "min": 20, "max": 100, "step": 2, "unit": "%", "default": 44 },
+
+    { "type": "header", "content": "Links" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "info": "Leave empty to use the link blocks below." },
+    { "type": "select", "id": "nav_font", "label": "Link font", "options": [{ "value": "serif", "label": "Theme serif" }, { "value": "sans", "label": "Theme sans" }, { "value": "custom", "label": "Custom font (below)" }], "default": "sans" },
+    { "type": "select", "id": "nav_case", "label": "Link letter case", "options": [{ "value": "titlecase", "label": "Capitalised" }, { "value": "uppercase", "label": "UPPERCASE" }, { "value": "normal", "label": "As typed" }], "default": "titlecase" },
+    { "type": "range", "id": "nav_text_size", "label": "Link size", "min": 70, "max": 200, "step": 5, "unit": "%", "default": 110 },
+    { "type": "range", "id": "nav_letter_spacing", "label": "Link letter spacing", "min": 0, "max": 40, "step": 1, "default": 6 },
+    { "type": "range", "id": "nav_spacing", "label": "Space between links", "min": 10, "max": 90, "step": 2, "unit": "px", "default": 34 },
+
+    { "type": "header", "content": "Cart" },
+    { "type": "text", "id": "cart_label", "label": "Cart label", "default": "Cart" },
+    { "type": "checkbox", "id": "show_cart_count", "label": "Show item count", "default": true },
+    { "type": "select", "id": "cart_font", "label": "Cart font", "options": [{ "value": "serif", "label": "Theme serif" }, { "value": "sans", "label": "Theme sans" }, { "value": "custom", "label": "Custom font (below)" }], "default": "sans" },
+    { "type": "range", "id": "cart_text_size", "label": "Cart size", "min": 70, "max": 200, "step": 5, "unit": "%", "default": 110 },
+    { "type": "select", "id": "cart_action", "label": "Cart opens", "options": [{ "value": "drawer", "label": "Drawer" }, { "value": "page", "label": "Cart page" }], "default": "page", "info": "The cart page is used until a cart drawer is added to the theme." },
+
+    { "type": "header", "content": "Custom font" },
+    { "type": "font_picker", "id": "custom_font", "label": "Custom font", "default": "jost_n4", "info": "Used by any element above set to Custom font." },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "text_color", "label": "Text on dark sections", "default": "#E9D2AF" },
+    { "type": "color", "id": "text_color_light", "label": "Text on light sections", "default": "#2B241C" },
+    { "type": "color", "id": "accent_color", "label": "Link hover colour", "default": "#B69156" },
+
+    { "type": "header", "content": "Behaviour and bar" },
+    { "type": "checkbox", "id": "overlay_hero", "label": "Sit over the top of the page", "default": true, "info": "The first section starts behind the bar." },
+    { "type": "checkbox", "id": "enable_sticky", "label": "Stay visible while scrolling", "default": true },
+    { "type": "color", "id": "bg_color_scrolled", "label": "Bar colour over dark sections", "default": "#120E0A" },
+    { "type": "color", "id": "bar_color_light", "label": "Bar colour over light sections", "default": "#F3ECE0" },
+    { "type": "range", "id": "bg_opacity_scrolled", "label": "Bar strength after scrolling", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 60, "info": "0% is fully transparent." },
+    { "type": "range", "id": "header_padding_y", "label": "Bar height padding", "min": 6, "max": 40, "step": 2, "unit": "px", "default": 18 },
+    { "type": "range", "id": "max_width", "label": "Content width", "min": 960, "max": 1920, "step": 20, "unit": "px", "default": 1400 }
   ],
   "blocks": [
     {
       "type": "link",
-      "name": "Menu Link",
+      "name": "Menu link",
       "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "The Process"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        }
+        { "type": "text", "id": "label", "label": "Label", "default": "Jewels" },
+        { "type": "url", "id": "link", "label": "Link" }
       ]
     }
   ],

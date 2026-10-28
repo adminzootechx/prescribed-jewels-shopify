@@ -580,40 +580,57 @@
       }
     };
 
-    // A curved arrow from the left edge of the highlighted stone to the photograph, then drawn in
+    // A curved arrow from the highlighted stone to the photograph, drawn after wheel settles
+    let arrowTimer = null;
     const placeArrow = (redraw) => {
       if (!arrowSvg || !arrowPath || !wheelHalo || !photoWrap || window.innerWidth < 960) return;
       const box = arrowSvg.getBoundingClientRect();
       const halo = wheelHalo.getBoundingClientRect();
       const photo = photoWrap.getBoundingClientRect();
-      // The line starts a fixed 3 mm (about 12 px) clear of the chosen stone's left edge, so it is longer or shorter with the stone's width
+      const compStyle = window.getComputedStyle(wheelSection || document.documentElement);
+      const arrowTargetX = parseFloat(compStyle.getPropertyValue('--pj-arrow-target-x')) || 0;
+      const arrowTargetY = parseFloat(compStyle.getPropertyValue('--pj-arrow-target-y')) || 0;
+      const arrowStartX = parseFloat(compStyle.getPropertyValue('--pj-arrow-start-x')) || 0;
+      const arrowStartY = parseFloat(compStyle.getPropertyValue('--pj-arrow-start-y')) || 0;
+
+      // The line starts right at the highlighted stone on the wheel
       const activeEntry = slotElements.find((entry) => entry.slot.classList.contains('is-active'));
-      const assembly = wheelHalo.parentElement.getBoundingClientRect();
-      const gemW = activeEntry ? activeEntry.inner.offsetWidth : 84;
-      const img = activeEntry ? activeEntry.img : null;
-      const aspect = img && img.naturalWidth && img.naturalHeight ? Math.min(1, img.naturalWidth / img.naturalHeight) : 1;
-      const wheelScale = assembly.width / 560;
-      const halfGem = (gemW * 1.3 * aspect * wheelScale) / 2;
-      const MIN_GAP = 12;
-      const DOT_R = 5;
-      const sx = assembly.left + (280 - RADIUS) * wheelScale - box.left - halfGem - MIN_GAP - DOT_R;
-      const sy = halo.top + halo.height / 2 - box.top;
-      // The head stops 14 px (the tip reaches about 11 px) short of the big stone's right edge, whatever its width
-      const nat = photoImg && photoImg.naturalWidth && photoImg.naturalHeight ? photoImg.naturalWidth / photoImg.naturalHeight : 1;
-      const seenHalf = (photo.width * 1.05 * Math.min(1, nat) * 0.97) / 2;
-      const ex = photo.left + photo.width / 2 - box.left + seenHalf + 14;
-      const ey = photo.top + photo.height / 2 - box.top;
-      const reach = Math.max(80, sx - ex);
-      const lift = Math.min(150, reach * 0.3);
-      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${(sx - reach * 0.38).toFixed(1)} ${(sy + lift).toFixed(1)}, ${(ex + reach * 0.34).toFixed(1)} ${(ey - lift).toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      let sx, sy;
+      if (activeEntry && activeEntry.inner) {
+        const gemRect = activeEntry.inner.getBoundingClientRect();
+        sx = gemRect.left + (gemRect.width * 0.15) - box.left + arrowStartX;
+        sy = gemRect.top + (gemRect.height * 0.5) - box.top + arrowStartY;
+      } else {
+        const assembly = wheelHalo.parentElement.getBoundingClientRect();
+        const wheelScale = assembly.width / 560;
+        sx = assembly.left + (280 - RADIUS) * wheelScale - box.left + arrowStartX;
+        sy = halo.top + halo.height / 2 - box.top + arrowStartY;
+      }
+
+      // The head points directly into the center-right of the big gemstone
+      const ex = photo.left + (photo.width * 0.80) - box.left + arrowTargetX;
+      const ey = photo.top + (photo.height * 0.50) - box.top + arrowTargetY;
+      const reach = Math.max(60, sx - ex);
+      const lift = Math.min(130, reach * 0.28);
+      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${(sx - reach * 0.45).toFixed(1)} ${(sy + lift).toFixed(1)}, ${(ex + reach * 0.35).toFixed(1)} ${(ey - lift * 0.4).toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
       arrowPath.setAttribute('d', d);
       arrowDot.setAttribute('cx', sx.toFixed(1));
       arrowDot.setAttribute('cy', sy.toFixed(1));
+
       if (redraw) {
         arrowPath.style.transition = 'none';
         arrowPath.style.strokeDashoffset = '1';
+        arrowPath.style.opacity = '0';
+        arrowDot.style.opacity = '0';
         void arrowPath.getBoundingClientRect();
-        arrowPath.style.transition = 'stroke-dashoffset 0.9s cubic-bezier(0.2, 0.7, 0.1, 1)';
+        arrowPath.style.opacity = '1';
+        arrowDot.style.opacity = '1';
+        arrowPath.style.transition = 'stroke-dashoffset 0.75s cubic-bezier(0.2, 0.7, 0.1, 1), opacity 0.3s ease';
+        arrowDot.style.transition = 'opacity 0.3s ease';
+        arrowPath.style.strokeDashoffset = '0';
+      } else {
+        arrowPath.style.opacity = '1';
+        arrowDot.style.opacity = '1';
         arrowPath.style.strokeDashoffset = '0';
       }
     };
@@ -641,7 +658,6 @@
         if (noteUses) noteUses.textContent = notes[1];
         if (noteWear) noteWear.textContent = notes[2];
         showStone(activeStoneIndex);
-        placeArrow(true);
         if (wheelBar) wheelBar.style.transform = `scaleX(${((activeStoneIndex + 1) / GEMSTONES.length).toFixed(3)})`;
         infoBox?.classList.remove('is-fading');
       };
@@ -655,6 +671,13 @@
 
     const renderWheelState = (animate = true) => {
       const activeSlot = ((wheelStep % NUM_SLOTS) + NUM_SLOTS) % NUM_SLOTS;
+      if (animate && arrowPath && arrowDot) {
+        // While wheel is in motion, hide arrow so it does not connect prematurely
+        arrowPath.style.transition = 'none';
+        arrowPath.style.opacity = '0';
+        arrowPath.style.strokeDashoffset = '1';
+        arrowDot.style.opacity = '0';
+      }
       wheelRotor.style.transform = `rotate(${-wheelStep * 45}deg)`;
       if (wheelFrameSpin) wheelFrameSpin.style.transform = `rotate(${-wheelStep * 45}deg)`;
       // Counter-turn each stone by the wheel's rotation so it always reads upright
@@ -669,6 +692,16 @@
       });
 
       updateInfo(animate);
+
+      clearTimeout(arrowTimer);
+      if (animate) {
+        // When the wheel finishes its rotation and stops (820ms) and the gem pops up, start arrow pointing!
+        arrowTimer = setTimeout(() => {
+          placeArrow(true);
+        }, 820);
+      } else {
+        placeArrow(false);
+      }
     };
 
     const advance = () => {
