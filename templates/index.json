@@ -29,8 +29,32 @@
         "cta_label": "EXPLORE DESIGNS",
         "cta_link": "",
         "mantra": "YOUR BIRTHPLACE. YOUR TIME. YOUR GEMSTONE. YOUR STORY.",
-        "text_color": "#F0E4C8",
+        "text_color": "#f0e4c8",
         "height": 100
+      }
+    },
+    "personal_by_design": {
+      "type": "personal-by-design",
+      "settings": {
+        "heading": "PERSONAL BY DESIGN",
+        "heading_size": 100,
+        "body_text": "In Vedic astrology, your birth chart is a map of your inner world — your strengths, challenges and potential. We translate this into fine jewelry, thoughtfully designed and set with gemstones that support your unique energy. Pieces that are personal, meaningful and made for your everyday life.",
+        "body_size": 100,
+        "show_tagline": true,
+        "tagline": "ANCIENT\nWISDOM\nMODERN\nJEWELRY",
+        "show_emblem": false,
+        "emblem_color": "#8b7d6b",
+        "emblem_size": 130,
+        "bg_color": "#f4eee5",
+        "text_color": "#1e1b18",
+        "body_color": "#574f44",
+        "accent_color": "#8b7d6b",
+        "border_color": "#1a18151f",
+        "border_top": true,
+        "border_bottom": true,
+        "max_width": 1200,
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     },
     "designs_showcase": {
@@ -109,8 +133,12 @@
         "design6",
         "design7"
       ],
+      "disabled": true,
       "custom_css": [],
       "settings": {
+        "veil": 35,
+        "veil_color": "#14100c",
+        "text_color": "#f4ebe1",
         "eyebrow": "THE COLLECTION",
         "heading": "SEVEN DESIGNS,\nONE MEANING",
         "heading_size": 100
@@ -451,30 +479,6 @@
         "font_body": "jost_n3",
         "heading_size": 100,
         "body_size": 100
-      }
-    },
-    "personal_by_design": {
-      "type": "personal-by-design",
-      "settings": {
-        "heading": "PERSONAL BY DESIGN",
-        "heading_size": 100,
-        "body_text": "In Vedic astrology, your birth chart is a map of your inner world — your strengths, challenges and potential. We translate this into fine jewelry, thoughtfully designed and set with gemstones that support your unique energy. Pieces that are personal, meaningful and made for your everyday life.",
-        "body_size": 100,
-        "show_tagline": true,
-        "tagline": "ANCIENT\nWISDOM\nMODERN\nJEWELRY",
-        "show_emblem": true,
-        "emblem_color": "#8B7D6B",
-        "emblem_size": 130,
-        "bg_color": "#F4EEE5",
-        "text_color": "#1E1B18",
-        "body_color": "#574F44",
-        "accent_color": "#8B7D6B",
-        "border_color": "rgba(26, 24, 21, 0.12)",
-        "border_top": true,
-        "border_bottom": true,
-        "max_width": 1200,
-        "padding_top": 56,
-        "padding_bottom": 56
       }
     }
   },
