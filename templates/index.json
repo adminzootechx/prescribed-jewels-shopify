@@ -480,11 +480,67 @@
         "heading_size": 100,
         "body_size": 100
       }
+    },
+    "process_steps": {
+      "type": "process-steps",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "step_number": "01",
+            "title": "CHOOSE A DESIGN",
+            "description": "Select from our eight signature designs or create a custom piece."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "step_number": "02",
+            "title": "SHARE YOUR BIRTH DETAILS",
+            "description": "Provide your birth date, exact time and place of birth so we can create your personal gemstone prescription."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "step_number": "03",
+            "title": "YOUR PRESCRIPTION",
+            "description": "Our Vedic astrology process identifies the gemstones that best support your unique energy."
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "step_number": "04",
+            "title": "CRAFTED FOR YOU",
+            "description": "Your jewelry is thoughtfully crafted in fine materials, with gemstones prescribed just for you."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "settings": {
+        "eyebrow": "THE PROCESS",
+        "heading": "A PIECE THAT'S TRULY YOURS",
+        "heading_size": 100,
+        "veil": 45,
+        "veil_color": "#120e0a",
+        "text_color": "#f4ebe1",
+        "accent_color": "#b69156",
+        "desc_color": "#c8bfb2",
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
     }
   },
   "order": [
     "hero",
     "personal_by_design",
+    "process_steps",
     "designs_showcase",
     "about_story",
     "prescription_process",

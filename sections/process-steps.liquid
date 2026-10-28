@@ -1,0 +1,144 @@
+{%- assign s = section.settings -%}
+
+<section
+  id="pj-process-steps-{{ section.id }}"
+  class="pj-process-steps"
+  aria-labelledby="pj-process-steps-heading-{{ section.id }}"
+  style="
+    --pj-ps-veil: {{ s.veil | default: 45 }}%;
+    --pj-ps-veil-color: {{ s.veil_color | default: '#120E0A' }};
+    --pj-ps-text: {{ s.text_color | default: '#F4EBE1' }};
+    --pj-ps-accent: {{ s.accent_color | default: '#B69156' }};
+    --pj-ps-desc: {{ s.desc_color | default: '#C8BFB2' }};
+    --pj-ps-pt: {{ s.padding_top | default: 72 }}px;
+    --pj-ps-pb: {{ s.padding_bottom | default: 72 }}px;
+    --pj-ps-hs: {{ s.heading_size | default: 100 | divided_by: 100.0 }};
+  "
+>
+  <div class="pj-process-steps__bg" aria-hidden="true">
+    {%- if s.bg_image != blank -%}
+      {{ s.bg_image | image_url: width: 2400 | image_tag: class: 'pj-process-steps__bg-img', widths: '800, 1400, 2000, 2400', sizes: '100vw', alt: '', loading: 'lazy' }}
+    {%- else -%}
+      <img src="{{ 'collection-stone-bg.png' | asset_url }}" alt="" class="pj-process-steps__bg-img" width="1920" height="1080" loading="lazy">
+    {%- endif -%}
+  </div>
+
+  <div class="pj-container pj-process-steps__container">
+    {%- if s.eyebrow != blank or s.heading != blank -%}
+      <div class="pj-process-steps__header">
+        {%- if s.eyebrow != blank -%}
+          <p class="pj-eyebrow pj-process-steps__eyebrow">{{ s.eyebrow }}</p>
+        {%- endif -%}
+        {%- if s.heading != blank -%}
+          <h2 id="pj-process-steps-heading-{{ section.id }}" class="pj-process-steps__title">
+            {{ s.heading | escape }}
+          </h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="pj-process-steps__grid">
+      {%- assign fallback_imgs = 'process-step-1.png,process-step-2.png,process-step-3.png,process-step-4.png' | split: ',' -%}
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <article class="pj-process-step" {{ block.shopify_attributes }}>
+          <div class="pj-process-step__head">
+            <span class="pj-process-step__num">{{ b.step_number | default: forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            <h3 class="pj-process-step__name">{{ b.title }}</h3>
+          </div>
+
+          <div class="pj-process-step__media">
+            {%- if b.image != blank -%}
+              {{ b.image | image_url: width: 600 | image_tag: class: 'pj-process-step__img', widths: '300, 450, 600', sizes: '(min-width: 900px) 22vw, 85vw', alt: b.title, loading: 'lazy' }}
+            {%- else -%}
+              {%- assign fallback_img = fallback_imgs[forloop.index0] | default: fallback_imgs[0] -%}
+              <img src="{{ fallback_img | asset_url }}" alt="{{ b.title | escape }}" class="pj-process-step__img" width="382" height="266" loading="lazy">
+            {%- endif -%}
+          </div>
+
+          {%- if b.description != blank -%}
+            <p class="pj-process-step__desc">{{ b.description }}</p>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Process Steps Grid",
+  "tag": "section",
+  "class": "pj-section-process-steps",
+  "settings": [
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE PROCESS" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "A PIECE THAT'S TRULY YOURS" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 70, "max": 140, "step": 5, "unit": "%", "default": 100 },
+    { "type": "header", "content": "Background & Overlay" },
+    { "type": "image_picker", "id": "bg_image", "label": "Background Image", "info": "Leave blank to use the textured dark stone background." },
+    { "type": "range", "id": "veil", "label": "Overlay strength", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 45 },
+    { "type": "color", "id": "veil_color", "label": "Overlay tint", "default": "#120E0A" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "text_color", "label": "Heading & step title", "default": "#F4EBE1" },
+    { "type": "color", "id": "accent_color", "label": "Eyebrow & step numbers", "default": "#B69156" },
+    { "type": "color", "id": "desc_color", "label": "Description text", "default": "#C8BFB2" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 20, "max": 140, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 20, "max": 140, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "step_number", "label": "Step number", "default": "01" },
+        { "type": "text", "id": "title", "label": "Title", "default": "CHOOSE A DESIGN" },
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "Landscape rectangular photo." },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Select from our eight signature designs or create a custom piece." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Process Steps Grid",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "step_number": "01",
+            "title": "CHOOSE A DESIGN",
+            "description": "Select from our eight signature designs or create a custom piece."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_number": "02",
+            "title": "SHARE YOUR BIRTH DETAILS",
+            "description": "Provide your birth date, exact time and place of birth so we can create your personal gemstone prescription."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_number": "03",
+            "title": "YOUR PRESCRIPTION",
+            "description": "Our Vedic astrology process identifies the gemstones that best support your unique energy."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "step_number": "04",
+            "title": "CRAFTED FOR YOU",
+            "description": "Your jewelry is thoughtfully crafted in fine materials, with gemstones prescribed just for you."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
