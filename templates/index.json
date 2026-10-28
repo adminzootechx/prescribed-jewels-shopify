@@ -562,6 +562,7 @@
       "settings": {
         "height": 90,
         "wheel_size": 100,
+        "bg_image": "shopify://shop_images/73437e2c-0127-4dac-ba62-678b9b8bd98d.png",
         "veil": 25,
         "veil_color": "#120e0a",
         "glow_color": "#d9a25a",
@@ -591,7 +592,7 @@
         "focus_x": 50,
         "focus_y": 50,
         "veil_color": "#2a1c10",
-        "veil": 20,
+        "veil": 45,
         "align": "center",
         "min_height": 640,
         "card_color": "",
