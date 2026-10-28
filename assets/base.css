@@ -2084,8 +2084,8 @@ textarea {
 .pj-process-steps {
   position: relative;
   isolation: isolate;
-  background-color: var(--pj-bg-primary);
-  color: var(--pj-ps-text, #F4EBE1);
+  background-color: var(--pj-ps-bg, #120E0A);
+  color: var(--pj-ps-heading-color, #F4EBE1);
   padding-top: var(--pj-ps-pt, 72px);
   padding-bottom: var(--pj-ps-pb, 72px);
   overflow: hidden;
@@ -2116,25 +2116,25 @@ textarea {
   background:
     radial-gradient(ellipse at center, rgba(14, 11, 9, 0.25) 0%, rgba(10, 8, 6, 0.65) 100%),
     linear-gradient(to bottom, rgba(12, 10, 8, 0.55) 0%, transparent 20%, transparent 80%, rgba(12, 10, 8, 0.65) 100%),
-    color-mix(in srgb, var(--pj-ps-veil-color, #120E0A) var(--pj-ps-veil, 45%), transparent);
+    color-mix(in srgb, var(--pj-ps-veil-color, #120E0A) var(--pj-ps-veil, 60%), transparent);
 }
 
 .pj-process-steps__container {
   position: relative;
   z-index: 1;
-  max-width: 1240px;
+  max-width: var(--pj-ps-max-w, 1240px);
 }
 
 .pj-process-steps__header {
-  text-align: center;
+  text-align: var(--pj-ps-header-align, center);
   margin-bottom: clamp(2rem, 4.5vw, 3.25rem);
 }
 
 .pj-process-steps__eyebrow {
   margin-bottom: 0.45rem;
-  color: var(--pj-ps-accent, #B69156);
+  color: var(--pj-ps-eyebrow-color, #B69156);
   letter-spacing: 0.26em;
-  font-size: 0.68rem;
+  font-size: calc(0.68rem * var(--pj-ps-eyebrow-size, 1));
   font-weight: 500;
   text-transform: uppercase;
 }
@@ -2142,18 +2142,18 @@ textarea {
 .pj-process-steps__title {
   margin: 0;
   font-family: var(--pj-font-serif);
-  font-size: calc(clamp(1.5rem, 2.6vw, 2.15rem) * var(--pj-ps-hs, 1));
+  font-size: calc(clamp(1.5rem, 2.6vw, 2.15rem) * var(--pj-ps-hs, 1.15));
   font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   line-height: 1.15;
-  color: var(--pj-ps-text, #F4EBE1);
+  color: var(--pj-ps-heading-color, #F4EBE1);
 }
 
 .pj-process-steps__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(1.25rem, 2.4vw, 2rem);
+  gap: var(--pj-ps-gap, clamp(1.25rem, 2.4vw, 2rem));
   align-items: stretch;
 }
 
@@ -2161,6 +2161,9 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+  background: var(--pj-ps-card-bg, transparent);
+  padding: var(--pj-ps-card-pad, 0);
+  border-radius: var(--pj-ps-img-radius, 0);
 }
 
 .pj-process-step__head {
@@ -2174,29 +2177,30 @@ textarea {
 
 .pj-process-step__num {
   font-family: var(--pj-font-sans);
-  font-size: 0.65rem;
+  font-size: calc(0.65rem * var(--pj-ps-step-num-size, 1));
   letter-spacing: 0.2em;
-  color: var(--pj-ps-accent, #B69156);
+  color: var(--pj-ps-step-num-color, #B69156);
   font-weight: 500;
 }
 
 .pj-process-step__name {
   margin: 0;
   font-family: var(--pj-font-sans);
-  font-size: 0.74rem;
+  font-size: calc(0.74rem * var(--pj-ps-step-title-size, 1));
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--pj-ps-text, #F4EBE1);
+  color: var(--pj-ps-step-title-color, #F4EBE1);
   line-height: 1.25;
 }
 
 .pj-process-step__media {
   width: 100%;
-  aspect-ratio: 191 / 133;
+  aspect-ratio: var(--pj-ps-img-ratio, 191 / 133);
   overflow: hidden;
   background: #1A1612;
-  border: 1px solid rgba(244, 235, 225, 0.12);
+  border-radius: var(--pj-ps-img-radius, 0);
+  border: 1px solid var(--pj-ps-img-border, rgba(244, 235, 225, 0.12));
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
   transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
@@ -2223,11 +2227,27 @@ textarea {
 .pj-process-step__desc {
   margin: 0;
   font-family: var(--pj-font-sans);
-  font-size: clamp(0.78rem, 0.95vw, 0.86rem);
+  font-size: calc(clamp(0.78rem, 0.95vw, 0.86rem) * var(--pj-ps-step-desc-size, 1));
   line-height: 1.55;
-  color: var(--pj-ps-desc, #C8BFB2);
-  text-align: left;
+  color: var(--pj-ps-step-desc-color, #C8BFB2);
+  text-align: var(--pj-ps-step-desc-align, left);
   font-weight: 350;
+}
+
+.pj-process-step__link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--pj-font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pj-ps-step-num-color, #B69156);
+  margin-top: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.pj-process-step__link:hover {
+  color: var(--pj-ps-step-title-color, #F4EBE1);
 }
 
 @media (max-width: 960px) {
