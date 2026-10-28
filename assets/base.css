@@ -1919,3 +1919,160 @@ textarea {
   justify-content: center;
   gap: 0.85rem;
 }
+
+/* ==========================================================================
+   PHILOSOPHY BANNER (PERSONAL BY DESIGN)
+   ========================================================================== */
+
+.pj-philosophy {
+  position: relative;
+  background-color: var(--pj-phi-bg, #F4EEE5);
+  color: var(--pj-phi-text, #1E1B18);
+  padding-top: var(--pj-phi-pt, 56px);
+  padding-bottom: var(--pj-phi-pb, 56px);
+  overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pj-philosophy--border-top {
+  border-top: 1px solid var(--pj-phi-border, rgba(26, 24, 21, 0.12));
+}
+
+.pj-philosophy--border-bottom {
+  border-bottom: 1px solid var(--pj-phi-border, rgba(26, 24, 21, 0.12));
+}
+
+.pj-philosophy__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.pj-philosophy__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pj-philosophy__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--pj-phi-max-w, 1200px);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(1.75rem, 4.5vw, 4.5rem);
+}
+
+/* Left vertical tagline */
+.pj-philosophy__tagline {
+  display: flex;
+  align-items: stretch;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.pj-philosophy__tagline-bar {
+  width: 1px;
+  background-color: var(--pj-phi-accent, #8B7D6B);
+  opacity: 0.55;
+  align-self: stretch;
+}
+
+.pj-philosophy__tagline-words {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.3rem;
+}
+
+.pj-philosophy__tagline-word {
+  font-family: var(--pj-font-sans);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--pj-phi-accent, #8B7D6B);
+  line-height: 1.35;
+}
+
+/* Center content */
+.pj-philosophy__center {
+  max-width: 680px;
+}
+
+.pj-philosophy__heading {
+  margin: 0 0 0.85rem;
+  font-family: var(--pj-font-serif);
+  font-size: calc(clamp(1.35rem, 2.3vw, 1.85rem) * var(--pj-phi-heading-size, 1));
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.18;
+  color: var(--pj-phi-text, #1E1B18);
+}
+
+.pj-philosophy__body {
+  font-family: var(--pj-font-sans);
+  font-size: calc(clamp(0.84rem, 1.05vw, 0.94rem) * var(--pj-phi-body-size, 1));
+  line-height: 1.68;
+  color: var(--pj-phi-body, #574F44);
+  font-weight: 350;
+}
+
+.pj-philosophy__body p {
+  margin: 0;
+}
+
+/* Right celestial emblem */
+.pj-philosophy__emblem {
+  width: var(--pj-phi-emblem-size, 130px);
+  height: var(--pj-phi-emblem-size, 130px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pj-celestial-emblem {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pj-celestial-emblem__svg,
+.pj-philosophy__emblem-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* Responsive breakpoint */
+@media (max-width: 860px) {
+  .pj-philosophy__inner {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    text-align: left;
+  }
+
+  .pj-philosophy__emblem {
+    margin: 0.5rem auto 0;
+    order: 3;
+    width: clamp(100px, 30vw, 130px);
+    height: clamp(100px, 30vw, 130px);
+  }
+
+  .pj-philosophy__tagline {
+    order: 1;
+  }
+
+  .pj-philosophy__center {
+    order: 2;
+  }
+}
