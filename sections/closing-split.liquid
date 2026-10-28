@@ -7,7 +7,7 @@
 <section
   class="pj-split{% if s.image_side == 'right' %} pj-split--image-right{% endif %}"
   aria-label="{{ s.statement | strip_newlines | escape }}"
-  style="--pj-split-image: {{ s.image_width }}%; --pj-split-min: {{ s.min_height }}px; --pj-split-focus: {{ s.focus_x }}% {{ s.focus_y }}%;"
+  style="--pj-split-image: {{ s.image_width }}%; --pj-split-min: {{ s.min_height }}px; --pj-split-focus: {{ s.focus_x }}% {{ s.focus_y }}%;{% if s.section_height > 0 %} --pj-split-h: {{ s.section_height }}vh; min-height: {{ s.section_height }}vh;{% endif %}"
 >
   <div class="pj-split__media">
     {%- if s.image != blank -%}
@@ -49,7 +49,8 @@
     { "type": "text", "id": "button_label", "label": "Link text", "default": "Begin your prescription" },
     { "type": "url", "id": "button_link", "label": "Link", "info": "Leave empty to open the prescription form." },
 
-    { "type": "header", "content": "Layout" },
+    { "type": "header", "content": "Layout & Screen Fit" },
+    { "type": "range", "id": "section_height", "label": "Section Min Height (Screen Fit)", "min": 0, "max": 100, "step": 5, "unit": "vh", "default": 0, "info": "0 = Auto fit content. 100 = 100vh full screen fit." },
     { "type": "select", "id": "image_side", "label": "Photo position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
     { "type": "range", "id": "image_width", "label": "Photo width", "min": 30, "max": 70, "step": 5, "unit": "%", "default": 50 },
     { "type": "range", "id": "min_height", "label": "Minimum height", "min": 320, "max": 900, "step": 20, "unit": "px", "default": 560 },

@@ -8,7 +8,7 @@
   id="pj-about"
   class="pj-about{% if s.image_side == 'right' %} pj-about--image-right{% endif %}{% unless s.fade_image %} pj-about--hard-edge{% endunless %}"
   aria-labelledby="pj-about-heading"
-  style="--pj-about-image: {{ s.image_width }}%; --pj-about-pad: {{ s.padding }}px;"
+  style="--pj-about-image: {{ s.image_width }}%; --pj-about-pad: {{ s.padding }}px;{% if s.section_height > 0 %} --pj-about-h: {{ s.section_height }}vh; min-height: {{ s.section_height }}vh;{% endif %}"
 >
   <div class="pj-about__media">
     {%- if s.image != blank -%}
@@ -46,7 +46,8 @@
     { "type": "textarea", "id": "heading", "label": "Heading", "default": "Our Story" },
     { "type": "textarea", "id": "body", "label": "Text", "info": "Leave a blank line between paragraphs.", "default": "Prescribed Jewels was born from a belief in the meaning and energy of gemstones.\n\nWe curate authentic, high-quality stones rooted in traditional wisdom and present them with a modern, wearable approach — helping you find a gemstone that truly aligns with you." },
 
-    { "type": "header", "content": "Layout" },
+    { "type": "header", "content": "Layout & Screen Fit" },
+    { "type": "range", "id": "section_height", "label": "Section Min Height (Screen Fit)", "min": 0, "max": 100, "step": 5, "unit": "vh", "default": 0, "info": "0 = Auto fit content. 100 = 100vh full screen fit." },
     { "type": "select", "id": "image_side", "label": "Image position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
     { "type": "range", "id": "image_width", "label": "Image width", "min": 30, "max": 70, "step": 5, "unit": "%", "default": 50 },
     { "type": "checkbox", "id": "fade_image", "label": "Fade the image into the background", "default": true },

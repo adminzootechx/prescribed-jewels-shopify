@@ -1,5 +1,5 @@
 {% render 'pj-section-style', section: section %}
-<section id="pj-gemstones" class="pj-gemstones-wheel-outer" aria-labelledby="pj-gemstones-heading" data-gem-wheel-section style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }}; --pj-w-veil: {{ section.settings.veil }}%; --pj-w-veil-color: {{ section.settings.veil_color }}; --pj-w-text: {{ section.settings.text_color }}; --pj-w-muted: {{ section.settings.muted_color }}; --pj-w-bg: {{ section.settings.veil_color }}; --pj-w-ns: {{ section.settings.notes_size | divided_by: 100.0 }}; --pj-w-nts: {{ section.settings.note_title_size | divided_by: 100.0 }}; --pj-w-ps: {{ section.settings.planet_size | divided_by: 100.0 }}; --pj-w-minh: {{ section.settings.height | divided_by: 100.0 }}; --pj-w-wscale: {{ section.settings.wheel_size | divided_by: 100.0 }}; --pj-w-glow: {{ section.settings.glow_color }}; --pj-w-glow-a: {{ section.settings.glow_strength }}%;{% unless section.settings.use_stone_color %} --gem-c: {{ section.settings.accent_color }};{% endunless %}"{% unless section.settings.use_stone_color %} data-fixed-accent{% endunless %}>
+<section id="pj-gemstones" class="pj-gemstones-wheel-outer" aria-labelledby="pj-gemstones-heading" data-gem-wheel-section style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }}; --pj-w-veil: {{ section.settings.veil }}%; --pj-w-veil-color: {{ section.settings.veil_color }}; --pj-w-text: {{ section.settings.text_color }}; --pj-w-muted: {{ section.settings.muted_color }}; --pj-w-bg: {{ section.settings.veil_color }}; --pj-w-ns: {{ section.settings.notes_size | divided_by: 100.0 }}; --pj-w-nts: {{ section.settings.note_title_size | divided_by: 100.0 }}; --pj-w-ps: {{ section.settings.planet_size | divided_by: 100.0 }}; --pj-w-minh: {{ section.settings.height | divided_by: 100.0 }}; --pj-w-wscale: {{ section.settings.wheel_size | divided_by: 100.0 }}; --pj-w-mobile-scale: {{ section.settings.mobile_wheel_size | default: 85 | divided_by: 100.0 }}; --pj-w-pt: {{ section.settings.padding_top | default: 20 }}px; --pj-w-pb: {{ section.settings.padding_bottom | default: 20 }}px; --pj-w-glow: {{ section.settings.glow_color }}; --pj-w-glow-a: {{ section.settings.glow_strength }}%;{% unless section.settings.use_stone_color %} --gem-c: {{ section.settings.accent_color }};{% endunless %}"{% unless section.settings.use_stone_color %} data-fixed-accent{% endunless %}>
   <div class="pj-gemstones-wheel-section">
     <div class="pj-wheel-bg" aria-hidden="true">
       {%- if section.settings.bg_image != blank -%}
@@ -124,9 +124,12 @@
   "tag": "section",
   "class": "pj-section-gemstones",
   "settings": [
-    { "type": "header", "content": "Section size" },
+    { "type": "header", "content": "Section Size & Screen Fit" },
     { "type": "range", "id": "height", "label": "Section height", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100, "info": "100% fills one screen. Raise it for more room, lower it for a shorter section." },
-    { "type": "range", "id": "wheel_size", "label": "Wheel size", "min": 60, "max": 130, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "wheel_size", "label": "Wheel size (Desktop)", "min": 60, "max": 130, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "mobile_wheel_size", "label": "Wheel size (Mobile/Tablet)", "min": 50, "max": 120, "step": 5, "unit": "%", "default": 85 },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 20 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 20 },
 
     { "type": "header", "content": "Background" },
     { "type": "image_picker", "id": "bg_image", "label": "Background image", "info": "Leave blank to use the built-in dark satin photograph." },

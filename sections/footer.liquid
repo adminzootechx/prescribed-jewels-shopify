@@ -1,4 +1,4 @@
-<footer class="pj-footer" role="contentinfo">
+<footer class="pj-footer" role="contentinfo" style="--pj-ftr-pt: {{ section.settings.padding_top | default: 28 }}px; --pj-ftr-pb: {{ section.settings.padding_bottom | default: 28 }}px; padding-top: var(--pj-ftr-pt); padding-bottom: var(--pj-ftr-pb);">
   <div class="pj-container pj-footer__bar">
     <a href="{{ routes.root_url }}" class="pj-footer__logo" aria-label="{{ shop.name | default: 'Prescribed Jewels' }}">
       {% render 'pj-monogram', variant: 'wordmark' %}
@@ -41,7 +41,10 @@
   "name": "Footer",
   "class": "pj-section-footer",
   "settings": [
-    { "type": "text", "id": "inquire_label", "label": "Inquire button label", "default": "Inquire" }
+    { "type": "text", "id": "inquire_label", "label": "Inquire button label", "default": "Inquire" },
+    { "type": "header", "content": "Layout & Padding" },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 10, "max": 100, "step": 2, "unit": "px", "default": 28 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 10, "max": 100, "step": 2, "unit": "px", "default": 28 }
   ],
   "blocks": [
     {

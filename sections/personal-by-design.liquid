@@ -16,6 +16,8 @@
     --pj-phi-heading-size: {{ s.heading_size | default: 100 | divided_by: 100.0 }};
     --pj-phi-body-size: {{ s.body_size | default: 100 | divided_by: 100.0 }};
     --pj-phi-emblem-size: {{ s.emblem_size | default: 130 }}px;
+    {% if s.section_height > 0 %} --pj-phi-min-h: {{ s.section_height }}vh;{% endif %}
+    --pj-phi-scale: {{ s.section_scale | default: 100 | divided_by: 100.0 }};
   "
 >
   {%- if s.bg_image != blank -%}
@@ -208,7 +210,29 @@
     },
     {
       "type": "header",
-      "content": "Layout & Spacing"
+      "content": "Layout, Spacing & Screen Fit"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Min Height (Screen Fit)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 0,
+      "info": "0 = Auto fit content. 100 = 100vh full screen fit."
+    },
+    {
+      "type": "range",
+      "id": "section_scale",
+      "label": "Section Overall Scale (%)",
+      "min": 70,
+      "max": 140,
+      "step": 5,
+      "unit": "%",
+      "default": 100,
+      "info": "Scale elements up or down proportionally"
     },
     {
       "type": "range",
@@ -224,8 +248,8 @@
       "type": "range",
       "id": "padding_top",
       "label": "Padding top",
-      "min": 20,
-      "max": 120,
+      "min": 10,
+      "max": 180,
       "step": 4,
       "unit": "px",
       "default": 56
@@ -234,8 +258,8 @@
       "type": "range",
       "id": "padding_bottom",
       "label": "Padding bottom",
-      "min": 20,
-      "max": 120,
+      "min": 10,
+      "max": 180,
       "step": 4,
       "unit": "px",
       "default": 56

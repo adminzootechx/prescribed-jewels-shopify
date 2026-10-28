@@ -7,6 +7,9 @@
   data-interval="{{ s.slide_seconds | times: 1000 }}"
   style="
     --pj-hero-h: {{ s.height }}vh;
+    --pj-hero-mobile-h: {{ s.mobile_height | default: s.height | default: 100 }}vh;
+    --pj-sec-pt: {{ s.padding_top | default: 0 }}px;
+    --pj-sec-pb: {{ s.padding_bottom | default: 0 }}px;
     --pj-hs-sec: {{ s.title_size | divided_by: 100.0 }};
     --pj-veil: {{ s.veil | divided_by: 100.0 }};
     --pj-hero-content-x: {{ s.content_offset_x | default: 80 }}px;
@@ -93,8 +96,11 @@
     { "type": "range", "id": "eyebrow_size", "label": "Eyebrow Text Size", "min": 70, "max": 160, "step": 5, "unit": "%", "default": 100 },
     { "type": "range", "id": "lead_size", "label": "Subtext Size", "min": 70, "max": 160, "step": 5, "unit": "%", "default": 100 },
     { "type": "range", "id": "mantra_size", "label": "Mantra Line Size", "min": 70, "max": 160, "step": 5, "unit": "%", "default": 100 },
-    { "type": "header", "content": "Layout" },
-    { "type": "range", "id": "height", "label": "Height", "min": 50, "max": 100, "step": 5, "unit": "vh", "default": 100 }
+    { "type": "header", "content": "Layout & Screen Fit" },
+    { "type": "range", "id": "height", "label": "Height (Desktop/Laptop)", "min": 50, "max": 100, "step": 5, "unit": "vh", "default": 100, "info": "100vh = full screen fit" },
+    { "type": "range", "id": "mobile_height", "label": "Height (Mobile/Tablet)", "min": 50, "max": 100, "step": 5, "unit": "vh", "default": 100 },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 }
   ],
   "presets": [ { "name": "1. Hero Banner" } ]
 }

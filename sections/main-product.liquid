@@ -1,4 +1,17 @@
-<section class="pj-product pj-section" aria-labelledby="pj-product-title">
+{%- assign s = section.settings -%}
+<section
+  class="pj-product"
+  aria-labelledby="pj-product-title"
+  style="
+    --pj-prod-pt: {{ s.padding_top | default: 64 }}px;
+    --pj-prod-pb: {{ s.padding_bottom | default: 64 }}px;
+    --pj-prod-h: {{ s.section_height | default: 0 }};
+    --pj-prod-max-w: {{ s.max_width | default: 1200 }}px;
+    --pj-prod-ratio: {{ s.image_aspect_ratio | default: '1 / 1' }};
+    {% if s.bg_color != blank %} --pj-prod-bg: {{ s.bg_color }};{% endif %}
+    {% if s.text_color != blank %} --pj-prod-text: {{ s.text_color }};{% endif %}
+  "
+>
   <div class="pj-container pj-product__grid">
     <div class="pj-product__media">
       {% if product.featured_image %}
@@ -137,6 +150,77 @@
   "name": "Product — Natal Order",
   "tag": "section",
   "class": "pj-section-product",
-  "settings": []
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout, Spacing & Screen Fit"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Min Height (Screen Fit)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 0,
+      "info": "0 = Auto fit content. 100 = 100vh full screen fit."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 10,
+      "max": 180,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 10,
+      "max": 180,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Container Max Width",
+      "min": 900,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Product Photo Ratio",
+      "default": "1 / 1",
+      "options": [
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 5", "label": "Portrait (4:5)" },
+        { "value": "3 / 4", "label": "Classic (3:4)" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    }
+  ]
 }
 {% endschema %}

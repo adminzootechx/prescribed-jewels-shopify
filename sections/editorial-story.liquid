@@ -5,7 +5,7 @@
   id="pj-story"
   class="pj-story pj-section pj-story--{{ s.align }}{% if s.show_card %} pj-story--has-card{% endif %}"
   aria-labelledby="pj-story-heading"
-  style="--pj-hs-sec: {{ s.heading_size | divided_by: 100.0 }}; --pj-story-veil: {{ s.veil }}%; --pj-story-veil-color: {{ s.veil_color | default: '#2A1C10' }}; --pj-story-min: {{ s.min_height }}px; --pj-story-focus: {{ s.focus_x }}% {{ s.focus_y }}%;{% if s.card_color != blank %} --pj-story-card-bg: {{ s.card_color }};{% endif %}"
+  style="--pj-hs-sec: {{ s.heading_size | divided_by: 100.0 }}; --pj-story-veil: {{ s.veil }}%; --pj-story-veil-color: {{ s.veil_color | default: '#2A1C10' }}; --pj-story-min: {{ s.min_height }}px; {% if s.section_height > 0 %}--pj-story-h: {{ s.section_height }}vh; {% endif %}--pj-story-pt: {{ s.padding_top | default: 64 }}px; --pj-story-pb: {{ s.padding_bottom | default: 64 }}px; --pj-story-card-max-w: {{ s.card_max_width | default: 1080 }}px; --pj-story-focus: {{ s.focus_x }}% {{ s.focus_y }}%;{% if s.card_color != blank %} --pj-story-card-bg: {{ s.card_color }};{% endif %}"
 >
   <div class="pj-story__bg" aria-hidden="true">
     {%- if s.image != blank -%}
@@ -65,9 +65,13 @@
     { "type": "color", "id": "veil_color", "label": "Tint over the image", "default": "#2A1C10" },
     { "type": "range", "id": "veil", "label": "Tint strength", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 20, "info": "Raise it if you want the background photo darker." },
 
-    { "type": "header", "content": "Layout" },
+    { "type": "header", "content": "Layout, Spacing & Screen Fit" },
     { "type": "select", "id": "align", "label": "Text position", "default": "center", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" }, { "value": "right", "label": "Right" } ] },
-    { "type": "range", "id": "min_height", "label": "Minimum height", "min": 360, "max": 900, "step": 20, "unit": "px", "default": 640 },
+    { "type": "range", "id": "section_height", "label": "Section Min Height (Screen Fit)", "min": 0, "max": 100, "step": 5, "unit": "vh", "default": 0, "info": "0 = Auto fit content. 100 = 100vh full screen fit." },
+    { "type": "range", "id": "min_height", "label": "Minimum pixel height", "min": 360, "max": 900, "step": 20, "unit": "px", "default": 640 },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 10, "max": 180, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 10, "max": 180, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "card_max_width", "label": "Framed Card Max Width", "min": 600, "max": 1200, "step": 20, "unit": "px", "default": 1080 },
 
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "card_color", "label": "Card background color", "info": "Leave empty for translucent warm white." },

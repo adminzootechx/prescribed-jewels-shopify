@@ -29,6 +29,8 @@
     --pj-ps-gap: {{ s.grid_gap | default: 24 }}px;
     --pj-ps-pt: {{ s.padding_top | default: 72 }}px;
     --pj-ps-pb: {{ s.padding_bottom | default: 72 }}px;
+    {% if s.section_height > 0 %} --pj-ps-min-h: {{ s.section_height }}vh;{% endif %}
+    --pj-ps-scale: {{ s.section_scale | default: 100 | divided_by: 100.0 }};
   "
 >
   <div class="pj-process-steps__bg" aria-hidden="true">
@@ -140,11 +142,13 @@
     { "type": "range", "id": "veil", "label": "Dark overlay strength", "min": 0, "max": 95, "step": 5, "unit": "%", "default": 60 },
     { "type": "color", "id": "veil_color", "label": "Dark overlay tint color", "default": "#120E0A" },
 
-    { "type": "header", "content": "5. Section Layout & Spacing" },
+    { "type": "header", "content": "5. Section Layout, Spacing & Screen Fit" },
+    { "type": "range", "id": "section_height", "label": "Section Min Height (Screen Fit)", "min": 0, "max": 120, "step": 5, "unit": "vh", "default": 0, "info": "0 = Auto fit content. 100 = 100vh full screen fit." },
+    { "type": "range", "id": "section_scale", "label": "Section Overall Scale (%)", "min": 70, "max": 140, "step": 5, "unit": "%", "default": 100 },
     { "type": "range", "id": "max_width", "label": "Max section width", "min": 900, "max": 1400, "step": 20, "unit": "px", "default": 1240 },
     { "type": "range", "id": "grid_gap", "label": "Gap between cards", "min": 12, "max": 48, "step": 2, "unit": "px", "default": 24 },
-    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 20, "max": 160, "step": 4, "unit": "px", "default": 72 },
-    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 20, "max": 160, "step": 4, "unit": "px", "default": 72 }
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 10, "max": 200, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 10, "max": 200, "step": 4, "unit": "px", "default": 72 }
   ],
   "blocks": [
     {
