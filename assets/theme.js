@@ -569,46 +569,92 @@
       }
     };
 
-    // A curved arrow from the left edge of the highlighted stone to the photograph, then drawn in
+    // A curved arrow dynamically connecting the active stone on the ring to the big gemstone
+    let arrowAnimFrame = null;
     const placeArrow = (redraw) => {
-      if (!arrowSvg || !arrowPath || !wheelHalo || !photoWrap || window.innerWidth < 960) return;
+      if (!arrowSvg || !arrowPath || !photoWrap || window.innerWidth < 960) return;
       const box = arrowSvg.getBoundingClientRect();
-      const halo = wheelHalo.getBoundingClientRect();
-      const photo = photoWrap.getBoundingClientRect();
-      // The line starts a fixed 3 mm (about 12 px) clear of the chosen stone's left edge, so it is longer or shorter with the stone's width
+      if (box.width === 0 || box.height === 0) return;
+
       const activeEntry = slotElements.find((entry) => entry.slot.classList.contains('is-active'));
-      const assembly = wheelHalo.parentElement.getBoundingClientRect();
-      const gemW = activeEntry ? activeEntry.inner.offsetWidth : 84;
-      const img = activeEntry ? activeEntry.img : null;
-      const aspect = img && img.naturalWidth && img.naturalHeight ? Math.min(1, img.naturalWidth / img.naturalHeight) : 1;
-      const wheelScale = assembly.width / 560;
-      const halfGem = (gemW * 1.3 * aspect * wheelScale) / 2;
-      const MIN_GAP = 12;
-      const DOT_R = 5;
-      const sx = assembly.left + (280 - RADIUS) * wheelScale - box.left - halfGem - MIN_GAP - DOT_R;
-      const sy = halo.top + halo.height / 2 - box.top;
-      // The head stops 14 px (the tip reaches about 11 px) short of the big stone's right edge, whatever its width
-      const nat = photoImg && photoImg.naturalWidth && photoImg.naturalHeight ? photoImg.naturalWidth / photoImg.naturalHeight : 1;
-      const seenHalf = (photo.width * 1.05 * Math.min(1, nat) * 0.97) / 2;
-      const ex = photo.left + photo.width / 2 - box.left + seenHalf + 14;
-      const ey = photo.top + photo.height / 2 - box.top;
-      const reach = Math.max(80, sx - ex);
-      const lift = Math.min(150, reach * 0.3);
-      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${(sx - reach * 0.38).toFixed(1)} ${(sy + lift).toFixed(1)}, ${(ex + reach * 0.34).toFixed(1)} ${(ey - lift).toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      if (!activeEntry) return;
+
+      // Settings from Shopify Theme Editor
+      const sec = wheelSection;
+      const startOffX = parseFloat(sec?.dataset.arrowStartX || '0') || 0;
+      const startOffY = parseFloat(sec?.dataset.arrowStartY || '0') || 0;
+      const endOffX = parseFloat(sec?.dataset.arrowEndX || '0') || 0;
+      const endOffY = parseFloat(sec?.dataset.arrowEndY || '0') || 0;
+      const customLift = parseFloat(sec?.dataset.arrowLift || '32');
+
+      // 1. Source: The active gemstone on the rotating ring
+      const gemTarget = (activeEntry.img && activeEntry.img.offsetWidth > 0 && !activeEntry.img.hidden)
+        ? activeEntry.img
+        : activeEntry.inner;
+      const gemRect = gemTarget.getBoundingClientRect();
+
+      // Start at the gem on the ring (inner edge facing the big gem)
+      const sx = gemRect.left - box.left + 4 + startOffX;
+      const sy = gemRect.top + (gemRect.height / 2) - box.top + startOffY;
+
+      // 2. Target: The big gemstone photograph on the left
+      const photoTarget = (photoImg && photoImg.offsetWidth > 0 && !photoImg.hidden)
+        ? photoImg
+        : photoWrap;
+      const photoRect = photoTarget.getBoundingClientRect();
+
+      // Point directly into the outer right contour/facet of the big stone
+      const ex = (photoRect.right - box.left) - 8 + endOffX;
+      const ey = photoRect.top + (photoRect.height / 2) - box.top + endOffY;
+
+      // 3. Smooth, elegant curve
+      const dx = sx - ex;
+      const lift = customLift;
+      const c1x = sx - dx * 0.42;
+      const c1y = sy - lift;
+      const c2x = ex + dx * 0.32;
+      const c2y = ey - (lift * 0.4);
+
+      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
       arrowPath.setAttribute('d', d);
-      arrowDot.setAttribute('cx', sx.toFixed(1));
-      arrowDot.setAttribute('cy', sy.toFixed(1));
+      if (arrowDot) {
+        arrowDot.setAttribute('cx', sx.toFixed(1));
+        arrowDot.setAttribute('cy', sy.toFixed(1));
+      }
+
       if (redraw) {
         arrowPath.style.transition = 'none';
         arrowPath.style.strokeDashoffset = '1';
         void arrowPath.getBoundingClientRect();
-        arrowPath.style.transition = 'stroke-dashoffset 0.9s cubic-bezier(0.2, 0.7, 0.1, 1)';
+        arrowPath.style.transition = 'stroke-dashoffset 0.8s cubic-bezier(0.2, 0.7, 0.1, 1)';
         arrowPath.style.strokeDashoffset = '0';
       }
     };
+
+    const trackArrow = () => {
+      if (arrowAnimFrame) cancelAnimationFrame(arrowAnimFrame);
+      const startTime = performance.now();
+      const duration = 920;
+      const tick = (now) => {
+        placeArrow(false);
+        if (now - startTime < duration) {
+          arrowAnimFrame = requestAnimationFrame(tick);
+        } else {
+          placeArrow(false);
+        }
+      };
+      arrowAnimFrame = requestAnimationFrame(tick);
+    };
+
     window.addEventListener('resize', () => placeArrow(false), { passive: true });
     window.addEventListener('load', () => placeArrow(true));
     if (photoImg) photoImg.addEventListener('load', () => placeArrow(false));
+    if (wheelRotor) wheelRotor.addEventListener('transitionend', () => placeArrow(false));
+    document.addEventListener('shopify:section:load', (e) => {
+      if (e.target && (e.target.contains(wheelSection) || e.target === wheelSection)) {
+        placeArrow(true);
+      }
+    });
 
     const updateInfo = (animate) => {
       const currentStone = GEMSTONES[activeStoneIndex];
@@ -617,7 +663,7 @@
         wheelDesc.textContent = currentStone.desc;
         if (wheelCounter) wheelCounter.textContent = currentStone.num;
         if (wheelPlanet) {
-          const cap = (t) => t.toLowerCase().replace(/(^|[\s-])([a-z])/g, (m, s, ch) => s + ch.toUpperCase());
+          const cap = (t) => t.toLowerCase().replace(/(^|[s-])([a-z])/g, (m, s, ch) => s + ch.toUpperCase());
           const [body, tradition] = currentStone.planet.split(' · ');
           wheelPlanet.textContent = `Ruled by ${cap(body)}${tradition ? ' (' + cap(tradition) + ')' : ''}`;
         }
@@ -658,6 +704,11 @@
       });
 
       updateInfo(animate);
+      if (animate) {
+        trackArrow();
+      } else {
+        placeArrow(false);
+      }
     };
 
     const advance = () => {

@@ -1,5 +1,40 @@
 {% render 'pj-section-style', section: section %}
-<section id="pj-gemstones" class="pj-gemstones-wheel-outer" aria-labelledby="pj-gemstones-heading" data-gem-wheel-section style="--pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }}; --pj-w-veil: {{ section.settings.veil }}%; --pj-w-veil-color: {{ section.settings.veil_color }}; --pj-w-text: {{ section.settings.text_color }}; --pj-w-muted: {{ section.settings.muted_color }}; --pj-w-bg: {{ section.settings.veil_color }}; --pj-w-ns: {{ section.settings.notes_size | divided_by: 100.0 }}; --pj-w-nts: {{ section.settings.note_title_size | divided_by: 100.0 }}; --pj-w-ps: {{ section.settings.planet_size | divided_by: 100.0 }}; --pj-w-minh: {{ section.settings.height | divided_by: 100.0 }}; --pj-w-wscale: {{ section.settings.wheel_size | divided_by: 100.0 }}; --pj-w-glow: {{ section.settings.glow_color }}; --pj-w-glow-a: {{ section.settings.glow_strength }}%;{% unless section.settings.use_stone_color %} --gem-c: {{ section.settings.accent_color }};{% endunless %}"{% unless section.settings.use_stone_color %} data-fixed-accent{% endunless %}>
+<section
+  id="pj-gemstones"
+  class="pj-gemstones-wheel-outer"
+  aria-labelledby="pj-gemstones-heading"
+  data-gem-wheel-section
+  data-arrow-start-x="{{ section.settings.arrow_start_x | default: 0 }}"
+  data-arrow-start-y="{{ section.settings.arrow_start_y | default: 0 }}"
+  data-arrow-end-x="{{ section.settings.arrow_end_x | default: 0 }}"
+  data-arrow-end-y="{{ section.settings.arrow_end_y | default: 0 }}"
+  data-arrow-lift="{{ section.settings.arrow_curvature | default: 32 }}"
+  style="
+    --pj-hs-sec: {{ section.settings.heading_size | default: 110 | divided_by: 100.0 }};
+    --pj-w-hs: {{ section.settings.heading_size | default: 110 | divided_by: 100.0 }};
+    --pj-w-veil: {{ section.settings.veil }}%;
+    --pj-w-veil-color: {{ section.settings.veil_color }};
+    --pj-w-text: {{ section.settings.text_color }};
+    --pj-w-muted: {{ section.settings.muted_color }};
+    --pj-w-bg: {{ section.settings.veil_color }};
+    --pj-w-ns: {{ section.settings.notes_size | default: 120 | divided_by: 100.0 }};
+    --pj-w-nts: {{ section.settings.note_title_size | default: 115 | divided_by: 100.0 }};
+    --pj-w-ps: {{ section.settings.planet_size | default: 110 | divided_by: 100.0 }};
+    --pj-w-minh: {{ section.settings.height | divided_by: 100.0 }};
+    --pj-w-wscale: {{ section.settings.wheel_size | divided_by: 100.0 }};
+    --pj-w-glow: {{ section.settings.glow_color }};
+    --pj-w-glow-a: {{ section.settings.glow_strength }}%;
+    --pj-w-info-x: {{ section.settings.info_offset_x | default: 0 }}px;
+    --pj-w-info-y: {{ section.settings.info_offset_y | default: 0 }}px;
+    --pj-w-info-w: {{ section.settings.info_width | default: 740 }}px;
+    --pj-w-gem-scale: {{ section.settings.big_gem_scale | default: 100 | divided_by: 100.0 }};
+    --pj-w-gem-x: {{ section.settings.big_gem_offset_x | default: 0 }}px;
+    --pj-w-gem-y: {{ section.settings.big_gem_offset_y | default: 0 }}px;
+    --pj-w-arrow-stroke: {{ section.settings.arrow_stroke | default: 2.6 }}px;
+    {% unless section.settings.use_stone_color %}--gem-c: {{ section.settings.accent_color }};{% endunless %}
+  "
+  {% unless section.settings.use_stone_color %}data-fixed-accent{% endunless %}
+>
   <div class="pj-gemstones-wheel-section">
     <div class="pj-wheel-bg" aria-hidden="true">
       {%- if section.settings.bg_image != blank -%}
@@ -24,6 +59,7 @@
       <!-- Left: the chosen stone, with what is known about it set out around its photograph -->
       <div class="pj-gemstones-wheel__info">
         <div class="pj-gem-diagram" id="pj-wheel-info-box" aria-live="polite">
+          {%- if section.settings.show_leader_lines -%}
           <svg class="pj-gem-diagram__lines" viewBox="0 0 720 540" aria-hidden="true" focusable="false">
             <g class="pj-gem-diagram__leaders">
               <path d="M214 76 C 252 80, 272 104, 286 136" />
@@ -34,8 +70,11 @@
               <circle cx="214" cy="462" r="3.5" /><circle cx="506" cy="462" r="3.5" />
             </g>
           </svg>
+          {%- endif -%}
 
-          <div class="pj-gem-diagram__photo" id="pj-gem-photo-wrap"><img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="400" height="400" decoding="async"></div>
+          <div class="pj-gem-diagram__photo" id="pj-gem-photo-wrap">
+            <img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="400" height="400" decoding="async">
+          </div>
 
           <div class="pj-gem-diagram__name">
             <p class="pj-gemstones-wheel__planet" id="pj-wheel-planet">MERCURY · BUDHA</p>
@@ -49,11 +88,10 @@
         </div>
       </div>
 
-      <!-- Right Column: Half-Circle Rotating Gemstone Track (No Ring Band) -->
+      <!-- Right Column: Half-Circle Rotating Gemstone Track -->
       <div class="pj-gemstones-wheel__stage" aria-hidden="true">
         <div class="pj-wheel-half-clip">
           <div class="pj-wheel-assembly">
-            <!-- Polished gold wheel: two rims, a spoked hub and rivets. The spokes turn with the stones; the rims stay put so the light on them does not jump. -->
             <svg class="pj-wheel-frame" viewBox="0 0 560 560" aria-hidden="true" focusable="false">
               <defs>
                 <linearGradient id="pj-gold-a" gradientUnits="userSpaceOnUse" x1="40" y1="40" x2="520" y2="520">
@@ -124,31 +162,45 @@
   "tag": "section",
   "class": "pj-section-gemstones",
   "settings": [
-    { "type": "header", "content": "Section size" },
-    { "type": "range", "id": "height", "label": "Section height", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100, "info": "100% fills one screen. Raise it for more room, lower it for a shorter section." },
+    { "type": "header", "content": "1. Section & Wheel Size" },
+    { "type": "range", "id": "height", "label": "Section height", "min": 60, "max": 140, "step": 5, "unit": "%", "default": 100 },
     { "type": "range", "id": "wheel_size", "label": "Wheel size", "min": 60, "max": 130, "step": 5, "unit": "%", "default": 100 },
 
-    { "type": "header", "content": "Background" },
-    { "type": "image_picker", "id": "bg_image", "label": "Background image", "info": "Leave blank to use the built-in dark satin photograph." },
+    { "type": "header", "content": "2. Info Box Position & Layout" },
+    { "type": "range", "id": "info_offset_x", "label": "Info box position X", "min": -160, "max": 160, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "info_offset_y", "label": "Info box position Y", "min": -120, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "info_width", "label": "Info box max width", "min": 540, "max": 860, "step": 20, "unit": "px", "default": 740 },
+    { "type": "range", "id": "big_gem_scale", "label": "Big gemstone size (%)", "min": 60, "max": 160, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "big_gem_offset_x", "label": "Big gemstone position X", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "big_gem_offset_y", "label": "Big gemstone position Y", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0 },
+    { "type": "checkbox", "id": "show_leader_lines", "label": "Show leader lines", "default": true },
+
+    { "type": "header", "content": "3. Arrow Position & Curvature" },
+    { "type": "range", "id": "arrow_start_x", "label": "Arrow start position X (on ring)", "min": -80, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "arrow_start_y", "label": "Arrow start position Y (on ring)", "min": -80, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "arrow_end_x", "label": "Arrow end position X (into big gem)", "min": -80, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "arrow_end_y", "label": "Arrow end position Y (into big gem)", "min": -80, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "arrow_curvature", "label": "Arrow curve height (%)", "min": 10, "max": 70, "step": 2, "unit": "%", "default": 32 },
+    { "type": "range", "id": "arrow_stroke", "label": "Arrow stroke thickness", "min": 1.5, "max": 5, "step": 0.5, "unit": "px", "default": 2.5 },
+
+    { "type": "header", "content": "4. Text Sizes & Typography" },
+    { "type": "range", "id": "heading_size", "label": "Stone name size (%)", "min": 60, "max": 200, "step": 5, "unit": "%", "default": 110 },
+    { "type": "range", "id": "planet_size", "label": "Ruling planet size (%)", "min": 60, "max": 200, "step": 5, "unit": "%", "default": 110 },
+    { "type": "range", "id": "note_title_size", "label": "Note titles size (%)", "min": 60, "max": 200, "step": 5, "unit": "%", "default": 115 },
+    { "type": "range", "id": "notes_size", "label": "Note description size (%)", "min": 60, "max": 200, "step": 5, "unit": "%", "default": 120 },
+
+    { "type": "header", "content": "5. Background & Lighting" },
+    { "type": "image_picker", "id": "bg_image", "label": "Background image", "info": "Leave blank to use the built-in dark velvet background." },
     { "type": "range", "id": "veil", "label": "Dark overlay strength", "min": 0, "max": 95, "step": 5, "unit": "%", "default": 25 },
     { "type": "color", "id": "veil_color", "label": "Dark overlay tint colour", "default": "#120E0A" },
-    { "type": "color", "id": "glow_color", "label": "Warm light colour", "default": "#D9A25A", "info": "A soft pool of light behind the wheel and the stone." },
+    { "type": "color", "id": "glow_color", "label": "Warm light colour", "default": "#D9A25A" },
     { "type": "range", "id": "glow_strength", "label": "Warm light strength", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 30 },
 
-    { "type": "header", "content": "Colours" },
+    { "type": "header", "content": "6. Colors" },
     { "type": "color", "id": "text_color", "label": "Stone name and note titles", "default": "#F4EBE1" },
     { "type": "color", "id": "muted_color", "label": "Note text", "default": "#D9CFC2" },
-    { "type": "checkbox", "id": "use_stone_color", "label": "Colour the lines and arrow to match each stone", "default": true },
-    { "type": "color", "id": "accent_color", "label": "Line and arrow colour", "default": "#C9A15B", "info": "Used when the option above is off." },
-
-    { "type": "header", "content": "Fonts and sizes" },
-    { "type": "checkbox", "id": "use_custom_fonts", "label": "Use the fonts chosen below", "default": false, "info": "Off: the theme fonts." },
-    { "type": "font_picker", "id": "font_heading", "label": "Stone name and note text font", "default": "cormorant_n5" },
-    { "type": "font_picker", "id": "font_body", "label": "Note titles font", "default": "jost_n5" },
-    { "type": "range", "id": "heading_size", "label": "Stone name size", "min": 60, "max": 160, "step": 5, "unit": "%", "default": 100 },
-    { "type": "range", "id": "planet_size", "label": "Ruling planet size", "min": 70, "max": 180, "step": 5, "unit": "%", "default": 100 },
-    { "type": "range", "id": "note_title_size", "label": "Note title size", "min": 70, "max": 180, "step": 5, "unit": "%", "default": 100 },
-    { "type": "range", "id": "notes_size", "label": "Note text size", "min": 70, "max": 180, "step": 5, "unit": "%", "default": 100 }
+    { "type": "checkbox", "id": "use_stone_color", "label": "Colour lines and arrow to match each stone", "default": true },
+    { "type": "color", "id": "accent_color", "label": "Fallback line & arrow colour", "default": "#C9A15B" }
   ],
   "blocks": [
     {
