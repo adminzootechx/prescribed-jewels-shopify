@@ -7,4 +7,11 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-{}
+{
+  "current": {
+    "color_bg_primary": "#F0E4D1",
+    "color_bg_secondary": "#F0E4C8",
+    "color_text_primary": "#2A2825",
+    "content_for_index": []
+  }
+}

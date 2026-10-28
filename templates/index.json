@@ -11,19 +11,25 @@
   "sections": {
     "hero": {
       "type": "hero",
+      "custom_css": [
+        ".pj-eyebrow {color: white;}",
+        ".pj-hero__lead {color: white;}",
+        ".pj-hero__mantra {color: white;}",
+        ".pj-hero__content {padding-left: 20px;}"
+      ],
       "settings": {
-        "image_1": "shopify://shop_images/Golden_Hour_Emerald_Pendant.png",
-        "image_2": "shopify://shop_images/Golden_Hour_Elegance_with_Emerald_Ring.png",
+        "image_1": "shopify://shop_images/Emerald_Pendant_in_Cinematic_Shadow.png",
+        "image_2": "shopify://shop_images/Elegant_emerald-cut_solitaire_ring.png",
         "slide_seconds": 5,
-        "veil": 100,
+        "veil": 0,
         "eyebrow": "ANCIENT WISDOM. MODERN JEWELLERY.",
         "heading": "JEWELLERY\nTHAT FINDS\nYOU",
-        "title_size": 100,
+        "title_size": 120,
         "subtext": "Thoughtfully designed pieces with a gemstone prescribed from your birth details.",
         "cta_label": "EXPLORE DESIGNS",
         "cta_link": "",
         "mantra": "YOUR BIRTHPLACE. YOUR TIME. YOUR GEMSTONE. YOUR STORY.",
-        "text_color": "",
+        "text_color": "#F0E4C8",
         "height": 100
       }
     },
@@ -103,6 +109,7 @@
         "design6",
         "design7"
       ],
+      "custom_css": [],
       "settings": {
         "eyebrow": "THE COLLECTION",
         "heading": "SEVEN DESIGNS,\nONE MEANING",
@@ -111,7 +118,25 @@
     },
     "about_story": {
       "type": "about-story",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/Gold_Garnet_Jewellery_on_Silk.png",
+        "eyebrow": "About Prescribed Jewels",
+        "heading": "Our Story",
+        "body": "Prescribed Jewels was born from a belief in the meaning and energy of gemstones.\n\nWe curate authentic, high-quality stones rooted in traditional wisdom and present them with a modern, wearable approach — helping you find a gemstone that truly aligns with you.",
+        "image_side": "left",
+        "image_width": 50,
+        "fade_image": true,
+        "padding": 0,
+        "bg_color": "#f8e6d3",
+        "text_color": "#14110e",
+        "muted_color": "#2a221b",
+        "accent_color": "#14110e",
+        "use_custom_fonts": false,
+        "font_heading": "cormorant_n4",
+        "font_body": "cormorant_n5",
+        "heading_size": 100,
+        "body_size": 100
+      }
     },
     "prescription_process": {
       "type": "prescription-process",
@@ -173,7 +198,25 @@
     },
     "closing_split": {
       "type": "closing-split",
-      "settings": {}
+      "settings": {
+        "image": "shopify://shop_images/317bcbd8bd05341d74dd87c3280a5756.jpg",
+        "statement": "Personal.\nTimeless.\nYours.",
+        "button_label": "Begin your prescription",
+        "button_link": "",
+        "image_side": "left",
+        "image_width": 50,
+        "min_height": 560,
+        "focus_x": 50,
+        "focus_y": 85,
+        "bg_color": "#f4ebe2",
+        "text_color": "#3a332d",
+        "accent_color": "#3a332d",
+        "use_custom_fonts": false,
+        "font_heading": "cormorant_n6",
+        "font_body": "jost_n5",
+        "heading_size": 100,
+        "body_size": 100
+      }
     },
     "gemstones_atlas": {
       "type": "gemstones-atlas",
@@ -182,126 +225,180 @@
           "type": "gem",
           "settings": {
             "name": "EMERALD",
-            "text": "Cultivates intellect, eloquent speech, emotional composure, and clear discernment."
+            "text": "Cultivates intellect, eloquent speech, emotional composure, and clear discernment.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem2": {
           "type": "gem",
           "settings": {
             "name": "RUBY",
-            "text": "Ignites vitality, sovereign confidence, courage, and unwavering inner purpose."
+            "text": "Ignites vitality, sovereign confidence, courage, and unwavering inner purpose.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem3": {
           "type": "gem",
           "settings": {
             "name": "YELLOW SAPPHIRE",
-            "text": "Attracts wisdom, auspicious abundance, spiritual grace, and prosperous growth."
+            "text": "Attracts wisdom, auspicious abundance, spiritual grace, and prosperous growth.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem4": {
           "type": "gem",
           "settings": {
             "name": "BLUE SAPPHIRE",
-            "text": "Bestows disciplined focus, karmic protection, endurance, and decisive clarity."
+            "text": "Bestows disciplined focus, karmic protection, endurance, and decisive clarity.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem5": {
           "type": "gem",
           "settings": {
             "name": "DIAMOND",
-            "text": "Elevates artistic refinement, magnetic harmony, devotion, and luminous grace."
+            "text": "Elevates artistic refinement, magnetic harmony, devotion, and luminous grace.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem6": {
           "type": "gem",
           "settings": {
             "name": "NATURAL PEARL",
-            "text": "Soothes the heart, deepens intuition, and restores serene emotional balance."
+            "text": "Soothes the heart, deepens intuition, and restores serene emotional balance.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem7": {
           "type": "gem",
           "settings": {
             "name": "RED CORAL",
-            "text": "Fuels decisive action, physical stamina, resilience, and fearless initiative."
+            "text": "Fuels decisive action, physical stamina, resilience, and fearless initiative.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem8": {
           "type": "gem",
           "settings": {
             "name": "HESSONITE GARNET",
-            "text": "Clears mental fog, shields against illusion, and unlocks unconventional success."
+            "text": "Clears mental fog, shields against illusion, and unlocks unconventional success.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem9": {
           "type": "gem",
           "settings": {
             "name": "CAT’S EYE",
-            "text": "Awakens spiritual insight, detachment from chaos, and instinctive protection."
+            "text": "Awakens spiritual insight, detachment from chaos, and instinctive protection.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem10": {
           "type": "gem",
           "settings": {
             "name": "MOONSTONE",
-            "text": "Nurtures receptivity, creative flow, restful calm, and gentle inner rhythm."
+            "text": "Nurtures receptivity, creative flow, restful calm, and gentle inner rhythm.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem11": {
           "type": "gem",
           "settings": {
             "name": "AMETHYST",
-            "text": "Encourages patience, meditative stillness, humility, and steady perseverance."
+            "text": "Encourages patience, meditative stillness, humility, and steady perseverance.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem12": {
           "type": "gem",
           "settings": {
             "name": "CITRINE",
-            "text": "Sparks optimism, generosity, higher learning, and warm creative abundance."
+            "text": "Sparks optimism, generosity, higher learning, and warm creative abundance.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem13": {
           "type": "gem",
           "settings": {
             "name": "PERIDOT",
-            "text": "Sharpens analytical wit, adaptability, joyful expression, and mental renewal."
+            "text": "Sharpens analytical wit, adaptability, joyful expression, and mental renewal.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem14": {
           "type": "gem",
           "settings": {
             "name": "WHITE SAPPHIRE",
-            "text": "Invites beauty, harmonious partnerships, poise, and pure creative inspiration."
+            "text": "Invites beauty, harmonious partnerships, poise, and pure creative inspiration.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem15": {
           "type": "gem",
           "settings": {
             "name": "RED GARNET",
-            "text": "Strengthens self-assurance, grounded warmth, leadership, and life force."
+            "text": "Strengthens self-assurance, grounded warmth, leadership, and life force.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem16": {
           "type": "gem",
           "settings": {
             "name": "CARNELIAN",
-            "text": "Kindles bold motivation, vital energy, determination, and creative courage."
+            "text": "Kindles bold motivation, vital energy, determination, and creative courage.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem17": {
           "type": "gem",
           "settings": {
             "name": "IOLITE",
-            "text": "Aligns inner vision, structured ambition, self-mastery, and clear direction."
+            "text": "Aligns inner vision, structured ambition, self-mastery, and clear direction.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         },
         "gem18": {
           "type": "gem",
           "settings": {
             "name": "GREEN TOURMALINE",
-            "text": "Harmonizes intellect with heart, inviting balanced prosperity and insight."
+            "text": "Harmonizes intellect with heart, inviting balanced prosperity and insight.",
+            "features": "",
+            "uses": "",
+            "wear": ""
           }
         }
       },
@@ -335,10 +432,25 @@
       "settings": {
         "eyebrow": "OUR STORY",
         "heading": "A Piece of Your Own Story",
-        "heading_size": 100,
+        "body_text": "Prescribed Jewels is born from the belief that fine jewellery should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details.",
         "button_label": "BEGIN YOUR PRESCRIPTION",
+        "show_monogram": true,
+        "show_card": true,
+        "focus_x": 50,
+        "focus_y": 50,
+        "veil_color": "#2a1c10",
+        "veil": 20,
+        "align": "center",
+        "min_height": 640,
         "card_color": "",
-        "body_text": "Prescribed Jewels is born from the belief that fine jewellery should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details."
+        "text_color": "#1a1815",
+        "muted_color": "#4a4237",
+        "accent_color": "#12261e",
+        "use_custom_fonts": false,
+        "font_heading": "cormorant_n4",
+        "font_body": "jost_n3",
+        "heading_size": 100,
+        "body_size": 100
       }
     }
   },
