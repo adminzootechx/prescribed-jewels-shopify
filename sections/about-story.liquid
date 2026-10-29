@@ -1,17 +1,21 @@
 {%- liquid
   assign s = section.settings
   assign paragraphs = s.body | newline_to_br | split: '<br />'
+  assign image_span = s.image_span | default: 'full'
+  assign blend_op = s.blend_opacity | default: s.bg_opacity | default: 70
   assign bg_op = s.bg_opacity | default: 100
 -%}
 {% render 'pj-section-style', section: section %}
 
 <section
   id="pj-about"
-  class="pj-about{% if s.image_side == 'right' %} pj-about--image-right{% endif %}{% unless s.fade_image %} pj-about--hard-edge{% endunless %}"
+  class="pj-about pj-about--{{ image_span }} pj-about--blend-{{ s.blend_style | default: 'gradient' }}{% if s.image_side == 'right' %} pj-about--image-right{% endif %}{% if s.fade_image %} pj-about--fade{% else %} pj-about--hard-edge{% endif %}"
   aria-labelledby="pj-about-heading"
   style="
-    --pj-about-image: {{ s.image_width }}%;
-    --pj-about-pad: {{ s.padding }}px;
+    --pj-about-image: {{ s.image_width | default: 50 }}%;
+    --pj-about-pad: {{ s.padding | default: 0 }}px;
+    --pj-about-blend-color: {{ s.bg_color | default: '#E9D2AF' }};
+    --pj-about-blend-op: {{ blend_op | divided_by: 100.0 }};
     {% if s.bg_color != blank %}
       {% if bg_op < 100 %}
         --pj-about-bg: color-mix(in srgb, {{ s.bg_color }} {{ bg_op }}%, transparent);
@@ -24,13 +28,15 @@
     {% if s.section_height > 0 %} --pj-about-h: {{ s.section_height }}vh; min-height: {{ s.section_height }}vh;{% endif %}
   "
 >
-  <div class="pj-about__media">
+  <div class="pj-about__media" aria-hidden="true">
     {%- if s.image != blank -%}
-      {{ s.image | image_url: width: 1600 | image_tag: class: 'pj-about__img', widths: '800, 1200, 1600', sizes: '(min-width: 900px) 60vw, 100vw', alt: s.image.alt | default: s.heading, loading: 'lazy' }}
+      {{ s.image | image_url: width: 2400 | image_tag: class: 'pj-about__img', widths: '800, 1200, 1600, 2400', sizes: '100vw', alt: s.image.alt | default: s.heading, loading: 'lazy' }}
     {%- else -%}
-      <img class="pj-about__img" src="{{ 'about-story-jewels.jpg' | asset_url }}" alt="{{ s.heading | escape }}" width="845" height="728" loading="lazy">
+      <img class="pj-about__img" src="{{ 'about-story-jewels.jpg' | asset_url }}" alt="{{ s.heading | escape }}" width="1600" height="900" loading="lazy">
     {%- endif -%}
   </div>
+
+  <div class="pj-about__blend" aria-hidden="true"></div>
 
   <div class="pj-about__copy">
     <div class="pj-about__label">
@@ -55,21 +61,55 @@
   "class": "pj-section-about",
   "settings": [
     { "type": "header", "content": "Content" },
-    { "type": "image_picker", "id": "image", "label": "Image", "info": "Leave empty to use the built-in jewellery photograph. A wide image with a plain background on the text side works best." },
+    { "type": "image_picker", "id": "image", "label": "Image / Background Photo", "info": "The jewellery photograph or banner background image." },
     { "type": "text", "id": "eyebrow", "label": "Small label", "default": "About Prescribed Jewels" },
     { "type": "textarea", "id": "heading", "label": "Heading", "default": "Our Story" },
     { "type": "textarea", "id": "body", "label": "Text", "info": "Leave a blank line between paragraphs.", "default": "Prescribed Jewels was born from a belief in the meaning and energy of gemstones.\n\nWe curate authentic, high-quality stones rooted in traditional wisdom and present them with a modern, wearable approach — helping you find a gemstone that truly aligns with you." },
 
+    { "type": "header", "content": "Photo & Background Blend" },
+    {
+      "type": "select",
+      "id": "image_span",
+      "label": "Photo display mode",
+      "options": [
+        { "value": "full", "label": "Full banner background" },
+        { "value": "split", "label": "Side-by-side split" }
+      ],
+      "default": "full",
+      "info": "Choose whether the photo covers the entire banner background or stays side-by-side."
+    },
+    {
+      "type": "range",
+      "id": "blend_opacity",
+      "label": "Background blend opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 70,
+      "info": "Reduce to 0% so the photo / bg image is completely visible. Increase to blend the background color over the photo."
+    },
+    {
+      "type": "select",
+      "id": "blend_style",
+      "label": "Blend effect style",
+      "options": [
+        { "value": "gradient", "label": "Gradient fade" },
+        { "value": "uniform", "label": "Uniform overlay" }
+      ],
+      "default": "gradient"
+    },
+    { "type": "checkbox", "id": "fade_image", "label": "Fade edge in side-by-side mode", "default": true },
+
     { "type": "header", "content": "Layout & Screen Fit" },
     { "type": "range", "id": "section_height", "label": "Section Min Height (Screen Fit)", "min": 0, "max": 100, "step": 5, "unit": "vh", "default": 0, "info": "0 = Auto fit content. 100 = 100vh full screen fit." },
-    { "type": "select", "id": "image_side", "label": "Image position", "default": "left", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
-    { "type": "range", "id": "image_width", "label": "Image width", "min": 30, "max": 70, "step": 5, "unit": "%", "default": 50 },
-    { "type": "checkbox", "id": "fade_image", "label": "Fade the image into the background", "default": true },
+    { "type": "select", "id": "image_side", "label": "Text alignment / side-by-side position", "default": "left", "options": [ { "value": "left", "label": "Photo Left / Text Right" }, { "value": "right", "label": "Photo Right / Text Left" } ] },
+    { "type": "range", "id": "image_width", "label": "Photo width in side-by-side mode", "min": 30, "max": 70, "step": 5, "unit": "%", "default": 50 },
     { "type": "range", "id": "padding", "label": "Extra vertical padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 0 },
 
     { "type": "header", "content": "Colours" },
-    { "type": "color", "id": "bg_color", "label": "Background", "default": "#F8E6D3" },
-    { "type": "range", "id": "bg_opacity", "label": "Background opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100, "info": "Reduce to make the background color transparent or blend with dark page background." },
+    { "type": "color", "id": "bg_color", "label": "Background / Blend color", "default": "#E9D2AF" },
+    { "type": "range", "id": "bg_opacity", "label": "Overall section opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100 },
     { "type": "color", "id": "text_color", "label": "Heading and label", "default": "#14110E" },
     { "type": "color", "id": "muted_color", "label": "Body text", "default": "#2A221B" },
     { "type": "color", "id": "accent_color", "label": "Lines", "default": "#14110E" },

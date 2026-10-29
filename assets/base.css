@@ -1911,35 +1911,163 @@ textarea {
 
 .pj-about {
   position: relative;
-  display: grid;
-  grid-template-columns: var(--pj-about-image, 50%) 1fr;
   min-height: clamp(460px, 62vh, 700px);
   padding: var(--pj-about-pad, 0px) 0;
   background-color: var(--pj-about-bg, var(--pj-s-bg, #F8E6D3));
   color: var(--pj-s-text, #14110E);
   overflow: hidden;
   transition: background-color 0.3s ease;
+  isolation: isolate;
 }
-.pj-about--image-right { grid-template-columns: 1fr var(--pj-about-image, 50%); }
-.pj-about--image-right .pj-about__media { order: 2; }
 
-.pj-about__media { position: relative; min-height: 300px; }
-.pj-about__img {
+/* 1. Full-width Background Image Mode */
+.pj-about--full {
+  display: flex;
+  align-items: center;
+}
+
+.pj-about--full .pj-about__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pj-about--full .pj-about__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+
+.pj-about__blend {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+/* Gradient blend on full background: soft fade from text side into photo */
+.pj-about--full.pj-about--blend-gradient .pj-about__blend {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 15%), transparent) 0%,
+    color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 55%), transparent) 45%,
+    color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 95%), transparent) 75%,
+    color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 100%), transparent) 100%
+  );
+}
+
+.pj-about--full.pj-about--image-right.pj-about--blend-gradient .pj-about__blend {
+  background: linear-gradient(
+    to left,
+    color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 15%), transparent) 0%,
+    color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 55%), transparent) 45%,
+    color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 95%), transparent) 75%,
+    color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 100%), transparent) 100%
+  );
+}
+
+.pj-about--full.pj-about--blend-uniform .pj-about__blend {
+  background: color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 100%), transparent);
+}
+
+.pj-about--full .pj-about__copy {
+  position: relative;
+  z-index: 2;
+  margin-left: auto;
+  max-width: 44rem;
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.5rem, 4vw, 4.5rem);
+}
+
+.pj-about--full.pj-about--image-right .pj-about__copy {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* 2. Side-by-Side Split Mode */
+.pj-about--split,
+.pj-about:not(.pj-about--full) {
+  display: grid;
+  grid-template-columns: var(--pj-about-image, 50%) 1fr;
+}
+
+.pj-about--split.pj-about--image-right,
+.pj-about:not(.pj-about--full).pj-about--image-right {
+  grid-template-columns: 1fr var(--pj-about-image, 50%);
+}
+
+.pj-about--split.pj-about--image-right .pj-about__media,
+.pj-about:not(.pj-about--full).pj-about--image-right .pj-about__media {
+  order: 2;
+}
+
+.pj-about--split .pj-about__media,
+.pj-about:not(.pj-about--full) .pj-about__media {
+  position: relative;
+  min-height: 300px;
+}
+
+.pj-about--split .pj-about__blend,
+.pj-about:not(.pj-about--full) .pj-about__blend {
+  display: none;
+}
+
+.pj-about--split .pj-about__img,
+.pj-about:not(.pj-about--full) .pj-about__img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: left center;
-  -webkit-mask-image: linear-gradient(to right, #000 74%, transparent 100%);
-  mask-image: linear-gradient(to right, #000 74%, transparent 100%);
 }
-.pj-about--image-right .pj-about__img {
+
+.pj-about--split.pj-about--image-right .pj-about__img,
+.pj-about:not(.pj-about--full).pj-about--image-right .pj-about__img {
   object-position: right center;
-  -webkit-mask-image: linear-gradient(to left, #000 74%, transparent 100%);
-  mask-image: linear-gradient(to left, #000 74%, transparent 100%);
 }
-.pj-about--hard-edge .pj-about__img { -webkit-mask-image: none; mask-image: none; }
+
+/* In split mode with fade: the mask fades out the edge proportional to blend opacity */
+.pj-about--split.pj-about--fade .pj-about__img,
+.pj-about:not(.pj-about--full):not(.pj-about--hard-edge) .pj-about__img {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 calc(100% - (var(--pj-about-blend-op, 0.7) * 35%)),
+    rgba(0, 0, 0, calc(1 - var(--pj-about-blend-op, 0.7))) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000 calc(100% - (var(--pj-about-blend-op, 0.7) * 35%)),
+    rgba(0, 0, 0, calc(1 - var(--pj-about-blend-op, 0.7))) 100%
+  );
+}
+
+.pj-about--split.pj-about--image-right.pj-about--fade .pj-about__img,
+.pj-about:not(.pj-about--full).pj-about--image-right:not(.pj-about--hard-edge) .pj-about__img {
+  -webkit-mask-image: linear-gradient(
+    to left,
+    #000 calc(100% - (var(--pj-about-blend-op, 0.7) * 35%)),
+    rgba(0, 0, 0, calc(1 - var(--pj-about-blend-op, 0.7))) 100%
+  );
+  mask-image: linear-gradient(
+    to left,
+    #000 calc(100% - (var(--pj-about-blend-op, 0.7) * 35%)),
+    rgba(0, 0, 0, calc(1 - var(--pj-about-blend-op, 0.7))) 100%
+  );
+}
+
+.pj-about--hard-edge .pj-about__img {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
 
 .pj-about__copy {
   align-self: center;
@@ -1982,17 +2110,60 @@ textarea {
 .pj-about__end-rule { display: block; width: 9rem; height: 1px; margin-top: clamp(1.5rem, 4vw, 3rem); background: var(--pj-s-accent, #14110E); }
 
 @media (max-width: 859px) {
-  .pj-about, .pj-about--image-right { grid-template-columns: 1fr; min-height: 0; }
-  .pj-about--image-right .pj-about__media { order: 0; }
-  .pj-about__media { min-height: 0; aspect-ratio: 845 / 600; }
-  .pj-about__img, .pj-about--image-right .pj-about__img {
-    object-position: center;
-    -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
+  .pj-about--split,
+  .pj-about:not(.pj-about--full),
+  .pj-about--image-right {
+    grid-template-columns: 1fr;
+    min-height: 0;
   }
-  .pj-about--hard-edge .pj-about__img { -webkit-mask-image: none; mask-image: none; }
-  .pj-about__copy { padding: 0.5rem clamp(1.25rem, 6vw, 2.5rem) 2.5rem; }
-  .pj-about__eyebrow { white-space: normal; }
+  .pj-about--split.pj-about--image-right .pj-about__media,
+  .pj-about:not(.pj-about--full).pj-about--image-right .pj-about__media {
+    order: 0;
+  }
+  .pj-about--split .pj-about__media,
+  .pj-about:not(.pj-about--full) .pj-about__media {
+    min-height: 0;
+    aspect-ratio: 845 / 600;
+  }
+  .pj-about--split.pj-about--fade .pj-about__img,
+  .pj-about:not(.pj-about--full):not(.pj-about--hard-edge) .pj-about__img,
+  .pj-about--image-right .pj-about__img {
+    object-position: center;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 calc(100% - (var(--pj-about-blend-op, 0.7) * 40%)),
+      rgba(0, 0, 0, calc(1 - var(--pj-about-blend-op, 0.7))) 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #000 calc(100% - (var(--pj-about-blend-op, 0.7) * 40%)),
+      rgba(0, 0, 0, calc(1 - var(--pj-about-blend-op, 0.7))) 100%
+    );
+  }
+  .pj-about--full {
+    min-height: 520px;
+  }
+  .pj-about--full.pj-about--blend-gradient .pj-about__blend {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 15%), transparent) 0%,
+      color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 70%), transparent) 45%,
+      color-mix(in srgb, var(--pj-about-blend-color, #E9D2AF) calc(var(--pj-about-blend-op, 0.7) * 100%), transparent) 100%
+    );
+  }
+  .pj-about--full .pj-about__copy {
+    padding: clamp(2rem, 5vw, 3rem) clamp(1.25rem, 6vw, 2.5rem);
+  }
+  .pj-about--hard-edge .pj-about__img {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+  .pj-about__copy {
+    padding: 0.5rem clamp(1.25rem, 6vw, 2.5rem) 2.5rem;
+  }
+  .pj-about__eyebrow {
+    white-space: normal;
+  }
 }
 
 /* ==========================================================================
