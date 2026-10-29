@@ -1,5 +1,7 @@
 {%- assign s = section.settings -%}
 {%- assign lines = s.tagline | newline_to_br | split: '<br />' -%}
+{%- assign emblem_pos = s.emblem_position | default: 'left' -%}
+{%- assign tagline_pos = s.tagline_position | default: 'right' -%}
 
 <section
   id="pj-philosophy-{{ section.id }}"
@@ -15,7 +17,7 @@
     --pj-phi-max-w: {{ s.max_width | default: 1200 }}px;
     --pj-phi-heading-size: {{ s.heading_size | default: 100 | divided_by: 100.0 }};
     --pj-phi-body-size: {{ s.body_size | default: 100 | divided_by: 100.0 }};
-    --pj-phi-emblem-size: {{ s.emblem_size | default: 130 }}px;
+    --pj-phi-emblem-size: {{ s.emblem_size | default: 135 }}px;
     {% if s.section_height > 0 %} --pj-phi-min-h: {{ s.section_height }}vh;{% endif %}
     --pj-phi-scale: {{ s.section_scale | default: 100 | divided_by: 100.0 }};
   "
@@ -26,9 +28,21 @@
     </div>
   {%- endif -%}
 
-  <div class="pj-philosophy__inner">
-    {%- if s.show_tagline and s.tagline != blank -%}
-      <div class="pj-philosophy__tagline" aria-label="Brand mantra">
+  {%- capture emblem_html -%}
+    {%- if s.show_emblem -%}
+      <div class="pj-philosophy__emblem pj-philosophy__emblem--{{ emblem_pos }}" style="color: {{ s.emblem_color | default: '#8B7D6B' }};">
+        {%- if s.emblem_image != blank -%}
+          {{ s.emblem_image | image_url: width: 400 | image_tag: class: 'pj-philosophy__emblem-img', alt: 'Celestial Emblem', loading: 'lazy' }}
+        {%- else -%}
+          {% render 'pj-celestial-emblem' %}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture tagline_html -%}
+    {%- if s.show_tagline and s.tagline != blank and tagline_pos != 'none' -%}
+      <div class="pj-philosophy__tagline pj-philosophy__tagline--{{ tagline_pos }}" aria-label="Brand mantra">
         <span class="pj-philosophy__tagline-bar" aria-hidden="true"></span>
         <div class="pj-philosophy__tagline-words">
           {%- for line in lines -%}
@@ -40,27 +54,37 @@
         </div>
       </div>
     {%- endif -%}
+  {%- endcapture -%}
 
-    <div class="pj-philosophy__center">
-      {%- if s.heading != blank -%}
-        <h2 class="pj-philosophy__heading">{{ s.heading | escape }}</h2>
-      {%- endif -%}
+  <div class="pj-philosophy__inner pj-philosophy__inner--emblem-{{ emblem_pos }}">
+    {%- if emblem_pos == 'left' -%}
+      {{ emblem_html }}
+      <div class="pj-philosophy__center">
+        {%- if s.heading != blank -%}
+          <h2 class="pj-philosophy__heading">{{ s.heading | escape }}</h2>
+        {%- endif -%}
 
-      {%- if s.body_text != blank -%}
-        <div class="pj-philosophy__body">
-          <p>{{ s.body_text | newline_to_br }}</p>
-        </div>
-      {%- endif -%}
-    </div>
-
-    {%- if s.show_emblem -%}
-      <div class="pj-philosophy__emblem" style="color: {{ s.emblem_color | default: '#8B7D6B' }};">
-        {%- if s.emblem_image != blank -%}
-          {{ s.emblem_image | image_url: width: 400 | image_tag: class: 'pj-philosophy__emblem-img', alt: 'Celestial Emblem', loading: 'lazy' }}
-        {%- else -%}
-          {% render 'pj-celestial-emblem' %}
+        {%- if s.body_text != blank -%}
+          <div class="pj-philosophy__body">
+            <p>{{ s.body_text | newline_to_br }}</p>
+          </div>
         {%- endif -%}
       </div>
+      {{ tagline_html }}
+    {%- else -%}
+      {{ tagline_html }}
+      <div class="pj-philosophy__center">
+        {%- if s.heading != blank -%}
+          <h2 class="pj-philosophy__heading">{{ s.heading | escape }}</h2>
+        {%- endif -%}
+
+        {%- if s.body_text != blank -%}
+          <div class="pj-philosophy__body">
+            <p>{{ s.body_text | newline_to_br }}</p>
+          </div>
+        {%- endif -%}
+      </div>
+      {{ emblem_html }}
     {%- endif -%}
   </div>
 </section>
@@ -109,24 +133,7 @@
     },
     {
       "type": "header",
-      "content": "Tagline (Left badge)"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_tagline",
-      "label": "Show vertical tagline",
-      "default": true
-    },
-    {
-      "type": "textarea",
-      "id": "tagline",
-      "label": "Tagline lines",
-      "info": "Press Enter for each stacked line.",
-      "default": "ANCIENT\nWISDOM\nMODERN\nJEWELRY"
-    },
-    {
-      "type": "header",
-      "content": "Emblem (Right icon)"
+      "content": "Emblem"
     },
     {
       "type": "checkbox",
@@ -135,26 +142,64 @@
       "default": true
     },
     {
+      "type": "select",
+      "id": "emblem_position",
+      "label": "Emblem position",
+      "options": [
+        { "value": "left", "label": "Left (Recommended)" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
       "type": "image_picker",
       "id": "emblem_image",
       "label": "Custom emblem image",
-      "info": "Optional. Leave blank to display the built-in celestial moonburst SVG."
+      "info": "Optional. Leave blank to display the built-in celestial sun & moon emblem."
     },
     {
       "type": "color",
       "id": "emblem_color",
-      "label": "Emblem color (SVG)",
+      "label": "Emblem color",
       "default": "#8B7D6B"
     },
     {
       "type": "range",
       "id": "emblem_size",
       "label": "Emblem size",
-      "min": 80,
-      "max": 200,
-      "step": 10,
+      "min": 70,
+      "max": 250,
+      "step": 5,
       "unit": "px",
-      "default": 130
+      "default": 135
+    },
+    {
+      "type": "header",
+      "content": "Tagline (Mantra)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tagline",
+      "label": "Show vertical tagline",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "tagline_position",
+      "label": "Tagline position",
+      "options": [
+        { "value": "right", "label": "Right" },
+        { "value": "left", "label": "Left" },
+        { "value": "none", "label": "Hidden" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline lines",
+      "info": "Press Enter for each stacked line.",
+      "default": "ANCIENT\nWISDOM\nMODERN\nJEWELRY"
     },
     {
       "type": "header",

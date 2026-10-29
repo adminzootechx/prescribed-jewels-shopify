@@ -2311,18 +2311,22 @@ textarea {
   max-width: var(--pj-phi-max-w, 1200px);
   margin: 0 auto;
   padding: 0 clamp(1.25rem, 4vw, 3.5rem);
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: clamp(1.75rem, 4.5vw, 4.5rem);
 }
 
-/* Left vertical tagline */
+/* Vertical tagline */
 .pj-philosophy__tagline {
   display: flex;
   align-items: stretch;
   gap: 0.85rem;
   flex-shrink: 0;
+}
+
+.pj-philosophy__tagline--right {
+  flex-direction: row-reverse;
 }
 
 .pj-philosophy__tagline-bar {
@@ -2352,6 +2356,7 @@ textarea {
 /* Center content */
 .pj-philosophy__center {
   max-width: 680px;
+  flex: 1 1 auto;
 }
 
 .pj-philosophy__heading {
@@ -2377,23 +2382,52 @@ textarea {
   margin: 0;
 }
 
-/* Right celestial emblem */
+/* Celestial emblem */
 .pj-philosophy__emblem {
-  width: var(--pj-phi-emblem-size, 130px);
-  height: var(--pj-phi-emblem-size, 130px);
+  width: var(--pj-phi-emblem-size, 135px);
+  height: auto;
+  aspect-ratio: 387 / 462;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.pj-philosophy__emblem:hover {
+  transform: scale(1.04);
 }
 
 .pj-celestial-emblem {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.pj-celestial-emblem__svg,
+.pj-celestial-emblem__mask {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  -webkit-mask-image: var(--pj-emblem-mask-url);
+  mask-image: var(--pj-emblem-mask-url);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  transition: background-color 0.3s ease;
+}
+
+.pj-celestial-emblem__fallback {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .pj-philosophy__emblem-img {
   width: 100%;
   height: 100%;
@@ -2404,24 +2438,28 @@ textarea {
 /* Responsive breakpoint */
 @media (max-width: 860px) {
   .pj-philosophy__inner {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 1.75rem;
     text-align: left;
+    align-items: flex-start;
   }
 
-  .pj-philosophy__emblem {
-    margin: 0.5rem auto 0;
-    order: 3;
-    width: clamp(100px, 30vw, 130px);
-    height: clamp(100px, 30vw, 130px);
-  }
-
-  .pj-philosophy__tagline {
+  .pj-philosophy__inner--emblem-left .pj-philosophy__emblem {
+    margin: 0 auto;
+    width: clamp(100px, 30vw, 135px);
+    height: auto;
+    aspect-ratio: 387 / 462;
     order: 1;
   }
 
-  .pj-philosophy__center {
+  .pj-philosophy__inner--emblem-left .pj-philosophy__center {
     order: 2;
+    width: 100%;
+  }
+
+  .pj-philosophy__inner--emblem-left .pj-philosophy__tagline {
+    order: 3;
+    margin-top: 0.5rem;
   }
 }
 

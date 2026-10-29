@@ -12,9 +12,9 @@
     "hero": {
       "type": "hero",
       "custom_css": [
-        ".pj-eyebrow {color: #E9D2AF;}",
-        ".pj-hero__lead {color: #E9D2AF;}",
-        ".pj-hero__mantra {color: #E9D2AF;}",
+        ".pj-eyebrow {color: #e9d2af;}",
+        ".pj-hero__lead {color: #e9d2af;}",
+        ".pj-hero__mantra {color: #e9d2af;}",
         ".pj-hero__content {padding-left: 20px;}"
       ],
       "settings": {
@@ -28,7 +28,7 @@
         "cta_label": "EXPLORE DESIGNS",
         "cta_link": "",
         "mantra": "YOUR BIRTHPLACE. YOUR TIME. YOUR GEMSTONE. YOUR STORY.",
-        "text_color": "#E9D2AF",
+        "text_color": "#e9d2af",
         "content_offset_x": 80,
         "content_offset_y": 0,
         "content_max_width": 540,
@@ -37,7 +37,10 @@
         "eyebrow_size": 100,
         "lead_size": 100,
         "mantra_size": 100,
-        "height": 100
+        "height": 100,
+        "mobile_height": 100,
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "personal_by_design": {
@@ -50,8 +53,10 @@
         "show_tagline": true,
         "tagline": "ANCIENT\nWISDOM\nMODERN\nJEWELRY",
         "show_emblem": true,
+        "emblem_position": "left",
         "emblem_color": "#8b7d6b",
-        "emblem_size": 130,
+        "emblem_size": 135,
+        "tagline_position": "right",
         "bg_color": "#e9d2af",
         "text_color": "#1e1b18",
         "body_color": "#574f44",
@@ -59,6 +64,8 @@
         "border_color": "#1a18151f",
         "border_top": true,
         "border_bottom": true,
+        "section_height": 100,
+        "section_scale": 100,
         "max_width": 1200,
         "padding_top": 56,
         "padding_bottom": 56
@@ -165,6 +172,8 @@
         "bg_color": "#120e0a",
         "veil": 60,
         "veil_color": "#120e0a",
+        "section_height": 0,
+        "section_scale": 100,
         "max_width": 1300,
         "grid_gap": 40,
         "padding_top": 72,
@@ -255,7 +264,9 @@
         "text_color": "#f4ebe1",
         "eyebrow": "THE COLLECTION",
         "heading": "SEVEN DESIGNS,\nONE MEANING",
-        "heading_size": 100
+        "section_height": 100,
+        "padding_top": 24,
+        "padding_bottom": 24
       }
     },
     "about_story": {
@@ -265,6 +276,7 @@
         "eyebrow": "About Prescribed Jewels",
         "heading": "Our Story",
         "body": "Prescribed Jewels was born from a belief in the meaning and energy of gemstones.\n\nWe curate authentic, high-quality stones rooted in traditional wisdom and present them with a modern, wearable approach — helping you find a gemstone that truly aligns with you.",
+        "section_height": 100,
         "image_side": "left",
         "image_width": 50,
         "fade_image": true,
@@ -336,7 +348,10 @@
         "eyebrow": "HOW IT WORKS",
         "heading": "A THOUGHTFUL JOURNEY",
         "heading_size": 100,
-        "circle_size": 136
+        "circle_size": 136,
+        "section_height": 100,
+        "padding_top": 24,
+        "padding_bottom": 24
       }
     },
     "closing_split": {
@@ -347,6 +362,7 @@
         "statement": "Personal.\nTimeless.\nYours.",
         "button_label": "Begin your prescription",
         "button_link": "",
+        "section_height": 0,
         "image_side": "left",
         "image_width": 50,
         "min_height": 560,
@@ -569,6 +585,16 @@
       "settings": {
         "height": 90,
         "wheel_size": 100,
+        "mobile_wheel_size": 85,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "note_spread_x": 24,
+        "note_spread_y": 20,
+        "gem_name_y": 0,
+        "arrow_target_offset_x": 0,
+        "arrow_target_offset_y": 0,
+        "arrow_start_offset_x": 0,
+        "arrow_start_offset_y": 0,
         "bg_image": "shopify://shop_images/73437e2c-0127-4dac-ba62-678b9b8bd98d.png",
         "veil": 25,
         "veil_color": "#120e0a",
@@ -601,7 +627,11 @@
         "veil_color": "#2a1c10",
         "veil": 45,
         "align": "center",
+        "section_height": 0,
         "min_height": 640,
+        "padding_top": 64,
+        "padding_bottom": 64,
+        "card_max_width": 1080,
         "card_color": "",
         "text_color": "#1a1815",
         "muted_color": "#4a4237",
