@@ -1295,12 +1295,10 @@ textarea {
 .pj-gem-arrow path {
   fill: none;
   stroke: var(--gem-c, #B69156);
-  stroke-width: 2.6;
+  stroke-width: 2.4;
   stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
 }
 
 .pj-gem-arrow circle {
@@ -1308,7 +1306,22 @@ textarea {
   stroke: var(--gem-c, #B69156);
   stroke-width: 2;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
+}
+
+.pj-gem-arrow__head {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  transform-origin: 0 0;
+}
+
+.pj-gem-arrow__head path {
+  fill: none;
+  stroke: var(--gem-c, #B69156);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 1 !important;
 }
 
 @media (min-width: 960px) {
@@ -1707,9 +1720,10 @@ textarea {
 .pj-wheel-claws i:nth-child(4) { left: 86%; top: 86%; transform: translate(-50%, -50%) rotate(-45deg); }
 
 .pj-wheel-gem-slot.is-active .pj-wheel-gem-inner {
-  --sc: 1.3;
+  --sc: 1.34;
   opacity: 1;
-  filter: drop-shadow(0 12px 14px rgba(26, 24, 21, 0.22));
+  filter: drop-shadow(0 14px 20px rgba(26, 24, 21, 0.42)) drop-shadow(0 0 14px color-mix(in srgb, var(--gem-c, #B69156) 45%, transparent));
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease, filter 0.4s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {

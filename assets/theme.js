@@ -561,6 +561,7 @@
     const arrowSvg = document.getElementById('pj-gem-arrow');
     const arrowPath = document.getElementById('pj-gem-arrow-path');
     const arrowDot = document.getElementById('pj-gem-arrow-dot');
+    const arrowHead = document.getElementById('pj-gem-arrow-head');
     const photoWrap = document.getElementById('pj-gem-photo-wrap');
     const photoImg = document.getElementById('pj-gem-photo');
     const noteFeatures = document.getElementById('pj-gem-features');
@@ -594,10 +595,27 @@
       }
     };
 
-    // A curved arrow from the highlighted stone to the photograph, drawn after wheel settles
+    // A curved arrow from the highlighted stone to the photograph, traveling progressively when gem pops up
     let arrowTimer = null;
-    const placeArrow = (redraw) => {
+    let arrowAnimId = null;
+
+    const stopArrow = () => {
+      if (arrowAnimId) {
+        cancelAnimationFrame(arrowAnimId);
+        arrowAnimId = null;
+      }
+      if (arrowPath) {
+        arrowPath.style.opacity = '0';
+        arrowPath.style.strokeDashoffset = '9999';
+      }
+      if (arrowDot) arrowDot.style.opacity = '0';
+      if (arrowHead) arrowHead.style.opacity = '0';
+    };
+
+    const placeAndAnimateArrow = (animate = true) => {
       if (!arrowSvg || !arrowPath || !wheelHalo || !photoWrap || window.innerWidth < 960) return;
+      stopArrow();
+
       const box = arrowSvg.getBoundingClientRect();
       const halo = wheelHalo.getBoundingClientRect();
       const photo = photoWrap.getBoundingClientRect();
@@ -607,13 +625,13 @@
       const arrowStartX = parseFloat(compStyle.getPropertyValue('--pj-arrow-start-x')) || 0;
       const arrowStartY = parseFloat(compStyle.getPropertyValue('--pj-arrow-start-y')) || 0;
 
-      // The line starts right at the highlighted stone on the wheel
+      // Start point: directly at the left edge of the popped-up stone on the wheel
       const activeEntry = slotElements.find((entry) => entry.slot.classList.contains('is-active'));
       let sx, sy;
       if (activeEntry && activeEntry.inner) {
         const gemRect = activeEntry.inner.getBoundingClientRect();
-        sx = gemRect.left + (gemRect.width * 0.10) - box.left + arrowStartX;
-        sy = gemRect.top + (gemRect.height * 0.5) - box.top + arrowStartY;
+        sx = gemRect.left + (gemRect.width * 0.08) - box.left + arrowStartX;
+        sy = gemRect.top + (gemRect.height * 0.50) - box.top + arrowStartY;
       } else {
         const assembly = wheelHalo.parentElement.getBoundingClientRect();
         const wheelScale = assembly.width / 560;
@@ -621,44 +639,91 @@
         sy = halo.top + halo.height / 2 - box.top + arrowStartY;
       }
 
-      // The head points directly into the center-right of the big gemstone
-      const arrowCurviness = (parseFloat(compStyle.getPropertyValue('--pj-arrow-curviness')) || 100) / 100.0;
-
-      // The head points directly into the center-right tip of the big gemstone (outer edge)
+      // End point: directly at the outer right tip of the big gem
       const ex = photo.left + (photo.width * 0.865) - box.left + arrowTargetX;
       const ey = photo.top + (photo.height * 0.50) - box.top + arrowTargetY;
+
+      // Deep graceful curve matching user media drawing: dips down then rises into the gem tip
+      const arrowCurviness = (parseFloat(compStyle.getPropertyValue('--pj-arrow-curviness')) || 100) / 100.0;
       const reach = Math.max(60, sx - ex);
-      // Graceful sweeping curve matching user media: dips down then rises into the tip
-      const dip = Math.min(115, reach * 0.30 * arrowCurviness);
-      const cp1x = sx - reach * 0.46;
-      const cp1y = sy + (dip * 1.15);
-      const cp2x = ex + reach * 0.34;
-      const cp2y = ey + (dip * 0.12);
+      const dip = Math.min(130, reach * 0.34 * arrowCurviness);
+      const cp1x = sx - reach * 0.48;
+      const cp1y = sy + (dip * 1.25);
+      const cp2x = ex + reach * 0.32;
+      const cp2y = ey + (dip * 0.18);
       const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
       arrowPath.setAttribute('d', d);
       arrowDot.setAttribute('cx', sx.toFixed(1));
       arrowDot.setAttribute('cy', sy.toFixed(1));
 
-      if (redraw) {
-        arrowPath.style.transition = 'none';
-        arrowPath.style.strokeDashoffset = '1';
-        arrowPath.style.opacity = '0';
-        arrowDot.style.opacity = '0';
-        void arrowPath.getBoundingClientRect();
+      const totalLen = arrowPath.getTotalLength();
+      if (!totalLen || totalLen <= 0) return;
+
+      arrowPath.style.strokeDasharray = `${totalLen.toFixed(1)} ${totalLen.toFixed(1)}`;
+
+      if (!animate) {
+        arrowPath.style.strokeDashoffset = '0';
         arrowPath.style.opacity = '1';
         arrowDot.style.opacity = '1';
-        arrowPath.style.transition = 'stroke-dashoffset 0.65s cubic-bezier(0.2, 0.7, 0.1, 1), opacity 0.25s ease';
-        arrowDot.style.transition = 'opacity 0.3s ease';
-        arrowPath.style.strokeDashoffset = '0';
-      } else {
-        arrowPath.style.opacity = '1';
-        arrowDot.style.opacity = '1';
-        arrowPath.style.strokeDashoffset = '0';
+        if (arrowHead) {
+          const pt = arrowPath.getPointAtLength(totalLen);
+          const ptPrev = arrowPath.getPointAtLength(Math.max(0, totalLen - 3));
+          const angle = Math.atan2(pt.y - ptPrev.y, pt.x - ptPrev.x) * (180 / Math.PI);
+          arrowHead.setAttribute('transform', `translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)}) rotate(${angle.toFixed(1)})`);
+          arrowHead.style.opacity = '1';
+        }
+        return;
       }
+
+      // Traveling arrow animation: starts at ring stone and moves along the curve to the big gem
+      arrowPath.style.strokeDashoffset = `${totalLen.toFixed(1)}`;
+      arrowPath.style.opacity = '1';
+      arrowDot.style.opacity = '1';
+
+      const duration = 650;
+      const startTime = performance.now();
+
+      const step = (now) => {
+        const elapsed = now - startTime;
+        const p = Math.min(1, elapsed / duration);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const curLen = ease * totalLen;
+
+        arrowPath.style.strokeDashoffset = `${Math.max(0, totalLen - curLen).toFixed(1)}`;
+
+        if (arrowHead) {
+          if (curLen > 8) {
+            const pt = arrowPath.getPointAtLength(curLen);
+            const ptPrev = arrowPath.getPointAtLength(Math.max(0, curLen - 3));
+            const angle = Math.atan2(pt.y - ptPrev.y, pt.x - ptPrev.x) * (180 / Math.PI);
+            arrowHead.setAttribute('transform', `translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)}) rotate(${angle.toFixed(1)})`);
+            arrowHead.style.opacity = '1';
+          } else {
+            arrowHead.style.opacity = '0';
+          }
+        }
+
+        if (p < 1) {
+          arrowAnimId = requestAnimationFrame(step);
+        } else {
+          arrowAnimId = null;
+          arrowPath.style.strokeDashoffset = '0';
+          if (arrowHead) {
+            const pt = arrowPath.getPointAtLength(totalLen);
+            const ptPrev = arrowPath.getPointAtLength(Math.max(0, totalLen - 3));
+            const angle = Math.atan2(pt.y - ptPrev.y, pt.x - ptPrev.x) * (180 / Math.PI);
+            arrowHead.setAttribute('transform', `translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)}) rotate(${angle.toFixed(1)})`);
+            arrowHead.style.opacity = '1';
+          }
+        }
+      };
+
+      arrowAnimId = requestAnimationFrame(step);
     };
-    window.addEventListener('resize', () => placeArrow(false), { passive: true });
-    window.addEventListener('load', () => setTimeout(() => placeArrow(true), 350));
-    if (photoImg) photoImg.addEventListener('load', () => placeArrow(false));
+
+    window.addEventListener('resize', () => placeAndAnimateArrow(false), { passive: true });
+    window.addEventListener('load', () => setTimeout(() => placeAndAnimateArrow(true), 400));
+    if (photoImg) photoImg.addEventListener('load', () => placeAndAnimateArrow(false));
 
     const updateInfo = (animate) => {
       const currentStone = GEMSTONES[activeStoneIndex];
@@ -672,7 +737,8 @@
           wheelPlanet.textContent = `Ruled by ${cap(body)}${tradition ? ' (' + cap(tradition) + ')' : ''}`;
         }
         if (wheelSection) {
-          // Pale stones (diamond, pearl, white sapphire) take their deeper tone so the line stays visible on the sand
+          wheelSection.style.setProperty('--gem-c1', currentStone.c1);
+          wheelSection.style.setProperty('--gem-c2', currentStone.c2);
           if (!wheelSection.hasAttribute('data-fixed-accent')) wheelSection.style.setProperty('--gem-c', currentStone.c1);
         }
         const notes = GEM_NOTES[activeStoneIndex] || ['', '', ''];
@@ -685,7 +751,7 @@
       };
       if (animate && infoBox) {
         infoBox.classList.add('is-fading');
-        setTimeout(apply, 260);
+        setTimeout(apply, 200);
       } else {
         apply();
       }
@@ -693,37 +759,47 @@
 
     const renderWheelState = (animate = true) => {
       const activeSlot = ((wheelStep % NUM_SLOTS) + NUM_SLOTS) % NUM_SLOTS;
-      if (animate && arrowPath && arrowDot) {
-        // While wheel is in motion, hide arrow so it does not connect prematurely
-        arrowPath.style.transition = 'none';
-        arrowPath.style.opacity = '0';
-        arrowPath.style.strokeDashoffset = '1';
-        arrowDot.style.opacity = '0';
+
+      clearTimeout(arrowTimer);
+      stopArrow();
+
+      // When moving/animating, remove is-active from all slots so no stone pops up while rotating
+      if (animate) {
+        slotElements.forEach((entry) => entry.slot.classList.remove('is-active'));
       }
+
       wheelRotor.style.transform = `rotate(${-wheelStep * 45}deg)`;
       if (wheelFrameSpin) wheelFrameSpin.style.transform = `rotate(${-wheelStep * 45}deg)`;
-      // Counter-turn each stone by the wheel's rotation so it always reads upright
       slotElements.forEach((entry) => entry.inner.style.setProperty('--ur', `${wheelStep * 45}deg`));
 
       [-3, -2, -1, 0, 1, 2, 3, 4].forEach((rel) => {
         const slotIdx = (activeSlot + rel + NUM_SLOTS) % NUM_SLOTS;
         const stoneIdx = (((activeStoneIndex + rel) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
         const entry = slotElements[slotIdx];
-        entry.slot.classList.toggle('is-active', rel === 0);
+        if (!animate) {
+          entry.slot.classList.toggle('is-active', rel === 0);
+        }
         setSlotGem(entry, stoneIdx, slotIdx);
       });
 
-      updateInfo(animate);
-
-      clearTimeout(arrowTimer);
-      if (animate) {
-        // When the wheel finishes its rotation and stops (820ms) and the gem pops up, start arrow pointing!
-        arrowTimer = setTimeout(() => {
-          placeArrow(true);
-        }, 840);
-      } else {
-        placeArrow(false);
+      if (!animate) {
+        updateInfo(false);
+        placeAndAnimateArrow(false);
+        return;
       }
+
+      // Wheel rotates for 820ms:
+      // When wheel arrives and stops at 820ms -> Gem pops up on the ring -> Arrow starts moving towards the big gem!
+      arrowTimer = setTimeout(() => {
+        const activeEntry = slotElements[activeSlot];
+        if (activeEntry) activeEntry.slot.classList.add('is-active');
+
+        updateInfo(true);
+
+        setTimeout(() => {
+          placeAndAnimateArrow(true);
+        }, 40);
+      }, 820);
     };
 
     const advance = () => {
