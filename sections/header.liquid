@@ -12,29 +12,30 @@
 {%- if hs.overlay_hero -%}
 <style>
   .template-index .pj-header--overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
     z-index: 100;
+    transition: background-color 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+  .template-index .pj-header--overlay:not(.is-scrolled) {
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .template-index .pj-header--overlay.is-scrolled {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    animation: pj-header-float-in 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    background-color: color-mix(in srgb, var(--pj-hdr-bg-scrolled, #120E0A) calc(var(--pj-hdr-bg-opacity, 0.85) * 100%), transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(244, 235, 225, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   }
-  @keyframes pj-header-float-in {
-    from {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  .template-index .pj-header--overlay:has(#pj-mobile-nav:not([hidden])) {
+    background-color: var(--pj-hdr-bg-scrolled, #120E0A);
   }
   .template-index .pj-hero {
     padding-top: calc(var(--pj-hdr-py, 18px) * 2 + 36px);
