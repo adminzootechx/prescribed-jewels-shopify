@@ -154,7 +154,7 @@
         "tagline_position": "right",
         "tagline": "ANCIENT\nWISDOM\nMODERN\nJEWELRY",
         "bg_color": "#e9d2af",
-        "text_color": "#40200E",
+        "text_color": "#40200e",
         "body_color": "#684320",
         "accent_color": "#8b7d6b",
         "border_color": "#1a18151f",
@@ -279,7 +279,7 @@
     "about_story": {
       "type": "about-story",
       "settings": {
-        "image": "shopify://shop_images/Gold_Garnet_Jewellery_on_Silk.png",
+        "image": "shopify://shop_images/6de1ba46-5e90-4354-8326-747a029ae81f.png",
         "eyebrow": "About Prescribed Jewels",
         "heading": "Our Story",
         "body": "Prescribed Jewels was born from a belief in the meaning and energy of gemstones.\n\nWe curate authentic, high-quality stones rooted in traditional wisdom and present them with a modern, wearable approach — helping you find a gemstone that truly aligns with you.",
@@ -288,7 +288,8 @@
         "image_width": 50,
         "fade_image": true,
         "padding": 0,
-        "bg_color": "#e9d2af",
+        "bg_color": "#E9D2AF",
+        "bg_opacity": 100,
         "text_color": "#684320",
         "muted_color": "#40200e",
         "accent_color": "#14110e",

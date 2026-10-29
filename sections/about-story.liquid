@@ -1,6 +1,7 @@
 {%- liquid
   assign s = section.settings
   assign paragraphs = s.body | newline_to_br | split: '<br />'
+  assign bg_op = s.bg_opacity | default: 100
 -%}
 {% render 'pj-section-style', section: section %}
 
@@ -8,7 +9,20 @@
   id="pj-about"
   class="pj-about{% if s.image_side == 'right' %} pj-about--image-right{% endif %}{% unless s.fade_image %} pj-about--hard-edge{% endunless %}"
   aria-labelledby="pj-about-heading"
-  style="--pj-about-image: {{ s.image_width }}%; --pj-about-pad: {{ s.padding }}px;{% if s.section_height > 0 %} --pj-about-h: {{ s.section_height }}vh; min-height: {{ s.section_height }}vh;{% endif %}"
+  style="
+    --pj-about-image: {{ s.image_width }}%;
+    --pj-about-pad: {{ s.padding }}px;
+    {% if s.bg_color != blank %}
+      {% if bg_op < 100 %}
+        --pj-about-bg: color-mix(in srgb, {{ s.bg_color }} {{ bg_op }}%, transparent);
+        --pj-s-bg: color-mix(in srgb, {{ s.bg_color }} {{ bg_op }}%, transparent);
+      {% else %}
+        --pj-about-bg: {{ s.bg_color }};
+        --pj-s-bg: {{ s.bg_color }};
+      {% endif %}
+    {% endif %}
+    {% if s.section_height > 0 %} --pj-about-h: {{ s.section_height }}vh; min-height: {{ s.section_height }}vh;{% endif %}
+  "
 >
   <div class="pj-about__media">
     {%- if s.image != blank -%}
@@ -55,6 +69,7 @@
 
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#F8E6D3" },
+    { "type": "range", "id": "bg_opacity", "label": "Background opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100, "info": "Reduce to make the background color transparent or blend with dark page background." },
     { "type": "color", "id": "text_color", "label": "Heading and label", "default": "#14110E" },
     { "type": "color", "id": "muted_color", "label": "Body text", "default": "#2A221B" },
     { "type": "color", "id": "accent_color", "label": "Lines", "default": "#14110E" },

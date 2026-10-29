@@ -1,4 +1,29 @@
-<footer class="pj-footer" role="contentinfo" style="--pj-ftr-pt: {{ section.settings.padding_top | default: 28 }}px; --pj-ftr-pb: {{ section.settings.padding_bottom | default: 28 }}px; padding-top: var(--pj-ftr-pt); padding-bottom: var(--pj-ftr-pb);">
+{%- assign s = section.settings -%}
+{%- assign bg_op = s.bg_opacity | default: 100 -%}
+
+<footer
+  class="pj-footer{% if s.show_border_top == false %} pj-footer--no-border{% endif %}"
+  role="contentinfo"
+  style="
+    --pj-ftr-pt: {{ s.padding_top | default: 28 }}px;
+    --pj-ftr-pb: {{ s.padding_bottom | default: 28 }}px;
+    padding-top: var(--pj-ftr-pt);
+    padding-bottom: var(--pj-ftr-pb);
+    {% if s.bg_color != blank %}
+      {% if bg_op < 100 %}
+        --pj-ftr-bg: color-mix(in srgb, {{ s.bg_color }} {{ bg_op }}%, transparent);
+      {% else %}
+        --pj-ftr-bg: {{ s.bg_color }};
+      {% endif %}
+    {% endif %}
+    {% if s.border_color != blank %}--pj-ftr-border: {{ s.border_color }};{% endif %}
+    {% if s.logo_color != blank %}--pj-ftr-logo-color: {{ s.logo_color }};{% endif %}
+    {% if s.link_color != blank %}--pj-ftr-link-color: {{ s.link_color }};{% endif %}
+    {% if s.link_hover_color != blank %}--pj-ftr-link-hover: {{ s.link_hover_color }};{% endif %}
+    {% if s.social_color != blank %}--pj-ftr-social-color: {{ s.social_color }};{% endif %}
+    {% if s.social_hover_color != blank %}--pj-ftr-social-hover: {{ s.social_hover_color }};{% endif %}
+  "
+>
   <div class="pj-container pj-footer__bar">
     <a href="{{ routes.root_url }}" class="pj-footer__logo" aria-label="{{ shop.name | default: 'Prescribed Jewels' }}">
       {% render 'pj-monogram', variant: 'wordmark' %}
@@ -14,7 +39,7 @@
         data-open-prescription
         data-design="07 — Custom Bespoke Commission"
       >
-        {{ section.settings.inquire_label }}
+        {{ s.inquire_label }}
       </button>
     </nav>
 
@@ -41,7 +66,20 @@
   "name": "Footer",
   "class": "pj-section-footer",
   "settings": [
+    { "type": "header", "content": "Navigation & Actions" },
     { "type": "text", "id": "inquire_label", "label": "Inquire button label", "default": "Inquire" },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#120E0A" },
+    { "type": "range", "id": "bg_opacity", "label": "Background opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100, "info": "Adjust to make the footer background transparent or blend with dark page background." },
+    { "type": "checkbox", "id": "show_border_top", "label": "Show top border", "default": true },
+    { "type": "color", "id": "border_color", "label": "Top border line color", "default": "rgba(244, 235, 225, 0.1)" },
+    { "type": "color", "id": "logo_color", "label": "Logo / Brand text color", "default": "#E9D2AF" },
+    { "type": "color", "id": "link_color", "label": "Links color", "default": "#A6998A" },
+    { "type": "color", "id": "link_hover_color", "label": "Links hover color", "default": "#E9D2AF" },
+    { "type": "color", "id": "social_color", "label": "Social icons color", "default": "#A6998A" },
+    { "type": "color", "id": "social_hover_color", "label": "Social icons hover color", "default": "#E9D2AF" },
+
     { "type": "header", "content": "Layout & Padding" },
     { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 10, "max": 100, "step": 2, "unit": "px", "default": 28 },
     { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 10, "max": 100, "step": 2, "unit": "px", "default": 28 }

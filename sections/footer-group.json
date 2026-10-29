@@ -14,7 +14,18 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "inquire_label": "Inquire"
+        "inquire_label": "Inquire",
+        "bg_color": "#120e0a",
+        "bg_opacity": 100,
+        "show_border_top": true,
+        "border_color": "#ffffff1a",
+        "logo_color": "#e9d2af",
+        "link_color": "#a6998a",
+        "link_hover_color": "#e9d2af",
+        "social_color": "#a6998a",
+        "social_hover_color": "#e9d2af",
+        "padding_top": 28,
+        "padding_bottom": 28
       },
       "blocks": {
         "link1": {
