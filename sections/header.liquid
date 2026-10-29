@@ -38,7 +38,15 @@
     background-color: var(--pj-hdr-bg-scrolled, #120E0A);
   }
   .template-index .pj-hero {
+    height: var(--pj-hero-h, 100vh);
+    height: var(--pj-hero-dvh, var(--pj-hero-h, 100vh));
     padding-top: calc(var(--pj-hdr-py, 18px) * 2 + 36px);
+  }
+  @media (max-width: 768px) {
+    .template-index .pj-hero {
+      height: var(--pj-hero-mobile-h, var(--pj-hero-h, 100vh));
+      height: var(--pj-hero-mobile-dvh, var(--pj-hero-dvh, var(--pj-hero-mobile-h, 100dvh)));
+    }
   }
 </style>
 {%- endif -%}

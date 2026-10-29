@@ -457,7 +457,8 @@ textarea {
 
 .pj-hero {
   position: relative;
-  height: calc(var(--pj-hero-h, 100vh) - 54px);
+  height: var(--pj-hero-h, 100vh);
+  height: var(--pj-hero-dvh, var(--pj-hero-h, 100vh));
   min-height: var(--pj-hero-min-h, 460px);
   padding-top: var(--pj-sec-pt, 0px);
   padding-bottom: var(--pj-sec-pb, 0px);
@@ -621,7 +622,8 @@ textarea {
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .pj-hero {
-    height: calc(var(--pj-hero-h, 100vh) - 54px);
+    height: var(--pj-hero-h, 100vh);
+    height: var(--pj-hero-dvh, var(--pj-hero-h, 100vh));
     min-height: 540px;
   }
   .pj-hero__content {
@@ -635,7 +637,8 @@ textarea {
 
 @media (max-width: 768px) {
   .pj-hero {
-    height: calc(var(--pj-hero-mobile-h, var(--pj-hero-h, 100vh)) - 54px);
+    height: var(--pj-hero-mobile-h, var(--pj-hero-h, 100vh));
+    height: var(--pj-hero-mobile-dvh, var(--pj-hero-dvh, var(--pj-hero-mobile-h, 100dvh)));
     min-height: 520px;
     padding-top: var(--pj-sec-pt-mobile, 0px);
     padding-bottom: var(--pj-sec-pb-mobile, 0px);
@@ -660,6 +663,12 @@ textarea {
     font-size: calc(clamp(0.52rem, 2.3vw, 0.65rem) * var(--pj-hero-mantra-s, 1));
     letter-spacing: 0.14em;
     line-height: 1.4;
+  }
+}
+
+@media (max-height: 600px) {
+  .pj-hero {
+    min-height: 0;
   }
 }
 

@@ -7,7 +7,9 @@
   data-interval="{{ s.slide_seconds | times: 1000 }}"
   style="
     --pj-hero-h: {{ s.height }}vh;
+    --pj-hero-dvh: {{ s.height }}dvh;
     --pj-hero-mobile-h: {{ s.mobile_height | default: s.height | default: 100 }}vh;
+    --pj-hero-mobile-dvh: {{ s.mobile_height | default: s.height | default: 100 }}dvh;
     --pj-sec-pt: {{ s.padding_top | default: 0 }}px;
     --pj-sec-pb: {{ s.padding_bottom | default: 0 }}px;
     --pj-hs-sec: {{ s.title_size | divided_by: 100.0 }};
