@@ -608,11 +608,13 @@
       }
 
       // The head points directly into the center-right of the big gemstone
-      const ex = photo.left + (photo.width * 0.80) - box.left + arrowTargetX;
+      // The head points directly into the center-right tip of the big gemstone
+      const ex = photo.left + (photo.width * 0.84) - box.left + arrowTargetX;
       const ey = photo.top + (photo.height * 0.50) - box.top + arrowTargetY;
       const reach = Math.max(60, sx - ex);
-      const lift = Math.min(130, reach * 0.28);
-      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${(sx - reach * 0.45).toFixed(1)} ${(sy + lift).toFixed(1)}, ${(ex + reach * 0.35).toFixed(1)} ${(ey - lift * 0.4).toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      // Subtle, gentle curve matching user sketch with horizontal entry tangent
+      const dip = Math.min(38, reach * 0.11);
+      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${(sx - reach * 0.45).toFixed(1)} ${(sy + dip).toFixed(1)}, ${(ex + reach * 0.38).toFixed(1)} ${ey.toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
       arrowPath.setAttribute('d', d);
       arrowDot.setAttribute('cx', sx.toFixed(1));
       arrowDot.setAttribute('cy', sy.toFixed(1));

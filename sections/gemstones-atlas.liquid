@@ -21,8 +21,8 @@
     --pj-w-pb: {{ section.settings.padding_bottom | default: 20 }}px;
     --pj-w-glow: {{ section.settings.glow_color }};
     --pj-w-glow-a: {{ section.settings.glow_strength }}%;
-    --pj-note-spread-x: {{ section.settings.note_spread_x | default: 24 }}px;
-    --pj-note-spread-y: {{ section.settings.note_spread_y | default: 20 }}px;
+    --pj-note-spread-x: {{ section.settings.note_spread_x | default: 36 }}px;
+    --pj-note-spread-y: {{ section.settings.note_spread_y | default: 30 }}px;
     --pj-gem-name-y: {{ section.settings.gem_name_y | default: 0 }}px;
     --pj-arrow-target-x: {{ section.settings.arrow_target_offset_x | default: 0 }}px;
     --pj-arrow-target-y: {{ section.settings.arrow_target_offset_y | default: 0 }}px;
@@ -58,12 +58,12 @@
         <div class="pj-gem-diagram" id="pj-wheel-info-box" aria-live="polite">
           <svg class="pj-gem-diagram__lines" viewBox="0 0 720 540" aria-hidden="true" focusable="false">
             <g class="pj-gem-diagram__leaders">
-              <path d="M165 48 C 220 54, 260 88, 286 136" />
-              <path d="M555 48 C 500 54, 460 88, 434 136" />
-              <path d="M165 490 C 205 450, 230 400, 250 346" />
-              <path d="M555 490 C 515 450, 490 400, 470 346" />
-              <circle cx="165" cy="48" r="4" /><circle cx="555" cy="48" r="4" />
-              <circle cx="165" cy="490" r="4" /><circle cx="555" cy="490" r="4" />
+              <path d="M125 40 C 190 48, 240 95, 275 145" />
+              <path d="M595 40 C 530 48, 480 95, 445 145" />
+              <path d="M125 500 C 180 460, 220 400, 245 345" />
+              <path d="M595 500 C 540 460, 500 400, 475 345" />
+              <circle cx="125" cy="40" r="4" /><circle cx="595" cy="40" r="4" />
+              <circle cx="125" cy="500" r="4" /><circle cx="595" cy="500" r="4" />
             </g>
           </svg>
 
@@ -164,8 +164,8 @@
     { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 20 },
 
     { "type": "header", "content": "Diagram Layout & Arrow Positioning" },
-    { "type": "range", "id": "note_spread_x", "label": "Spread Notes Horizontally", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 24, "info": "Moves the 4 note boxes outward left and right away from the gem" },
-    { "type": "range", "id": "note_spread_y", "label": "Spread Notes Vertically", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 20, "info": "Moves the 4 note boxes outward top and bottom away from the gem" },
+    { "type": "range", "id": "note_spread_x", "label": "Spread Notes Horizontally", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 36, "info": "Moves the 4 note boxes outward left and right away from the gem" },
+    { "type": "range", "id": "note_spread_y", "label": "Spread Notes Vertically", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 30, "info": "Moves the 4 note boxes outward top and bottom away from the gem" },
     { "type": "range", "id": "gem_name_y", "label": "Stone Name & Planet (Up/Down)", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0, "info": "Fine-tune vertical position of the stone title centered directly below the big gem" },
     { "type": "range", "id": "arrow_target_offset_x", "label": "Arrow Target Point X Offset", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0 },
     { "type": "range", "id": "arrow_target_offset_y", "label": "Arrow Target Point Y Offset", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0 },
