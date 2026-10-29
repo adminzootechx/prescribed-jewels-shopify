@@ -591,6 +591,8 @@
         "note_spread_x": 36,
         "note_spread_y": 30,
         "gem_name_y": 0,
+        "info_offset_x": 25,
+        "arrow_curviness": 100,
         "arrow_target_offset_x": 0,
         "arrow_target_offset_y": 0,
         "arrow_start_offset_x": 0,

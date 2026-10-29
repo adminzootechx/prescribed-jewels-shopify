@@ -1234,6 +1234,12 @@ textarea {
   padding-left: clamp(0.75rem, 3.2vw, 3.25rem);
 }
 
+@media (min-width: 769px) {
+  .pj-gemstones-wheel__info {
+    transform: translateX(var(--pj-info-offset-x, 25px));
+  }
+}
+
 .pj-gemstones-wheel__active-box {
   max-width: 560px;
   background: none;

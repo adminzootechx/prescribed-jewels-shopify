@@ -24,6 +24,8 @@
     --pj-note-spread-x: {{ section.settings.note_spread_x | default: 36 }}px;
     --pj-note-spread-y: {{ section.settings.note_spread_y | default: 30 }}px;
     --pj-gem-name-y: {{ section.settings.gem_name_y | default: 0 }}px;
+    --pj-info-offset-x: {{ section.settings.info_offset_x | default: 25 }}px;
+    --pj-arrow-curviness: {{ section.settings.arrow_curviness | default: 100 }};
     --pj-arrow-target-x: {{ section.settings.arrow_target_offset_x | default: 0 }}px;
     --pj-arrow-target-y: {{ section.settings.arrow_target_offset_y | default: 0 }}px;
     --pj-arrow-start-x: {{ section.settings.arrow_start_offset_x | default: 0 }}px;
@@ -167,6 +169,8 @@
     { "type": "range", "id": "note_spread_x", "label": "Spread Notes Horizontally", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 36, "info": "Moves the 4 note boxes outward left and right away from the gem" },
     { "type": "range", "id": "note_spread_y", "label": "Spread Notes Vertically", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 30, "info": "Moves the 4 note boxes outward top and bottom away from the gem" },
     { "type": "range", "id": "gem_name_y", "label": "Stone Name & Planet (Up/Down)", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0, "info": "Fine-tune vertical position of the stone title centered directly below the big gem" },
+    { "type": "range", "id": "info_offset_x", "label": "Shift Info Box Left / Right (X Offset)", "min": -50, "max": 100, "step": 5, "unit": "px", "default": 25, "info": "Moves the entire left gemstone and 4 notes diagram closer to or further from the rotating wheel" },
+    { "type": "range", "id": "arrow_curviness", "label": "Arrow Curviness (%)", "min": 20, "max": 200, "step": 5, "unit": "%", "default": 100, "info": "Controls the depth and curvature of the connecting arrow into the gem" },
     { "type": "range", "id": "arrow_target_offset_x", "label": "Arrow Target Point X Offset", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0 },
     { "type": "range", "id": "arrow_target_offset_y", "label": "Arrow Target Point Y Offset", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0 },
     { "type": "range", "id": "arrow_start_offset_x", "label": "Arrow Start Point X Offset", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0 },

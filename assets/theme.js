@@ -27,12 +27,26 @@
     });
   }
 
-  /* Sticky / Scrolled Header Glass Effect */
+  /* Sticky / Scrolled Header Floating Effect once Hero section ends */
   const header = document.querySelector('.pj-header');
   if (header) {
+    const hero = document.querySelector('.pj-hero');
+    const getHeroThreshold = () => {
+      if (hero) {
+        // Hero ends when the bottom of hero reaches near the header height
+        const heroBottom = hero.offsetTop + hero.offsetHeight;
+        const headerH = header.offsetHeight || 72;
+        return Math.max(100, heroBottom - headerH);
+      }
+      return 60;
+    };
+
+    let heroThreshold = getHeroThreshold();
+    window.addEventListener('resize', () => { heroThreshold = getHeroThreshold(); }, { passive: true });
+
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 30;
-      header.classList.toggle('is-scrolled', isScrolled);
+      const isPastHero = window.scrollY >= heroThreshold;
+      header.classList.toggle('is-scrolled', isPastHero);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
@@ -608,13 +622,19 @@
       }
 
       // The head points directly into the center-right of the big gemstone
+      const arrowCurviness = (parseFloat(compStyle.getPropertyValue('--pj-arrow-curviness')) || 100) / 100.0;
+
       // The head points directly into the center-right tip of the big gemstone
       const ex = photo.left + (photo.width * 0.84) - box.left + arrowTargetX;
       const ey = photo.top + (photo.height * 0.50) - box.top + arrowTargetY;
       const reach = Math.max(60, sx - ex);
-      // Subtle, gentle curve matching user sketch with horizontal entry tangent
-      const dip = Math.min(38, reach * 0.11);
-      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${(sx - reach * 0.45).toFixed(1)} ${(sy + dip).toFixed(1)}, ${(ex + reach * 0.38).toFixed(1)} ${ey.toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      // More curvy: deep, sweeping graceful curve scaled by arrowCurviness
+      const dip = Math.min(105, reach * 0.28 * arrowCurviness);
+      const cp1x = sx - reach * 0.44;
+      const cp1y = sy + dip;
+      const cp2x = ex + reach * 0.36;
+      const cp2y = ey + (dip * 0.08);
+      const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
       arrowPath.setAttribute('d', d);
       arrowDot.setAttribute('cx', sx.toFixed(1));
       arrowDot.setAttribute('cy', sy.toFixed(1));
