@@ -1,11 +1,35 @@
 {%- assign s = section.settings -%}
 {% render 'pj-section-style', section: section %}
 
+{%- assign card_bg = s.card_color | default: '#120E0A' -%}
+{%- assign card_op = s.card_opacity | default: 75 -%}
+{%- assign card_blur_val = s.card_blur | default: 14 -%}
+{%- assign card_border_c = s.card_border_color | default: '#B69156' -%}
+{%- assign card_border_op = s.card_border_opacity | default: 25 -%}
+
 <section
   id="pj-story"
   class="pj-story pj-section pj-story--{{ s.align }}{% if s.show_card %} pj-story--has-card{% endif %}"
   aria-labelledby="pj-story-heading"
-  style="--pj-hs-sec: {{ s.heading_size | divided_by: 100.0 }}; --pj-story-veil: {{ s.veil }}%; --pj-story-veil-color: {{ s.veil_color | default: '#2A1C10' }}; --pj-story-min: {{ s.min_height }}px; {% if s.section_height > 0 %}--pj-story-h: {{ s.section_height }}vh; {% endif %}--pj-story-pt: {{ s.padding_top | default: 64 }}px; --pj-story-pb: {{ s.padding_bottom | default: 64 }}px; --pj-story-card-max-w: {{ s.card_max_width | default: 1080 }}px; --pj-story-focus: {{ s.focus_x }}% {{ s.focus_y }}%;{% if s.card_color != blank %} --pj-story-card-bg: {{ s.card_color }};{% endif %}"
+  style="
+    --pj-hs-sec: {{ s.heading_size | divided_by: 100.0 }};
+    --pj-story-veil: {{ s.veil }}%;
+    --pj-story-veil-color: {{ s.veil_color | default: '#2A1C10' }};
+    --pj-story-min: {{ s.min_height }}px;
+    {% if s.section_height > 0 %}--pj-story-h: {{ s.section_height }}vh;{% endif %}
+    --pj-story-pt: {{ s.padding_top | default: 64 }}px;
+    --pj-story-pb: {{ s.padding_bottom | default: 64 }}px;
+    --pj-story-card-max-w: {{ s.card_max_width | default: 1080 }}px;
+    --pj-story-focus: {{ s.focus_x }}% {{ s.focus_y }}%;
+    --pj-story-card-bg: color-mix(in srgb, {{ card_bg }} {{ card_op }}%, transparent);
+    --pj-story-card-blur: {{ card_blur_val }}px;
+    --pj-story-card-border: color-mix(in srgb, {{ card_border_c }} {{ card_border_op }}%, transparent);
+    --pj-story-card-text: {{ s.card_text_color | default: '#F4EBE1' }};
+    --pj-story-card-muted: {{ s.card_muted_color | default: '#D9CFC2' }};
+    --pj-story-card-eyebrow: {{ s.card_eyebrow_color | default: '#C9A15B' }};
+    --pj-story-card-btn-bg: {{ s.card_btn_bg | default: '#B69156' }};
+    --pj-story-card-btn-text: {{ s.card_btn_text | default: '#120E0A' }};
+  "
 >
   <div class="pj-story__bg" aria-hidden="true">
     {%- if s.image != blank -%}
@@ -73,11 +97,17 @@
     { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 0, "max": 180, "step": 4, "unit": "px", "default": 64 },
     { "type": "range", "id": "card_max_width", "label": "Framed Card Max Width", "min": 600, "max": 1200, "step": 20, "unit": "px", "default": 1080 },
 
-    { "type": "header", "content": "Colours" },
-    { "type": "color", "id": "card_color", "label": "Card background color", "info": "Leave empty for translucent warm white." },
-    { "type": "color", "id": "text_color", "label": "Heading and label", "default": "#1A1815" },
-    { "type": "color", "id": "muted_color", "label": "Body text", "default": "#4A4237" },
-    { "type": "color", "id": "accent_color", "label": "Button background", "default": "#12261E", "info": "Fill colour of the button." },
+    { "type": "header", "content": "Card Style & Colors (Transparent Glass / Colors)" },
+    { "type": "color", "id": "card_color", "label": "Card background color", "default": "#120E0A", "info": "Default is transparent black / dark glass." },
+    { "type": "range", "id": "card_opacity", "label": "Card background intensity (Opacity)", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 75, "info": "Change intensity / transparency of the card." },
+    { "type": "range", "id": "card_blur", "label": "Card glass blur", "min": 0, "max": 30, "step": 2, "unit": "px", "default": 14 },
+    { "type": "color", "id": "card_border_color", "label": "Card border color", "default": "#B69156" },
+    { "type": "range", "id": "card_border_opacity", "label": "Card border intensity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 25 },
+    { "type": "color", "id": "card_text_color", "label": "Card title & heading color", "default": "#F4EBE1" },
+    { "type": "color", "id": "card_muted_color", "label": "Card body text color", "default": "#D9CFC2" },
+    { "type": "color", "id": "card_eyebrow_color", "label": "Card eyebrow & monogram color", "default": "#C9A15B" },
+    { "type": "color", "id": "card_btn_bg", "label": "Button background color", "default": "#B69156" },
+    { "type": "color", "id": "card_btn_text", "label": "Button text color", "default": "#120E0A" },
 
     { "type": "header", "content": "Fonts and sizes" },
     { "type": "checkbox", "id": "use_custom_fonts", "label": "Use the fonts chosen below", "default": false, "info": "Off: the theme fonts." },
