@@ -478,7 +478,7 @@
 
     const NUM_SLOTS = 8;
     const RADIUS = 230;
-    const ROTATE_MS = 2000;
+    const ROTATE_MS = 4500;
     const slotElements = [];
     const gemUrls = (wheelRotor.getAttribute('data-gem-urls') || '').split('|');
     const views = (wheelRotor.getAttribute('data-gem-views') || '').split('|').map((v) => v.split(',').filter(Boolean));
@@ -612,7 +612,7 @@
       let sx, sy;
       if (activeEntry && activeEntry.inner) {
         const gemRect = activeEntry.inner.getBoundingClientRect();
-        sx = gemRect.left + (gemRect.width * 0.15) - box.left + arrowStartX;
+        sx = gemRect.left + (gemRect.width * 0.10) - box.left + arrowStartX;
         sy = gemRect.top + (gemRect.height * 0.5) - box.top + arrowStartY;
       } else {
         const assembly = wheelHalo.parentElement.getBoundingClientRect();
@@ -624,16 +624,16 @@
       // The head points directly into the center-right of the big gemstone
       const arrowCurviness = (parseFloat(compStyle.getPropertyValue('--pj-arrow-curviness')) || 100) / 100.0;
 
-      // The head points directly into the center-right tip of the big gemstone
-      const ex = photo.left + (photo.width * 0.84) - box.left + arrowTargetX;
+      // The head points directly into the center-right tip of the big gemstone (outer edge)
+      const ex = photo.left + (photo.width * 0.865) - box.left + arrowTargetX;
       const ey = photo.top + (photo.height * 0.50) - box.top + arrowTargetY;
       const reach = Math.max(60, sx - ex);
-      // More curvy: deep, sweeping graceful curve scaled by arrowCurviness
-      const dip = Math.min(105, reach * 0.28 * arrowCurviness);
-      const cp1x = sx - reach * 0.44;
-      const cp1y = sy + dip;
-      const cp2x = ex + reach * 0.36;
-      const cp2y = ey + (dip * 0.08);
+      // Graceful sweeping curve matching user media: dips down then rises into the tip
+      const dip = Math.min(115, reach * 0.30 * arrowCurviness);
+      const cp1x = sx - reach * 0.46;
+      const cp1y = sy + (dip * 1.15);
+      const cp2x = ex + reach * 0.34;
+      const cp2y = ey + (dip * 0.12);
       const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
       arrowPath.setAttribute('d', d);
       arrowDot.setAttribute('cx', sx.toFixed(1));
@@ -647,7 +647,7 @@
         void arrowPath.getBoundingClientRect();
         arrowPath.style.opacity = '1';
         arrowDot.style.opacity = '1';
-        arrowPath.style.transition = 'stroke-dashoffset 0.75s cubic-bezier(0.2, 0.7, 0.1, 1), opacity 0.3s ease';
+        arrowPath.style.transition = 'stroke-dashoffset 0.65s cubic-bezier(0.2, 0.7, 0.1, 1), opacity 0.25s ease';
         arrowDot.style.transition = 'opacity 0.3s ease';
         arrowPath.style.strokeDashoffset = '0';
       } else {
@@ -657,7 +657,7 @@
       }
     };
     window.addEventListener('resize', () => placeArrow(false), { passive: true });
-    window.addEventListener('load', () => placeArrow(true));
+    window.addEventListener('load', () => setTimeout(() => placeArrow(true), 350));
     if (photoImg) photoImg.addEventListener('load', () => placeArrow(false));
 
     const updateInfo = (animate) => {
@@ -720,7 +720,7 @@
         // When the wheel finishes its rotation and stops (820ms) and the gem pops up, start arrow pointing!
         arrowTimer = setTimeout(() => {
           placeArrow(true);
-        }, 820);
+        }, 840);
       } else {
         placeArrow(false);
       }

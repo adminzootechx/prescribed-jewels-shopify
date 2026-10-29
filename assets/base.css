@@ -1236,7 +1236,7 @@ textarea {
 
 @media (min-width: 769px) {
   .pj-gemstones-wheel__info {
-    transform: translateX(var(--pj-info-offset-x, 25px));
+    transform: translateX(var(--pj-info-offset-x, 45px));
   }
 }
 
@@ -1298,11 +1298,18 @@ textarea {
   stroke-width: 2.6;
   stroke-linecap: round;
   stroke-dasharray: 1;
-  stroke-dashoffset: 0;
+  stroke-dashoffset: 1;
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
 
-.pj-gem-arrow circle { fill: var(--pj-w-bg, #120E0A); stroke: var(--gem-c, #B69156); stroke-width: 2; transition: opacity 0.3s ease; }
+.pj-gem-arrow circle {
+  fill: var(--pj-w-bg, #120E0A);
+  stroke: var(--gem-c, #B69156);
+  stroke-width: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 
 @media (min-width: 960px) {
   .pj-gem-arrow { display: block; }
@@ -1392,10 +1399,10 @@ textarea {
 .pj-gem-diagram__name .pj-gemstones-wheel__title { margin: 0; font-weight: 500; letter-spacing: 0.03em; text-wrap: balance; color: var(--pj-w-text, #F4EBE1); font-size: calc(max(1.6rem, 4.6cqw) * var(--pj-hs, 1) * var(--pj-hs-sec, 1)); line-height: 1.04; }
 
 .pj-gem-note { position: absolute; width: 35%; max-width: 320px; transition: opacity 0.26s ease, transform 0.26s ease; }
-.pj-gem-note--tl { left: calc(-10% - var(--pj-note-spread-x, 36px)); top: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: right; }
-.pj-gem-note--tr { right: calc(-8% - var(--pj-note-spread-x, 36px)); top: calc(-5% - var(--pj-note-spread-y, 30px)); }
-.pj-gem-note--bl { left: calc(-10% - var(--pj-note-spread-x, 36px)); bottom: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: right; }
-.pj-gem-note--br { right: calc(-8% - var(--pj-note-spread-x, 36px)); bottom: calc(-5% - var(--pj-note-spread-y, 30px)); }
+.pj-gem-note--tl { left: calc(-10% - var(--pj-note-spread-x, 36px)); top: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: left; }
+.pj-gem-note--tr { right: calc(-8% - var(--pj-note-spread-x, 36px)); top: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: left; }
+.pj-gem-note--bl { left: calc(-10% - var(--pj-note-spread-x, 36px)); bottom: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: left; }
+.pj-gem-note--br { right: calc(-8% - var(--pj-note-spread-x, 36px)); bottom: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: left; }
 
 .pj-gem-note__title {
   margin: 0 0 0.35rem;
