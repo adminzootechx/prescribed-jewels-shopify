@@ -20,6 +20,9 @@
     --pj-phi-emblem-size: {{ s.emblem_size | default: 135 }}px;
     {% if s.section_height > 0 %} --pj-phi-min-h: {{ s.section_height }}vh;{% endif %}
     --pj-phi-scale: {{ s.section_scale | default: 100 | divided_by: 100.0 }};
+    --pj-phi-btn-mt: {{ s.button_mt | default: 24 }}px;
+    {% if s.button_color != blank %}--pj-phi-btn-color: {{ s.button_color }};{% endif %}
+    {% if s.button_border_color != blank %}--pj-phi-btn-border: {{ s.button_border_color }};{% endif %}
   "
 >
   {%- if s.bg_image != blank -%}
@@ -56,6 +59,17 @@
     {%- endif -%}
   {%- endcapture -%}
 
+  {%- capture cta_html -%}
+    {%- if s.button_label != blank -%}
+      <div class="pj-philosophy__cta pj-philosophy__cta--{{ s.button_align | default: 'right' }}">
+        <a href="{{ s.button_link | default: '#pj-designs' }}" class="pj-philosophy__link">
+          <span class="pj-philosophy__link-text">{{ s.button_label }}</span>
+          <span class="pj-philosophy__link-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    {%- endif -%}
+  {%- endcapture -%}
+
   <div class="pj-philosophy__inner pj-philosophy__inner--emblem-{{ emblem_pos }}">
     {%- if emblem_pos == 'left' -%}
       {{ emblem_html }}
@@ -68,6 +82,10 @@
           <div class="pj-philosophy__body">
             <p>{{ s.body_text | newline_to_br }}</p>
           </div>
+        {%- endif -%}
+
+        {%- if s.button_placement != 'section_bottom' -%}
+          {{ cta_html }}
         {%- endif -%}
       </div>
       {{ tagline_html }}
@@ -83,10 +101,20 @@
             <p>{{ s.body_text | newline_to_br }}</p>
           </div>
         {%- endif -%}
+
+        {%- if s.button_placement != 'section_bottom' -%}
+          {{ cta_html }}
+        {%- endif -%}
       </div>
       {{ emblem_html }}
     {%- endif -%}
   </div>
+
+  {%- if s.button_placement == 'section_bottom' -%}
+    <div class="pj-philosophy__footer">
+      {{ cta_html }}
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -130,6 +158,62 @@
       "step": 5,
       "unit": "%",
       "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Link Button (Explore Designs)"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button text",
+      "default": "EXPLORE THE DESIGNS"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_align",
+      "label": "Button alignment",
+      "options": [
+        { "value": "right", "label": "Right (Default)" },
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "button_placement",
+      "label": "Button placement",
+      "options": [
+        { "value": "content_bottom", "label": "Below body text (Recommended)" },
+        { "value": "section_bottom", "label": "Bottom of section" }
+      ],
+      "default": "content_bottom"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button text color"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button underline color"
+    },
+    {
+      "type": "range",
+      "id": "button_mt",
+      "label": "Button top margin",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 24
     },
     {
       "type": "header",

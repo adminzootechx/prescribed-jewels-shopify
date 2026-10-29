@@ -43,6 +43,95 @@
         "padding_bottom": 0
       }
     },
+    "designs_showcase": {
+      "type": "designs-showcase",
+      "blocks": {
+        "design1": {
+          "type": "design",
+          "settings": {
+            "name": "THE CLASSIC",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "01 — The Classic (Signature Ring)",
+            "is_custom": false
+          }
+        },
+        "design2": {
+          "type": "design",
+          "settings": {
+            "name": "THE SOLACE",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "02 — The Solace (Signature Pendant)",
+            "is_custom": false
+          }
+        },
+        "design3": {
+          "type": "design",
+          "settings": {
+            "name": "THE BALANCE",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "03 — The Balance (Signature Bracelet)",
+            "is_custom": false
+          }
+        },
+        "design4": {
+          "type": "design",
+          "settings": {
+            "name": "THE AURA",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "04 — The Aura (Signature Drop Earrings)",
+            "is_custom": false
+          }
+        },
+        "design5": {
+          "type": "design",
+          "settings": {
+            "name": "THE SIGNET",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "05 — The Signet (Signature Crest Ring)",
+            "is_custom": false
+          }
+        },
+        "design6": {
+          "type": "design",
+          "settings": {
+            "name": "THE CELESTIAL",
+            "button_label": "VIEW DETAILS →",
+            "request_label": "06 — The Celestial (Signature Medallion)",
+            "is_custom": false
+          }
+        },
+        "design7": {
+          "type": "design",
+          "settings": {
+            "name": "CUSTOM",
+            "button_label": "INQUIRE →",
+            "request_label": "07 — Custom Bespoke Commission",
+            "is_custom": true
+          }
+        }
+      },
+      "block_order": [
+        "design1",
+        "design2",
+        "design3",
+        "design4",
+        "design5",
+        "design6",
+        "design7"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "veil": 35,
+        "veil_color": "#14100c",
+        "text_color": "#f4ebe1",
+        "eyebrow": "THE COLLECTION",
+        "heading": "SEVEN DESIGNS,\nONE MEANING",
+        "section_height": 100,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "personal_by_design": {
       "type": "personal-by-design",
       "settings": {
@@ -50,6 +139,10 @@
         "heading_size": 100,
         "body_text": "In Vedic astrology, your birth chart is a map of your inner world — your strengths, challenges and potential. We translate this into fine jewelry, thoughtfully designed and set with gemstones that support your unique energy. Pieces that are personal, meaningful and made for your everyday life.",
         "body_size": 100,
+        "button_label": "EXPLORE THE DESIGNS",
+        "button_link": "#pj-designs",
+        "button_align": "right",
+        "button_placement": "content_bottom",
         "show_emblem": true,
         "emblem_position": "left",
         "emblem_color": "#8b7d6b",
@@ -180,95 +273,6 @@
         "padding_bottom": 72
       }
     },
-    "designs_showcase": {
-      "type": "designs-showcase",
-      "blocks": {
-        "design1": {
-          "type": "design",
-          "settings": {
-            "name": "THE CLASSIC",
-            "button_label": "VIEW DETAILS →",
-            "request_label": "01 — The Classic (Signature Ring)",
-            "is_custom": false
-          }
-        },
-        "design2": {
-          "type": "design",
-          "settings": {
-            "name": "THE SOLACE",
-            "button_label": "VIEW DETAILS →",
-            "request_label": "02 — The Solace (Signature Pendant)",
-            "is_custom": false
-          }
-        },
-        "design3": {
-          "type": "design",
-          "settings": {
-            "name": "THE BALANCE",
-            "button_label": "VIEW DETAILS →",
-            "request_label": "03 — The Balance (Signature Bracelet)",
-            "is_custom": false
-          }
-        },
-        "design4": {
-          "type": "design",
-          "settings": {
-            "name": "THE AURA",
-            "button_label": "VIEW DETAILS →",
-            "request_label": "04 — The Aura (Signature Drop Earrings)",
-            "is_custom": false
-          }
-        },
-        "design5": {
-          "type": "design",
-          "settings": {
-            "name": "THE SIGNET",
-            "button_label": "VIEW DETAILS →",
-            "request_label": "05 — The Signet (Signature Crest Ring)",
-            "is_custom": false
-          }
-        },
-        "design6": {
-          "type": "design",
-          "settings": {
-            "name": "THE CELESTIAL",
-            "button_label": "VIEW DETAILS →",
-            "request_label": "06 — The Celestial (Signature Medallion)",
-            "is_custom": false
-          }
-        },
-        "design7": {
-          "type": "design",
-          "settings": {
-            "name": "CUSTOM",
-            "button_label": "INQUIRE →",
-            "request_label": "07 — Custom Bespoke Commission",
-            "is_custom": true
-          }
-        }
-      },
-      "block_order": [
-        "design1",
-        "design2",
-        "design3",
-        "design4",
-        "design5",
-        "design6",
-        "design7"
-      ],
-      "disabled": true,
-      "custom_css": [],
-      "settings": {
-        "veil": 35,
-        "veil_color": "#14100c",
-        "text_color": "#f4ebe1",
-        "eyebrow": "THE COLLECTION",
-        "heading": "SEVEN DESIGNS,\nONE MEANING",
-        "section_height": 100,
-        "padding_top": 24,
-        "padding_bottom": 24
-      }
-    },
     "about_story": {
       "type": "about-story",
       "settings": {
@@ -281,15 +285,15 @@
         "image_width": 50,
         "fade_image": true,
         "padding": 0,
-        "bg_color": "#f8e6d3",
-        "text_color": "#14110e",
-        "muted_color": "#2a221b",
+        "bg_color": "#E9D2AF",
+        "text_color": "#684320",
+        "muted_color": "#40200E",
         "accent_color": "#14110e",
         "use_custom_fonts": false,
         "font_heading": "cormorant_n4",
         "font_body": "cormorant_n5",
         "heading_size": 100,
-        "body_size": 100
+        "body_size": 120
       }
     },
     "prescription_process": {
@@ -622,44 +626,41 @@
         "heading": "A Piece of Your Own Story",
         "body_text": "Prescribed Jewels is born from the belief that fine jewellery should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details.",
         "button_label": "BEGIN YOUR PRESCRIPTION",
-        "show_monogram": true,
+        "show_monogram": false,
         "show_card": true,
         "focus_x": 50,
         "focus_y": 50,
-        "veil_color": "#2a1c10",
-        "veil": 45,
+        "veil_color": "#684320",
+        "veil": 55,
         "align": "center",
         "section_height": 0,
         "min_height": 640,
         "padding_top": 64,
         "padding_bottom": 64,
         "card_max_width": 1080,
-        "card_color": "#120e0a",
+        "card_color": "#2B170C",
         "card_opacity": 75,
-        "card_blur": 14,
+        "card_blur": 4,
         "card_border_color": "#b69156",
-        "card_border_opacity": 25,
-        "card_text_color": "#f4ebe1",
-        "card_muted_color": "#d9cfc2",
+        "card_border_opacity": 20,
+        "card_text_color": "#E9D2AF",
+        "card_muted_color": "#E9D2AF",
         "card_eyebrow_color": "#c9a15b",
         "card_btn_bg": "#b69156",
         "card_btn_text": "#120e0a",
-        "text_color": "#f4ebe1",
-        "muted_color": "#d9cfc2",
-        "accent_color": "#b69156",
         "use_custom_fonts": false,
         "font_heading": "cormorant_n4",
         "font_body": "jost_n3",
-        "heading_size": 100,
-        "body_size": 100
+        "heading_size": 120,
+        "body_size": 125
       }
     }
   },
   "order": [
     "hero",
+    "designs_showcase",
     "personal_by_design",
     "process_steps",
-    "designs_showcase",
     "about_story",
     "prescription_process",
     "closing_split",

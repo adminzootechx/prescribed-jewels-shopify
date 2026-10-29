@@ -2304,6 +2304,8 @@ textarea {
   padding-bottom: var(--pj-phi-pb, 56px);
   min-height: var(--pj-phi-min-h, auto);
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   overflow: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -2407,6 +2409,65 @@ textarea {
 
 .pj-philosophy__body p {
   margin: 0;
+}
+
+/* CTA Link button */
+.pj-philosophy__cta {
+  display: flex;
+  margin-top: var(--pj-phi-btn-mt, 1.5rem);
+}
+
+.pj-philosophy__cta--right {
+  justify-content: flex-end;
+}
+
+.pj-philosophy__cta--left {
+  justify-content: flex-start;
+}
+
+.pj-philosophy__cta--center {
+  justify-content: center;
+}
+
+.pj-philosophy__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--pj-font-sans);
+  font-size: calc(clamp(0.72rem, 0.9vw, 0.82rem) * var(--pj-phi-scale, 1));
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--pj-phi-btn-color, var(--pj-phi-text, #1E1B18));
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--pj-phi-btn-border, var(--pj-phi-accent, #8B7D6B));
+  padding-bottom: 0.35rem;
+  transition: color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+}
+
+.pj-philosophy__link:hover {
+  color: var(--pj-phi-btn-border, var(--pj-phi-accent, #8B7D6B));
+  border-bottom-color: var(--pj-phi-btn-color, var(--pj-phi-text, #1E1B18));
+}
+
+.pj-philosophy__link-arrow {
+  display: inline-block;
+  font-size: 1.1em;
+  line-height: 1;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pj-philosophy__link:hover .pj-philosophy__link-arrow {
+  transform: translateX(4px);
+}
+
+.pj-philosophy__footer {
+  width: 100%;
+  max-width: var(--pj-phi-max-w, 1200px);
+  margin: 1.5rem auto 0;
+  padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+  position: relative;
+  z-index: 1;
 }
 
 /* Celestial emblem */
