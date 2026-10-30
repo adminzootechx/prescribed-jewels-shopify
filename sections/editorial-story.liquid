@@ -1,11 +1,16 @@
 {%- assign s = section.settings -%}
 {% render 'pj-section-style', section: section %}
 
-{%- assign card_bg = s.card_color | default: '#120E0A' -%}
-{%- assign card_op = s.card_opacity | default: 75 -%}
-{%- assign card_blur_val = s.card_blur | default: 14 -%}
-{%- assign card_border_c = s.card_border_color | default: '#B69156' -%}
-{%- assign card_border_op = s.card_border_opacity | default: 25 -%}
+{%- assign card_bg = s.card_color -%}
+{%- if card_bg == blank -%}{%- assign card_bg = '#120E0A' -%}{%- endif -%}
+{%- assign card_op = s.card_opacity -%}
+{%- if card_op == blank -%}{%- assign card_op = 75 -%}{%- endif -%}
+{%- assign card_blur_val = s.card_blur -%}
+{%- if card_blur_val == blank -%}{%- assign card_blur_val = 14 -%}{%- endif -%}
+{%- assign card_border_c = s.card_border_color -%}
+{%- if card_border_c == blank -%}{%- assign card_border_c = '#B69156' -%}{%- endif -%}
+{%- assign card_border_op = s.card_border_opacity -%}
+{%- if card_border_op == blank -%}{%- assign card_border_op = 25 -%}{%- endif -%}
 
 <section
   id="pj-story"
@@ -16,7 +21,12 @@
     --pj-story-veil: {{ s.veil }}%;
     --pj-story-veil-color: {{ s.veil_color | default: '#2A1C10' }};
     --pj-story-min: {{ s.min_height }}px;
-    {% if s.section_height > 0 %}--pj-story-h: {{ s.section_height }}vh;{% endif %}
+    {% if s.section_height > 0 %}
+      --pj-story-h: {{ s.section_height }}vh;
+      --pj-story-dvh: {{ s.section_height }}dvh;
+      min-height: {{ s.section_height }}vh;
+      min-height: {{ s.section_height }}dvh;
+    {% endif %}
     --pj-story-pt: {{ s.padding_top | default: 64 }}px;
     --pj-story-pb: {{ s.padding_bottom | default: 64 }}px;
     --pj-story-card-max-w: {{ s.card_max_width | default: 1080 }}px;

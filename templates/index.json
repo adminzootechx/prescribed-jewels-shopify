@@ -12,7 +12,7 @@
     "hero": {
       "type": "hero",
       "custom_css": [
-        ".pj-eyebrow {color: #e9d2af;}",
+        ".pj-eyebrow {color: #E9D2AF;}",
         ".pj-hero__lead {color: #e9d2af;}",
         ".pj-hero__mantra {color: #e9d2af;}",
         ".pj-hero__content {padding-left: 20px;}"
@@ -24,23 +24,149 @@
         "veil": 0,
         "eyebrow": "ANCIENT WISDOM. MODERN JEWELLERY.",
         "heading": "JEWELLERY\nTHAT FINDS\nYOU",
+        "title_size": 120,
         "subtext": "Thoughtfully designed pieces with a gemstone prescribed from your birth details.",
         "cta_label": "EXPLORE DESIGNS",
         "cta_link": "",
         "mantra": "YOUR BIRTHPLACE. YOUR TIME. YOUR GEMSTONE. YOUR STORY.",
-        "text_color": "#e9d2af",
-        "content_offset_x": 80,
-        "content_offset_y": 0,
-        "content_max_width": 540,
-        "content_align": "left",
-        "title_size": 120,
+        "text_color": "#E9D2AF",
+        "height": 100
+      }
+    },
+    "personal_by_design": {
+      "type": "personal-by-design",
+      "settings": {
+        "heading": "PERSONAL BY DESIGN",
+        "heading_size": 100,
+        "body_text": "In Vedic astrology, your birth chart is a map of your inner world — your strengths, challenges and potential. We translate this into fine jewelry, thoughtfully designed and set with gemstones that support your unique energy. Pieces that are personal, meaningful and made for your everyday life.",
+        "body_size": 100,
+        "show_tagline": true,
+        "tagline": "ANCIENT\nWISDOM\nMODERN\nJEWELRY",
+        "show_emblem": true,
+        "emblem_color": "#8b7d6b",
+        "emblem_size": 130,
+        "bg_color": "#f4eee5",
+        "text_color": "#1e1b18",
+        "body_color": "#574f44",
+        "accent_color": "#8b7d6b",
+        "border_color": "#1a18151f",
+        "border_top": true,
+        "border_bottom": true,
+        "max_width": 1200,
+        "button_label": "EXPLORE THE DESIGNS",
+        "button_link": "#pj-designs",
+        "button_align": "right",
+        "button_placement": "content_bottom",
+        "button_mt": 36,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "process_steps": {
+      "type": "process-steps",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "step_number": "01",
+            "title": "CHOOSE A DESIGN",
+            "image": "shopify://shop_images/04f624ad-2f13-4528-9ad8-4e219a99374d.png",
+            "description": "Select from our eight signature designs or create a custom piece.",
+            "custom_title_size": 145,
+            "custom_desc_size": 140,
+            "custom_num_size": 95,
+            "custom_title_color": "#E9D2AF",
+            "custom_desc_color": "#E9D2AF",
+            "custom_num_color": "#B87F29",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "step_number": "02",
+            "title": "YOUR BIRTH DETAILS",
+            "image": "shopify://shop_images/6e39416d-3bf1-41de-b05b-83bcb07800c9.png",
+            "description": "Provide your birth date, exact time and place of birth so we can create your personal gemstone prescription.",
+            "custom_title_size": 145,
+            "custom_desc_size": 140,
+            "custom_num_size": 100,
+            "custom_title_color": "#E9D2AF",
+            "custom_desc_color": "#E9D2AF",
+            "custom_num_color": "#B87F29",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "step_number": "03",
+            "title": "YOUR PRESCRIPTION",
+            "image": "shopify://shop_images/6fac5ae6-c6b4-43ef-a67d-9dfdf9257664.png",
+            "description": "Our Vedic astrology process identifies the gemstones that best support your unique energy.",
+            "custom_title_size": 140,
+            "custom_desc_size": 140,
+            "custom_num_size": 100,
+            "custom_title_color": "#E9D2AF",
+            "custom_desc_color": "#E9D2AF",
+            "custom_num_color": "#B87F29",
+            "link_label": "",
+            "link_url": ""
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "step_number": "04",
+            "title": "CRAFTED FOR YOU",
+            "image": "shopify://shop_images/9ee593af6d089225aeca9870c113ea20.jpg",
+            "description": "Your jewelry is thoughtfully crafted in fine materials, with gemstones prescribed just for you.",
+            "custom_title_size": 140,
+            "custom_desc_size": 140,
+            "custom_num_size": 100,
+            "custom_title_color": "#E9D2AF",
+            "custom_desc_color": "#E9D2AF",
+            "custom_num_color": "#B87F29",
+            "link_label": "",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "settings": {
+        "eyebrow": "THE PROCESS",
         "eyebrow_size": 100,
-        "lead_size": 100,
-        "mantra_size": 100,
-        "height": 100,
-        "mobile_height": 100,
-        "padding_top": 0,
-        "padding_bottom": 0
+        "eyebrow_color": "#b69156",
+        "heading": "A PIECE THAT'S TRULY YOURS",
+        "heading_size": 105,
+        "heading_color": "#f4ebe1",
+        "header_align": "center",
+        "step_num_size": 100,
+        "step_num_color": "#b69156",
+        "step_title_size": 100,
+        "step_title_color": "#f4ebe1",
+        "step_desc_size": 150,
+        "step_desc_color": "#c8bfb2",
+        "step_desc_align": "left",
+        "image_aspect_ratio": "1 / 1",
+        "image_radius": 0,
+        "image_border_color": "#f4ebe11f",
+        "card_bg": "rgba(0,0,0,0)",
+        "card_padding": 8,
+        "bg_color": "#120e0a",
+        "veil": 60,
+        "veil_color": "#120e0a",
+        "max_width": 1300,
+        "grid_gap": 40,
+        "padding_top": 72,
+        "padding_bottom": 72
       }
     },
     "designs_showcase": {
@@ -127,180 +253,29 @@
         "text_color": "#f4ebe1",
         "eyebrow": "THE COLLECTION",
         "heading": "SEVEN DESIGNS,\nONE MEANING",
-        "section_height": 100,
-        "padding_top": 24,
-        "padding_bottom": 24
-      }
-    },
-    "personal_by_design": {
-      "type": "personal-by-design",
-      "settings": {
-        "heading": "PERSONAL BY DESIGN",
-        "heading_size": 130,
-        "body_text": "In Vedic astrology, your birth chart is a map of your inner world — your strengths, challenges and potential. We translate this into fine jewelry, thoughtfully designed and set with gemstones that support your unique energy. Pieces that are personal, meaningful and made for your everyday life.",
-        "body_size": 115,
-        "button_label": "EXPLORE THE DESIGNS",
-        "button_link": "#pj-designs",
-        "button_align": "right",
-        "button_placement": "content_bottom",
-        "button_color": "",
-        "button_border_color": "",
-        "button_mt": 36,
-        "show_emblem": true,
-        "emblem_position": "left",
-        "emblem_color": "#8b7d6b",
-        "emblem_size": 190,
-        "show_tagline": false,
-        "tagline_position": "right",
-        "tagline": "ANCIENT\nWISDOM\nMODERN\nJEWELRY",
-        "bg_color": "#e9d2af",
-        "text_color": "#40200e",
-        "body_color": "#684320",
-        "accent_color": "#8b7d6b",
-        "border_color": "#1a18151f",
-        "border_top": true,
-        "border_bottom": true,
-        "section_height": 0,
-        "section_scale": 100,
-        "max_width": 1040,
-        "padding_top": 36,
-        "padding_bottom": 28
-      }
-    },
-    "process_steps": {
-      "type": "process-steps",
-      "blocks": {
-        "step_1": {
-          "type": "step",
-          "settings": {
-            "step_number": "01",
-            "title": "CHOOSE A DESIGN",
-            "image": "shopify://shop_images/04f624ad-2f13-4528-9ad8-4e219a99374d.png",
-            "description": "Select from our eight signature designs or create a custom piece.",
-            "custom_title_size": 140,
-            "custom_desc_size": 135,
-            "custom_num_size": 95,
-            "custom_title_color": "#e9d2af",
-            "custom_desc_color": "#e9d2af",
-            "custom_num_color": "#e9d2af",
-            "link_label": "",
-            "link_url": ""
-          }
-        },
-        "step_2": {
-          "type": "step",
-          "settings": {
-            "step_number": "02",
-            "title": "YOUR BIRTH DETAILS",
-            "image": "shopify://shop_images/6e39416d-3bf1-41de-b05b-83bcb07800c9.png",
-            "description": "Provide your birth date, exact time and place of birth so we can create your personal gemstone prescription.",
-            "custom_title_size": 140,
-            "custom_desc_size": 135,
-            "custom_num_size": 100,
-            "custom_title_color": "#e9d2af",
-            "custom_desc_color": "#e9d2af",
-            "custom_num_color": "#e9d2af",
-            "link_label": "",
-            "link_url": ""
-          }
-        },
-        "step_3": {
-          "type": "step",
-          "settings": {
-            "step_number": "03",
-            "title": "YOUR PRESCRIPTION",
-            "image": "shopify://shop_images/6fac5ae6-c6b4-43ef-a67d-9dfdf9257664.png",
-            "description": "Our Vedic astrology process identifies the gemstones that best support your unique energy.",
-            "custom_title_size": 140,
-            "custom_desc_size": 135,
-            "custom_num_size": 100,
-            "custom_title_color": "#e9d2af",
-            "custom_desc_color": "#e9d2af",
-            "custom_num_color": "#e9d2af",
-            "link_label": "",
-            "link_url": ""
-          }
-        },
-        "step_4": {
-          "type": "step",
-          "settings": {
-            "step_number": "04",
-            "title": "CRAFTED FOR YOU",
-            "image": "shopify://shop_images/9ee593af6d089225aeca9870c113ea20.jpg",
-            "description": "Your jewelry is thoughtfully crafted in fine materials, with gemstones prescribed just for you.",
-            "custom_title_size": 140,
-            "custom_desc_size": 135,
-            "custom_num_size": 100,
-            "custom_title_color": "#e9d2af",
-            "custom_desc_color": "#e9d2af",
-            "custom_num_color": "#e9d2af",
-            "link_label": "",
-            "link_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "step_1",
-        "step_2",
-        "step_3",
-        "step_4"
-      ],
-      "settings": {
-        "eyebrow": "THE PROCESS",
-        "eyebrow_size": 100,
-        "eyebrow_color": "#b69156",
-        "heading": "A PIECE THAT'S TRULY YOURS",
-        "heading_size": 105,
-        "heading_color": "#e9d2af",
-        "header_align": "center",
-        "step_num_size": 100,
-        "step_num_color": "#e9d2af",
-        "step_title_size": 100,
-        "step_title_color": "#e9d2af",
-        "step_desc_size": 100,
-        "step_desc_color": "#e9d2af",
-        "step_desc_align": "left",
-        "image_aspect_ratio": "1 / 1",
-        "image_radius": 0,
-        "image_border_color": "#f4ebe11f",
-        "card_bg": "rgba(0,0,0,0)",
-        "card_padding": 8,
-        "bg_color": "#120e0a",
-        "veil": 60,
-        "veil_color": "#120e0a",
-        "section_height": 0,
-        "section_scale": 100,
-        "max_width": 1300,
-        "grid_gap": 40,
-        "padding_top": 72,
-        "padding_bottom": 72
+        "heading_size": 100
       }
     },
     "about_story": {
       "type": "about-story",
       "settings": {
-        "image": "shopify://shop_images/6de1ba46-5e90-4354-8326-747a029ae81f.png",
+        "image": "shopify://shop_images/Gold_Garnet_Jewellery_on_Silk.png",
         "eyebrow": "About Prescribed Jewels",
         "heading": "Our Story",
         "body": "Prescribed Jewels was born from a belief in the meaning and energy of gemstones.\n\nWe curate authentic, high-quality stones rooted in traditional wisdom and present them with a modern, wearable approach — helping you find a gemstone that truly aligns with you.",
-        "section_height": 100,
-        "image_span": "full",
-        "blend_opacity": 50,
-        "blend_style": "gradient",
         "image_side": "left",
         "image_width": 50,
         "fade_image": true,
         "padding": 0,
-        "bg_color": "#E9D2AF",
-        "bg_opacity": 100,
-        "text_color": "#684320",
-        "muted_color": "#40200e",
+        "bg_color": "#f8e6d3",
+        "text_color": "#14110e",
+        "muted_color": "#2a221b",
         "accent_color": "#14110e",
         "use_custom_fonts": false,
         "font_heading": "cormorant_n4",
         "font_body": "cormorant_n5",
         "heading_size": 100,
-        "body_size": 120
+        "body_size": 100
       }
     },
     "prescription_process": {
@@ -359,10 +334,7 @@
         "eyebrow": "HOW IT WORKS",
         "heading": "A THOUGHTFUL JOURNEY",
         "heading_size": 100,
-        "circle_size": 136,
-        "section_height": 100,
-        "padding_top": 24,
-        "padding_bottom": 24
+        "circle_size": 136
       }
     },
     "closing_split": {
@@ -373,7 +345,6 @@
         "statement": "Personal.\nTimeless.\nYours.",
         "button_label": "Begin your prescription",
         "button_link": "",
-        "section_height": 0,
         "image_side": "left",
         "image_width": 50,
         "min_height": 560,
@@ -594,7 +565,7 @@
         "gem18"
       ],
       "settings": {
-        "height": 90,
+        "height": 100,
         "wheel_size": 100,
         "mobile_wheel_size": 85,
         "padding_top": 20,
@@ -604,15 +575,11 @@
         "gem_name_y": 0,
         "info_offset_x": 45,
         "arrow_curviness": 100,
-        "arrow_target_offset_x": 0,
-        "arrow_target_offset_y": 0,
-        "arrow_start_offset_x": 0,
-        "arrow_start_offset_y": 0,
         "bg_image": "shopify://shop_images/73437e2c-0127-4dac-ba62-678b9b8bd98d.png",
         "veil": 25,
         "veil_color": "#120e0a",
-        "glow_color": "#c9a15b",
-        "glow_strength": 40,
+        "glow_color": "#d9a25a",
+        "glow_strength": 30,
         "text_color": "#f4ebe1",
         "muted_color": "#d9cfc2",
         "use_stone_color": true,
@@ -620,9 +587,9 @@
         "use_custom_fonts": false,
         "font_heading": "cormorant_n5",
         "font_body": "jost_n5",
-        "heading_size": 100,
-        "planet_size": 100,
-        "note_title_size": 100,
+        "heading_size": 120,
+        "planet_size": 95,
+        "note_title_size": 115,
         "notes_size": 100
       }
     },
@@ -633,41 +600,41 @@
         "heading": "A Piece of Your Own Story",
         "body_text": "Prescribed Jewels is born from the belief that fine jewellery should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details.",
         "button_label": "BEGIN YOUR PRESCRIPTION",
-        "show_monogram": false,
+        "show_monogram": true,
         "show_card": true,
         "focus_x": 50,
         "focus_y": 50,
-        "veil_color": "#684320",
-        "veil": 55,
+        "veil_color": "#2a1c10",
+        "veil": 20,
         "align": "center",
         "section_height": 0,
         "min_height": 640,
         "padding_top": 64,
         "padding_bottom": 64,
         "card_max_width": 1080,
-        "card_color": "#2b170c",
+        "card_color": "#120e0a",
         "card_opacity": 75,
-        "card_blur": 4,
+        "card_blur": 14,
         "card_border_color": "#b69156",
-        "card_border_opacity": 20,
-        "card_text_color": "#e9d2af",
-        "card_muted_color": "#e9d2af",
+        "card_border_opacity": 25,
+        "card_text_color": "#f4ebe1",
+        "card_muted_color": "#d9cfc2",
         "card_eyebrow_color": "#c9a15b",
         "card_btn_bg": "#b69156",
         "card_btn_text": "#120e0a",
         "use_custom_fonts": false,
         "font_heading": "cormorant_n4",
         "font_body": "jost_n3",
-        "heading_size": 120,
-        "body_size": 125
+        "heading_size": 100,
+        "body_size": 100
       }
     }
   },
   "order": [
     "hero",
-    "designs_showcase",
     "personal_by_design",
     "process_steps",
+    "designs_showcase",
     "about_story",
     "prescription_process",
     "closing_split",

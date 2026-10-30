@@ -2173,7 +2173,9 @@ textarea {
 .pj-split {
   display: grid;
   grid-template-columns: var(--pj-split-image, 48%) 1fr;
-  min-height: var(--pj-split-min, 560px);
+  min-height: var(--pj-split-h, var(--pj-split-min, 560px));
+  padding-top: var(--pj-split-pt, 0px);
+  padding-bottom: var(--pj-split-pb, 0px);
   background-color: var(--pj-s-bg, #F4EBE2);
   color: var(--pj-s-text, #3A332D);
 }

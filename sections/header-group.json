@@ -17,29 +17,29 @@
         "link1": {
           "type": "link",
           "settings": {
-            "label": "The Process",
-            "link": "#pj-process"
+            "label": "Jewels",
+            "link": "#pj-designs"
           }
         },
         "link2": {
           "type": "link",
           "settings": {
-            "label": "The Designs",
-            "link": "#pj-designs"
+            "label": "Our Story",
+            "link": "#pj-story"
           }
         },
         "link3": {
           "type": "link",
           "settings": {
-            "label": "Our Philosophy",
-            "link": "#pj-story"
+            "label": "The Prescription",
+            "link": "#pj-process"
           }
         },
         "link4": {
           "type": "link",
           "settings": {
-            "label": "Journal",
-            "link": "/blogs/journal"
+            "label": "Gemstones",
+            "link": "#pj-gemstones"
           }
         }
       },
@@ -62,24 +62,24 @@
         "menu": "",
         "nav_font": "sans",
         "nav_case": "titlecase",
-        "nav_text_size": 120,
-        "nav_letter_spacing": 6,
+        "nav_text_size": 105,
+        "nav_letter_spacing": 13,
         "nav_spacing": 34,
         "cart_label": "Cart",
         "show_cart_count": true,
         "cart_font": "sans",
-        "cart_text_size": 125,
-        "cart_action": "drawer",
+        "cart_text_size": 110,
+        "cart_action": "page",
         "custom_font": "jost_n4",
         "text_color": "#e9d2af",
-        "text_color_light": "#2b241c",
-        "accent_color": "#f0e4d1",
+        "text_color_light": "#E9D2AF",
+        "accent_color": "#40200E",
         "overlay_hero": true,
         "enable_sticky": true,
         "bg_color_scrolled": "#120e0a",
-        "bar_color_light": "#f3ece0",
-        "bg_opacity_scrolled": 85,
-        "header_padding_y": 18,
+        "bar_color_light": "#201108",
+        "bg_opacity_scrolled": 60,
+        "header_padding_y": 12,
         "max_width": 1400
       }
     }
