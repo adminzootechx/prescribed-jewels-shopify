@@ -1434,11 +1434,11 @@ textarea {
 }
 
 /* 4 Notes arranged: Features (top left), Uses (top right), Importance (bottom left), Traditionally worn (bottom right) */
-.pj-gem-note { position: absolute; width: 30%; max-width: 240px; transition: opacity 0.26s ease, transform 0.26s ease; }
+.pj-gem-note { position: absolute; width: 22%; max-width: 165px; transition: opacity 0.26s ease, transform 0.26s ease; }
 .pj-gem-note--tl { left: 0%; top: 2%; text-align: left; }
 .pj-gem-note--tr { right: 0%; top: 2%; text-align: left; }
-.pj-gem-note--bl { left: 0%; top: 56%; text-align: left; }
-.pj-gem-note--br { right: 0%; top: 56%; text-align: left; }
+.pj-gem-note--bl { left: 0%; top: 57%; text-align: left; }
+.pj-gem-note--br { right: 0%; top: 57%; text-align: left; }
 
 .pj-gem-note__title {
   margin: 0 0 0.35rem;
