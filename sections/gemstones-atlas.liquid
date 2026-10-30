@@ -30,6 +30,7 @@
     --pj-arrow-target-y: {{ section.settings.arrow_target_offset_y | default: 0 }}px;
     --pj-arrow-start-x: {{ section.settings.arrow_start_offset_x | default: 0 }}px;
     --pj-arrow-start-y: {{ section.settings.arrow_start_offset_y | default: 0 }}px;
+    --pj-right-note-gap: {{ section.settings.right_notes_gap | default: 55 }}px;
     {% unless section.settings.use_stone_color %} --gem-c: {{ section.settings.accent_color }};{% endunless %}
   "
   {% unless section.settings.use_stone_color %} data-fixed-accent{% endunless %}
@@ -193,10 +194,12 @@
     { "type": "checkbox", "id": "use_custom_fonts", "label": "Use the fonts chosen below", "default": false, "info": "Off: the theme fonts." },
     { "type": "font_picker", "id": "font_heading", "label": "Stone name and note text font", "default": "cormorant_n5" },
     { "type": "font_picker", "id": "font_body", "label": "Note titles font", "default": "jost_n5" },
-    { "type": "range", "id": "heading_size", "label": "Stone name size", "min": 60, "max": 160, "step": 5, "unit": "%", "default": 100 },
-    { "type": "range", "id": "planet_size", "label": "Ruling planet size", "min": 70, "max": 180, "step": 5, "unit": "%", "default": 105 },
-    { "type": "range", "id": "note_title_size", "label": "Note title size", "min": 70, "max": 180, "step": 5, "unit": "%", "default": 110 },
-    { "type": "range", "id": "notes_size", "label": "Note text size", "min": 70, "max": 180, "step": 5, "unit": "%", "default": 115 }
+    { "type": "header", "content": "Text Sizes & Spacing" },
+    { "type": "range", "id": "right_notes_gap", "label": "Right notes distance from dot", "min": 20, "max": 120, "step": 5, "unit": "px", "default": 55, "info": "Default 55px (approx 1.5cm). Moves 'Uses' and 'Traditionally worn' further away from the leader dot." },
+    { "type": "range", "id": "note_title_size", "label": "Note Heading Size (Features, Uses, etc.)", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "notes_size", "label": "Note Subtext Info Size", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "heading_size", "label": "Gemstone Title Size", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "planet_size", "label": "Ruling Planet Subtitle Size", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 }
   ],
   "blocks": [
     {
