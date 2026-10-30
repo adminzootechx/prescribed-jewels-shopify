@@ -638,8 +638,8 @@
         sy = halo.top + halo.height / 2 - box.top + arrowStartY;
       }
 
-      // End point: directly at the outer right tip of the big gem
-      const ex = photo.left + (photo.width * 0.88) - box.left + arrowTargetX;
+      // End point: kept away from the bigger gem by 30px
+      const ex = photo.left + (photo.width * 0.88) + 30 - box.left + arrowTargetX;
       const ey = photo.top + (photo.height * 0.50) - box.top + arrowTargetY;
 
       // Deep graceful curve matching user media drawing: dips down then rises into the gem tip
