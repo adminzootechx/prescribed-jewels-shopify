@@ -1231,8 +1231,12 @@ textarea {
 
 @media (min-width: 960px) {
   .pj-gemstones-wheel__layout {
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 1rem;
+    grid-template-columns: 1fr auto;
+    gap: 0;
+    max-width: 100% !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
   }
 }
 
@@ -1241,7 +1245,7 @@ textarea {
   z-index: 4;
   padding-right: 1rem;
   /* Nudge the stone and its notes in from the page edge, towards the wheel */
-  padding-left: clamp(0.75rem, 3.2vw, 3.25rem);
+  padding-left: clamp(1rem, 3.5vw, 4rem);
 }
 
 @media (min-width: 769px) {
@@ -1299,7 +1303,7 @@ textarea {
   height: 100%;
   overflow: visible;
   pointer-events: none;
-  z-index: 6;
+  z-index: 10;
 }
 
 .pj-gem-arrow path {
@@ -1307,20 +1311,20 @@ textarea {
   stroke: var(--gem-c, #B69156);
   stroke-width: 2.4;
   stroke-linecap: round;
-  opacity: 0;
-  transition: opacity 0.25s ease;
+  opacity: 1;
+  transition: opacity 0.25s ease, stroke 0.4s ease;
 }
 
 .pj-gem-arrow circle {
   fill: var(--pj-w-bg, #120E0A);
   stroke: var(--gem-c, #B69156);
   stroke-width: 2;
-  opacity: 0;
-  transition: opacity 0.25s ease;
+  opacity: 1;
+  transition: opacity 0.25s ease, stroke 0.4s ease;
 }
 
 .pj-gem-arrow__head {
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s ease;
   transform-origin: 0 0;
 }
@@ -1334,14 +1338,14 @@ textarea {
   opacity: 1 !important;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 768px) {
   .pj-gem-arrow { display: block; }
 }
 
 /* The diagram: photograph in the middle, four notes around it, each tied back by a fine leader line */
 .pj-gem-diagram {
   position: relative;
-  width: min(100%, 760px);
+  width: min(100%, 740px);
   aspect-ratio: 720 / 540;
   margin-top: 0.75rem;
   transition: opacity 0.26s ease;
@@ -1357,7 +1361,7 @@ textarea {
 .pj-gem-diagram__photo {
   position: absolute;
   left: 31%;
-  top: 15%;
+  top: 13%;
   width: 38%;
   aspect-ratio: 1;
   perspective: 900px;
@@ -1412,8 +1416,8 @@ textarea {
 .pj-gem-diagram__name {
   position: absolute;
   left: 50%;
-  top: calc(73% + var(--pj-gem-name-y, 0px));
-  width: 44%;
+  top: calc(64% + var(--pj-gem-name-y, 0px));
+  width: 46%;
   transform: translateX(-50%);
   text-align: center;
 }
@@ -1421,11 +1425,20 @@ textarea {
 .pj-gem-diagram__name .pj-gemstones-wheel__planet { margin-bottom: 0.15rem; font-size: calc(max(0.88rem, 2.3cqw) * var(--pj-w-ps, 1)); text-wrap: balance; }
 .pj-gem-diagram__name .pj-gemstones-wheel__title { margin: 0; font-weight: 500; letter-spacing: 0.03em; text-wrap: balance; color: var(--pj-w-text, #F4EBE1); font-size: calc(max(1.6rem, 4.6cqw) * var(--pj-hs, 1) * var(--pj-hs-sec, 1)); line-height: 1.04; }
 
-.pj-gem-note { position: absolute; width: 35%; max-width: 320px; transition: opacity 0.26s ease, transform 0.26s ease; }
-.pj-gem-note--tl { left: calc(-10% - var(--pj-note-spread-x, 36px)); top: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: left; }
-.pj-gem-note--tr { right: calc(-8% - var(--pj-note-spread-x, 36px)); top: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: left; }
-.pj-gem-note--bl { left: calc(-10% - var(--pj-note-spread-x, 36px)); bottom: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: left; }
-.pj-gem-note--br { right: calc(-8% - var(--pj-note-spread-x, 36px)); bottom: calc(-5% - var(--pj-note-spread-y, 30px)); text-align: left; }
+.pj-gem-bracket {
+  color: var(--gem-c, #B69156);
+  opacity: 0.7;
+  font-weight: 300;
+  margin: 0 0.35rem;
+  transition: color 0.5s ease;
+}
+
+/* 4 Notes arranged: Features (top left), Uses (top right), Importance (bottom left), Traditionally worn (bottom right) */
+.pj-gem-note { position: absolute; width: 30%; max-width: 240px; transition: opacity 0.26s ease, transform 0.26s ease; }
+.pj-gem-note--tl { left: 0%; top: 2%; text-align: left; }
+.pj-gem-note--tr { right: 0%; top: 2%; text-align: left; }
+.pj-gem-note--bl { left: 0%; top: 56%; text-align: left; }
+.pj-gem-note--br { right: 0%; top: 56%; text-align: left; }
 
 .pj-gem-note__title {
   margin: 0 0 0.35rem;
@@ -1569,8 +1582,19 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-right: calc(-1 * clamp(0.85rem, 2vw, 1.75rem));
+  margin-right: 0;
+  padding-right: 0;
+  right: 0;
   z-index: 2;
+}
+
+@media (min-width: 960px) {
+  .pj-gemstones-wheel__stage {
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+    right: 0 !important;
+    justify-self: end;
+  }
 }
 
 .pj-wheel-half-clip {
@@ -2259,13 +2283,20 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
+  max-width: var(--pj-ftr-max-w, 1400px);
+}
+
+.pj-footer__logo svg {
+  transform: scale(var(--pj-ftr-logo-scale, 1));
+  transform-origin: left center;
+  display: block;
 }
 
 .pj-footer__nav {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: clamp(1.1rem, 2.5vw, 2.25rem);
+  gap: var(--pj-ftr-link-gap, clamp(1.1rem, 2.5vw, 2.25rem));
 }
 
 .pj-footer__link,
@@ -2273,7 +2304,7 @@ textarea {
   background: none;
   border: none;
   padding: 0;
-  font-size: 0.66rem;
+  font-size: calc(0.66rem * var(--pj-ftr-link-size, 1));
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--pj-ftr-link-color, var(--pj-text-muted));
@@ -2299,6 +2330,11 @@ textarea {
   align-items: center;
   justify-content: center;
   transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+.pj-footer__social-icon svg {
+  width: var(--pj-ftr-social-size, 18px);
+  height: var(--pj-ftr-social-size, 18px);
 }
 
 .pj-footer__social-icon:hover {
@@ -2598,8 +2634,10 @@ textarea {
 
 /* Center content */
 .pj-philosophy__center {
-  max-width: 680px;
+  max-width: var(--pj-phi-content-w, 680px);
   flex: 1 1 auto;
+  transform: translate(var(--pj-phi-content-x, 0px), var(--pj-phi-content-y, 0px));
+  text-align: var(--pj-phi-content-align, left);
 }
 
 .pj-philosophy__heading {
@@ -2616,7 +2654,7 @@ textarea {
 .pj-philosophy__body {
   font-family: var(--pj-font-sans);
   font-size: calc(clamp(0.84rem, 1.05vw, 0.94rem) * var(--pj-phi-body-size, 1));
-  line-height: 1.68;
+  line-height: var(--pj-phi-body-lh, 1.68);
   color: var(--pj-phi-body, #574F44);
   font-weight: 350;
 }
@@ -2703,11 +2741,13 @@ textarea {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transform: translate(var(--pj-phi-emblem-x, 0px), var(--pj-phi-emblem-y, 0px));
+  opacity: var(--pj-phi-emblem-opacity, 1);
   transition: transform 0.35s ease, opacity 0.35s ease;
 }
 
 .pj-philosophy__emblem:hover {
-  transform: scale(1.04);
+  transform: translate(var(--pj-phi-emblem-x, 0px), var(--pj-phi-emblem-y, 0px)) scale(1.04);
 }
 
 .pj-celestial-emblem {

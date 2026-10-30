@@ -7,7 +7,11 @@
   id="pj-philosophy-{{ section.id }}"
   class="pj-philosophy{% if s.border_top %} pj-philosophy--border-top{% endif %}{% if s.border_bottom %} pj-philosophy--border-bottom{% endif %}"
   style="
-    --pj-phi-bg: {{ s.bg_color | default: '#F4EEE5' }};
+    {% if s.bg_opacity != blank and s.bg_opacity < 100 %}
+      --pj-phi-bg: color-mix(in srgb, {{ s.bg_color | default: '#F4EEE5' }} {{ s.bg_opacity }}%, transparent);
+    {% else %}
+      --pj-phi-bg: {{ s.bg_color | default: '#F4EEE5' }};
+    {% endif %}
     --pj-phi-text: {{ s.text_color | default: '#1E1B18' }};
     --pj-phi-body: {{ s.body_color | default: '#574F44' }};
     --pj-phi-accent: {{ s.accent_color | default: '#8B7D6B' }};
@@ -15,9 +19,17 @@
     --pj-phi-pt: {{ s.padding_top | default: 56 }}px;
     --pj-phi-pb: {{ s.padding_bottom | default: 56 }}px;
     --pj-phi-max-w: {{ s.max_width | default: 1200 }}px;
+    --pj-phi-content-w: {{ s.content_max_width | default: 680 }}px;
+    --pj-phi-content-x: {{ s.content_offset_x | default: 0 }}px;
+    --pj-phi-content-y: {{ s.content_offset_y | default: 0 }}px;
+    --pj-phi-content-align: {{ s.content_align | default: 'left' }};
     --pj-phi-heading-size: {{ s.heading_size | default: 100 | divided_by: 100.0 }};
     --pj-phi-body-size: {{ s.body_size | default: 100 | divided_by: 100.0 }};
+    --pj-phi-body-lh: {{ s.body_line_height | default: 168 | divided_by: 100.0 }};
     --pj-phi-emblem-size: {{ s.emblem_size | default: 135 }}px;
+    --pj-phi-emblem-x: {{ s.emblem_offset_x | default: 0 }}px;
+    --pj-phi-emblem-y: {{ s.emblem_offset_y | default: 0 }}px;
+    --pj-phi-emblem-opacity: {{ s.emblem_opacity | default: 100 | divided_by: 100.0 }};
     {% if s.section_height > 0 %} --pj-phi-min-h: {{ s.section_height }}vh;{% endif %}
     --pj-phi-scale: {{ s.section_scale | default: 100 | divided_by: 100.0 }};
     --pj-phi-btn-mt: {{ s.button_mt | default: 24 }}px;
@@ -174,6 +186,57 @@
       "default": 100
     },
     {
+      "type": "range",
+      "id": "body_line_height",
+      "label": "Body line height",
+      "min": 120,
+      "max": 220,
+      "step": 5,
+      "unit": "%",
+      "default": 165
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content block max width",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 680
+    },
+    {
+      "type": "range",
+      "id": "content_offset_x",
+      "label": "Shift Content Left / Right (X)",
+      "min": -150,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_offset_y",
+      "label": "Shift Content Up / Down (Y)",
+      "min": -100,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Content text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
       "type": "header",
       "content": "Link Button (Explore Designs)"
     },
@@ -273,6 +336,36 @@
       "default": 135
     },
     {
+      "type": "range",
+      "id": "emblem_offset_x",
+      "label": "Shift Emblem Left / Right (X)",
+      "min": -100,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "emblem_offset_y",
+      "label": "Shift Emblem Up / Down (Y)",
+      "min": -100,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "emblem_opacity",
+      "label": "Emblem opacity",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
       "type": "header",
       "content": "Tagline (Mantra)"
     },
@@ -309,6 +402,16 @@
       "id": "bg_color",
       "label": "Background color",
       "default": "#F4EEE5"
+    },
+    {
+      "type": "range",
+      "id": "bg_opacity",
+      "label": "Background color opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
     },
     {
       "type": "image_picker",
@@ -366,17 +469,6 @@
       "unit": "vh",
       "default": 0,
       "info": "0 = Auto fit content. 100 = 100vh full screen fit."
-    },
-    {
-      "type": "range",
-      "id": "section_scale",
-      "label": "Section Overall Scale (%)",
-      "min": 70,
-      "max": 140,
-      "step": 5,
-      "unit": "%",
-      "default": 100,
-      "info": "Scale elements up or down proportionally"
     },
     {
       "type": "range",

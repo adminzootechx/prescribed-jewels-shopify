@@ -612,7 +612,7 @@
     };
 
     const placeAndAnimateArrow = (animate = true) => {
-      if (!arrowSvg || !arrowPath || !wheelHalo || !photoWrap || window.innerWidth < 960) return;
+      if (!arrowSvg || !arrowPath || !wheelHalo || !photoWrap || window.innerWidth < 768) return;
       stopArrow();
 
       const box = arrowSvg.getBoundingClientRect();
@@ -629,7 +629,7 @@
       let sx, sy;
       if (activeEntry && activeEntry.inner) {
         const gemRect = activeEntry.inner.getBoundingClientRect();
-        sx = gemRect.left + (gemRect.width * 0.08) - box.left + arrowStartX;
+        sx = gemRect.left + (gemRect.width * 0.12) - box.left + arrowStartX;
         sy = gemRect.top + (gemRect.height * 0.50) - box.top + arrowStartY;
       } else {
         const assembly = wheelHalo.parentElement.getBoundingClientRect();
@@ -639,7 +639,7 @@
       }
 
       // End point: directly at the outer right tip of the big gem
-      const ex = photo.left + (photo.width * 0.865) - box.left + arrowTargetX;
+      const ex = photo.left + (photo.width * 0.88) - box.left + arrowTargetX;
       const ey = photo.top + (photo.height * 0.50) - box.top + arrowTargetY;
 
       // Deep graceful curve matching user media drawing: dips down then rises into the gem tip
@@ -721,7 +721,11 @@
     };
 
     window.addEventListener('resize', () => placeAndAnimateArrow(false), { passive: true });
-    window.addEventListener('load', () => setTimeout(() => placeAndAnimateArrow(true), 400));
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(() => placeAndAnimateArrow(true), 250);
+    } else {
+      window.addEventListener('load', () => setTimeout(() => placeAndAnimateArrow(true), 400));
+    }
     if (photoImg) photoImg.addEventListener('load', () => placeAndAnimateArrow(false));
 
     const updateInfo = (animate) => {

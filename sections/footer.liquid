@@ -7,6 +7,11 @@
   style="
     --pj-ftr-pt: {{ s.padding_top | default: 28 }}px;
     --pj-ftr-pb: {{ s.padding_bottom | default: 28 }}px;
+    --pj-ftr-max-w: {{ s.max_width | default: 1400 }}px;
+    --pj-ftr-logo-scale: {{ s.logo_scale | default: 100 | divided_by: 100.0 }};
+    --pj-ftr-link-size: {{ s.link_size | default: 100 | divided_by: 100.0 }};
+    --pj-ftr-link-gap: {{ s.link_gap | default: 28 }}px;
+    --pj-ftr-social-size: {{ s.social_size | default: 18 }}px;
     padding-top: var(--pj-ftr-pt);
     padding-bottom: var(--pj-ftr-pb);
     {% if s.bg_color != blank %}
@@ -80,7 +85,12 @@
     { "type": "color", "id": "social_color", "label": "Social icons color", "default": "#A6998A" },
     { "type": "color", "id": "social_hover_color", "label": "Social icons hover color", "default": "#E9D2AF" },
 
-    { "type": "header", "content": "Layout & Padding" },
+    { "type": "header", "content": "Layout, Sizes & Padding" },
+    { "type": "range", "id": "max_width", "label": "Container Max Width", "min": 900, "max": 1800, "step": 20, "unit": "px", "default": 1400 },
+    { "type": "range", "id": "logo_scale", "label": "Logo Size Scale (%)", "min": 60, "max": 160, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "link_size", "label": "Link Text Size (%)", "min": 70, "max": 150, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "link_gap", "label": "Space Between Links", "min": 12, "max": 60, "step": 2, "unit": "px", "default": 28 },
+    { "type": "range", "id": "social_size", "label": "Social Icons Size", "min": 14, "max": 28, "step": 1, "unit": "px", "default": 18 },
     { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 10, "max": 100, "step": 2, "unit": "px", "default": 28 },
     { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 10, "max": 100, "step": 2, "unit": "px", "default": 28 }
   ],
