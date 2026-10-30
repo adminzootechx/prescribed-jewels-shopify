@@ -208,8 +208,9 @@ textarea {
   top: 0;
 }
 
+.pj-header.is-scrolled,
 .pj-header--sticky.is-scrolled {
-  background-color: color-mix(in srgb, var(--pj-hdr-bg-scrolled, #120E0A) calc(var(--pj-hdr-bg-opacity, 0.85) * 100%), transparent);
+  background-color: var(--pj-hdr-bg-scrolled-rgba, rgba(18, 14, 10, 0.6));
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(244, 235, 225, 0.1);

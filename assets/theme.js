@@ -31,24 +31,23 @@
   const header = document.querySelector('.pj-header');
   if (header) {
     const hero = document.querySelector('.pj-hero');
-    const getHeroThreshold = () => {
-      if (hero) {
-        // Hero ends when the bottom of hero reaches near the header height
-        const heroBottom = hero.offsetTop + hero.offsetHeight;
-        const headerH = header.offsetHeight || 72;
-        return Math.max(100, heroBottom - headerH);
-      }
-      return 60;
-    };
-
-    let heroThreshold = getHeroThreshold();
-    window.addEventListener('resize', () => { heroThreshold = getHeroThreshold(); }, { passive: true });
 
     const handleScroll = () => {
-      const isPastHero = window.scrollY >= heroThreshold;
+      let isPastHero = false;
+      if (hero) {
+        const heroRect = hero.getBoundingClientRect();
+        const headerH = header.offsetHeight || 64;
+        // Header stays transparent while over the hero picture;
+        // transitions to dark translucent glass the exact moment the hero ends.
+        isPastHero = heroRect.bottom <= headerH;
+      } else {
+        isPastHero = window.scrollY > 40;
+      }
       header.classList.toggle('is-scrolled', isPastHero);
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     handleScroll();
   }
 
