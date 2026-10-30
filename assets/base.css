@@ -1360,9 +1360,9 @@ textarea {
 /* The stone alone: no plate. The photograph is blended into the sand so only the gem and its soft shadow remain. */
 .pj-gem-diagram__photo {
   position: absolute;
-  left: 31%;
-  top: 13%;
-  width: 38%;
+  left: 33%;
+  top: 9%;
+  width: 34%;
   aspect-ratio: 1;
   perspective: 900px;
 }
@@ -1416,8 +1416,8 @@ textarea {
 .pj-gem-diagram__name {
   position: absolute;
   left: 50%;
-  top: calc(64% + var(--pj-gem-name-y, 0px));
-  width: 46%;
+  top: calc(58.5% + var(--pj-gem-name-y, 0px));
+  width: 48%;
   transform: translateX(-50%);
   text-align: center;
 }
