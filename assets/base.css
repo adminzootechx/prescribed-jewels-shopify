@@ -2683,11 +2683,21 @@ textarea {
   z-index: 1;
 }
 
+.pj-philosophy__right-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  align-self: stretch;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
 /* Celestial emblem */
 .pj-philosophy__emblem {
   width: var(--pj-phi-emblem-size, 135px);
   height: auto;
-  aspect-ratio: 387 / 462;
+  aspect-ratio: 265 / 365;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2749,7 +2759,7 @@ textarea {
     margin: 0 auto;
     width: clamp(100px, 30vw, 135px);
     height: auto;
-    aspect-ratio: 387 / 462;
+    aspect-ratio: 265 / 365;
     order: 1;
   }
 
@@ -2760,6 +2770,13 @@ textarea {
 
   .pj-philosophy__inner--emblem-left .pj-philosophy__tagline {
     order: 3;
+    margin-top: 0.5rem;
+  }
+
+  .pj-philosophy__right-col {
+    order: 3;
+    width: 100%;
+    align-items: flex-end;
     margin-top: 0.5rem;
   }
 }

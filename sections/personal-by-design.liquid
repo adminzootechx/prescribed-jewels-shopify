@@ -84,13 +84,27 @@
           </div>
         {%- endif -%}
 
-        {%- if s.button_placement != 'section_bottom' -%}
+        {%- if s.button_placement != 'section_bottom' and s.button_placement != 'right_column' -%}
           {{ cta_html }}
         {%- endif -%}
       </div>
-      {{ tagline_html }}
+      {%- if s.button_placement == 'right_column' or tagline_html != blank -%}
+        <div class="pj-philosophy__right-col">
+          {{ tagline_html }}
+          {%- if s.button_placement == 'right_column' -%}
+            {{ cta_html }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     {%- else -%}
-      {{ tagline_html }}
+      {%- if s.button_placement == 'right_column' or tagline_html != blank -%}
+        <div class="pj-philosophy__right-col">
+          {{ tagline_html }}
+          {%- if s.button_placement == 'right_column' -%}
+            {{ cta_html }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
       <div class="pj-philosophy__center">
         {%- if s.heading != blank -%}
           <h2 class="pj-philosophy__heading">{{ s.heading | escape }}</h2>
@@ -102,7 +116,7 @@
           </div>
         {%- endif -%}
 
-        {%- if s.button_placement != 'section_bottom' -%}
+        {%- if s.button_placement != 'section_bottom' and s.button_placement != 'right_column' -%}
           {{ cta_html }}
         {%- endif -%}
       </div>
@@ -191,6 +205,7 @@
       "label": "Button placement",
       "options": [
         { "value": "content_bottom", "label": "Below body text (Recommended)" },
+        { "value": "right_column", "label": "Right column (Bottom right)" },
         { "value": "section_bottom", "label": "Bottom of section" }
       ],
       "default": "content_bottom"
