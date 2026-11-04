@@ -203,18 +203,16 @@ textarea {
   transition: background-color 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
+.pj-header,
 .pj-header--sticky {
   position: sticky;
   top: 0;
-}
-
-.pj-header.is-scrolled,
-.pj-header--sticky.is-scrolled {
-  background-color: var(--pj-hdr-bg-scrolled-rgba, rgba(18, 14, 10, 0.6));
+  z-index: 1000;
+  background-color: rgba(18, 14, 10, 0.3);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(244, 235, 225, 0.1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid rgba(244, 235, 225, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
 }
 
 .pj-header__inner {

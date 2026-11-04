@@ -3,13 +3,12 @@
 {%- assign scrolled_bg = hs.bg_color_scrolled | default: '#120E0A' -%}
 {%- assign scrolled_rgba = scrolled_bg | color_modify: 'alpha', scrolled_opacity -%}
 
-{%- assign hero_bar_style = hs.hero_bar_style | default: 'gradient' -%}
-{%- assign hero_bg_color = hs.bg_color_hero | default: '#120E0A' -%}
-{%- assign hero_opacity_val = hs.bg_opacity_hero | default: 25 -%}
-{%- assign hero_opacity = hero_opacity_val | divided_by: 100.0 -%}
-{%- assign hero_blur = hs.bg_blur_hero | default: 6 -%}
-{%- assign hero_rgba = hero_bg_color | color_modify: 'alpha', hero_opacity -%}
-{%- assign hero_text_color = hs.text_color_hero | default: '#E9D2AF' -%}
+{%- assign header_bg_color = hs.bg_color_hero | default: '#120E0A' -%}
+{%- assign header_opacity_val = hs.bg_opacity_hero | default: 30 -%}
+{%- assign header_opacity = header_opacity_val | divided_by: 100.0 -%}
+{%- assign header_blur = hs.bg_blur_hero | default: 14 -%}
+{%- assign header_rgba = header_bg_color | color_modify: 'alpha', header_opacity -%}
+{%- assign header_text_color = hs.text_color_hero | default: '#E9D2AF' -%}
 
 {%- if hs.custom_font != blank -%}<style>{{ hs.custom_font | font_face: font_display: 'swap' }}</style>{%- endif -%}
 {%- assign custom_fam = hs.custom_font.family | append: ', ' | append: hs.custom_font.fallback_families -%}
@@ -23,72 +22,42 @@
 
 {%- if hs.overlay_hero -%}
 <style>
-  .template-index .pj-header {
-    position: fixed !important;
+  /* Unified Transparent Blurry Header across all pages & scroll states */
+  .pj-header {
+    position: sticky !important;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
     z-index: 1000;
-    transition: background-color 0.35s ease, background 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    background-color: {{ header_rgba }} !important;
+    background-color: color-mix(in srgb, {{ header_bg_color }} {{ header_opacity_val }}%, transparent) !important;
+    backdrop-filter: blur({{ header_blur }}px) !important;
+    -webkit-backdrop-filter: blur({{ header_blur }}px) !important;
+    border-bottom: 1px solid rgba(244, 235, 225, 0.08) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18) !important;
+    transition: background-color 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease;
   }
-  .template-index .pj-header:not(.is-scrolled) {
-    {%- if hero_bar_style == 'transparent' or hero_opacity_val == 0 -%}
-      background: transparent !important;
-      background-color: transparent !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-    {%- elsif hero_bar_style == 'glass' -%}
-      background: none !important;
-      background-color: {{ hero_rgba }} !important;
-      background-color: color-mix(in srgb, {{ hero_bg_color }} {{ hero_opacity_val }}%, transparent) !important;
-      {%- if hero_blur > 0 -%}
-        backdrop-filter: blur({{ hero_blur }}px) !important;
-        -webkit-backdrop-filter: blur({{ hero_blur }}px) !important;
-      {%- else -%}
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-      {%- endif -%}
-    {%- else -%}
-      /* 'gradient' (default): Soft, seamless vignette fade from top - no harsh cutoff box */
-      background: linear-gradient(to bottom, color-mix(in srgb, {{ hero_bg_color }} {{ hero_opacity_val }}%, transparent) 0%, color-mix(in srgb, {{ hero_bg_color }} calc({{ hero_opacity_val }}% * 0.4), transparent) 65%, transparent 100%) !important;
-      background-color: transparent !important;
-      {%- if hero_blur > 0 -%}
-        backdrop-filter: blur({{ hero_blur }}px) !important;
-        -webkit-backdrop-filter: blur({{ hero_blur }}px) !important;
-      {%- else -%}
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-      {%- endif -%}
-    {%- endif -%}
-    border-bottom: {%- if hs.hero_show_border -%}1px solid rgba(244, 235, 225, 0.08){%- else -%}none{%- endif -%} !important;
-    box-shadow: {%- if hs.hero_show_shadow -%}0 4px 20px rgba(0, 0, 0, 0.25){%- else -%}none{%- endif -%} !important;
+
+  .template-index .pj-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
   }
-  .template-index .pj-header:not(.is-scrolled) .pj-header__wordmark,
-  .template-index .pj-header:not(.is-scrolled) .pj-header__logo-text,
-  .template-index .pj-header:not(.is-scrolled) .pj-header__link,
-  .template-index .pj-header:not(.is-scrolled) .pj-header__cart-link,
-  .template-index .pj-header:not(.is-scrolled) .pj-header__mobile-toggle {
-    color: {{ hero_text_color }} !important;
+
+  .pj-header .pj-header__wordmark,
+  .pj-header .pj-header__logo-text,
+  .pj-header .pj-header__link,
+  .pj-header .pj-header__cart-link,
+  .pj-header .pj-header__mobile-toggle {
+    color: {{ header_text_color }} !important;
   }
-  .template-index .pj-header.is-scrolled {
-    background-color: {{ scrolled_rgba }} !important;
-    background-color: color-mix(in srgb, {{ scrolled_bg }} {{ hs.bg_opacity_scrolled | default: 60 }}%, transparent) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    border-bottom: 1px solid rgba(244, 235, 225, 0.1) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+
+  .pj-header:has(#pj-mobile-nav:not([hidden])) {
+    background-color: {{ header_bg_color }} !important;
   }
-  .template-index .pj-header.is-scrolled .pj-header__wordmark,
-  .template-index .pj-header.is-scrolled .pj-header__logo-text,
-  .template-index .pj-header.is-scrolled .pj-header__link,
-  .template-index .pj-header.is-scrolled .pj-header__cart-link,
-  .template-index .pj-header.is-scrolled .pj-header__mobile-toggle {
-    color: {{ hs.text_color | default: '#E9D2AF' }} !important;
-  }
-  .template-index .pj-header:has(#pj-mobile-nav:not([hidden])) {
-    background-color: {{ scrolled_bg }} !important;
-  }
+
   .template-index .pj-hero {
     height: var(--pj-hero-h, 100vh);
     height: var(--pj-hero-dvh, var(--pj-hero-h, 100vh));
@@ -249,23 +218,12 @@
     { "type": "range", "id": "header_padding_y", "label": "Bar height padding (Top & Bottom)", "min": 6, "max": 40, "step": 2, "unit": "px", "default": 18 },
     { "type": "range", "id": "max_width", "label": "Content width", "min": 960, "max": 1920, "step": 20, "unit": "px", "default": 1400, "info": "Only used when Full width is unchecked." },
 
-    { "type": "header", "content": "Hero Page Bar (Top of Page)" },
-    { "type": "checkbox", "id": "overlay_hero", "label": "Sit over the top of the hero image", "default": true, "info": "The hero photograph extends behind the bar." },
-    {
-      "type": "select",
-      "id": "hero_bar_style",
-      "label": "Background style over hero",
-      "options": [
-        { "value": "gradient", "label": "Soft gradient fade (seamless, no harsh box)" },
-        { "value": "glass", "label": "Translucent glass bar" },
-        { "value": "transparent", "label": "Fully transparent" }
-      ],
-      "default": "gradient"
-    },
+    { "type": "header", "content": "Transparent Blurry Bar (All Pages)" },
+    { "type": "checkbox", "id": "overlay_hero", "label": "Overlay over top of hero on homepage", "default": true },
     { "type": "color", "id": "bg_color_hero", "label": "Background tint colour", "default": "#120E0A" },
-    { "type": "range", "id": "bg_opacity_hero", "label": "Darkness / Opacity", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 25, "info": "Lower = lighter / softer. 0% is fully transparent." },
-    { "type": "range", "id": "bg_blur_hero", "label": "Glass blur strength", "min": 0, "max": 30, "step": 1, "unit": "px", "default": 6 },
-    { "type": "color", "id": "text_color_hero", "label": "Text colour over hero", "default": "#E9D2AF" },
+    { "type": "range", "id": "bg_opacity_hero", "label": "Darkness / Opacity", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 30, "info": "Translucency across all pages. 0% is transparent." },
+    { "type": "range", "id": "bg_blur_hero", "label": "Glass blur strength", "min": 0, "max": 30, "step": 1, "unit": "px", "default": 14 },
+    { "type": "color", "id": "text_color_hero", "label": "Header text & logo colour", "default": "#E9D2AF" },
 
     { "type": "header", "content": "Scrolled Bar (After Scrolling)" },
     { "type": "checkbox", "id": "enable_sticky", "label": "Stay visible while scrolling", "default": true },
