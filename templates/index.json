@@ -246,12 +246,9 @@
         "design6",
         "design7"
       ],
-      "disabled": true,
-      "custom_css": [],
       "settings": {
         "veil": 35,
         "veil_color": "#14100c",
-        "text_color": "#f4ebe1",
         "eyebrow": "THE COLLECTION",
         "heading": "Jewelry with meaning,\nmade to be lived in.",
         "heading_size": 100,

@@ -703,7 +703,7 @@ textarea {
   display: block;
 }
 
-.pj-designs-sticky::after {
+.pj-designs-sticky.has-bg-image::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -755,14 +755,14 @@ textarea {
 
 .pj-designs__header .pj-eyebrow {
   margin-bottom: 0.2rem;
-  color: var(--pj-designs-color, var(--pj-text-muted));
-  opacity: 0.85;
+  color: var(--pj-designs-color, var(--pj-accent-gold, #B69156));
+  opacity: 0.95;
 }
 
 .pj-designs__header .pj-section-title {
   font-size: clamp(1.45rem, 2.2vw, 1.95rem);
   line-height: 1.05;
-  color: var(--pj-designs-color, inherit);
+  color: var(--pj-designs-color, var(--pj-text-primary, #1A1815));
 }
 
 .pj-designs__subtext {
@@ -770,9 +770,14 @@ textarea {
   font-family: var(--pj-font-serif);
   font-size: clamp(0.92rem, 1.1vw, 1.05rem);
   line-height: 1.35;
-  color: var(--pj-designs-color, inherit);
+  color: var(--pj-designs-color, var(--pj-text-muted, #5A5247));
   opacity: 0.88;
   max-width: 44ch;
+}
+
+.pj-designs-sticky.has-bg-image .pj-designs__header .pj-section-title,
+.pj-designs-sticky.has-bg-image .pj-designs__subtext {
+  color: var(--pj-designs-color, #F4EBE1);
 }
 
 .pj-designs__header-line {
@@ -797,17 +802,23 @@ textarea {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1px solid rgba(244, 235, 225, 0.28);
-  background: rgba(20, 16, 12, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--pj-designs-color, #F4EBE1);
+  border: 1px solid var(--pj-border-strong, rgba(26, 24, 21, 0.25));
+  background: var(--pj-bg-card, #F7F1E6);
+  color: var(--pj-designs-color, var(--pj-text-primary, #1A1815));
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   font-size: 0.85rem;
   transition: all 0.22s ease;
+}
+
+.pj-designs-sticky.has-bg-image .pj-designs__arrow-btn {
+  border: 1px solid rgba(244, 235, 225, 0.28);
+  background: rgba(20, 16, 12, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--pj-designs-color, #F4EBE1);
 }
 
 .pj-designs__arrow-btn:hover {
