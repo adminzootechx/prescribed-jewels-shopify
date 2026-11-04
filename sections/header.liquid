@@ -52,6 +52,16 @@
   .pj-header .pj-header__cart-link,
   .pj-header .pj-header__mobile-toggle {
     color: {{ header_text_color }} !important;
+    transition: color 0.22s ease, opacity 0.22s ease;
+  }
+
+  .pj-header .pj-header__link:hover,
+  .pj-header .pj-header__cart-link:hover,
+  .pj-header .pj-header__brand-link:hover .pj-header__wordmark,
+  .pj-header .pj-header__brand-link:hover .pj-header__logo-text,
+  .pj-header .pj-header__mobile-toggle:hover {
+    color: {{ hs.accent_color | default: '#000000' }} !important;
+    opacity: 1 !important;
   }
 
   .pj-header:has(#pj-mobile-nav:not([hidden])) {
@@ -79,7 +89,7 @@
     --pj-hdr-text: {{ hs.text_color | default: '#e9d2af' }};
     --pj-hdr-text-dark: {{ hs.text_color | default: '#e9d2af' }};
     --pj-hdr-text-light: {{ hs.text_color_light | default: '#2b241c' }};
-    --pj-hdr-accent: {{ hs.accent_color | default: '#f0e4d1' }};
+    --pj-hdr-accent: {{ hs.accent_color | default: '#000000' }};
     --pj-hdr-bg-scrolled: {{ hs.bg_color_scrolled | default: '#120e0a' }};
     --pj-hdr-bg-scrolled-rgba: {{ scrolled_rgba }};
     --pj-hdr-bar-dark: {{ hs.bg_color_scrolled | default: '#120e0a' }};
@@ -210,7 +220,7 @@
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "text_color", "label": "Text on dark sections", "default": "#E9D2AF" },
     { "type": "color", "id": "text_color_light", "label": "Text on light sections", "default": "#2B241C" },
-    { "type": "color", "id": "accent_color", "label": "Link hover colour", "default": "#B69156" },
+    { "type": "color", "id": "accent_color", "label": "Link hover colour", "default": "#000000" },
 
     { "type": "header", "content": "Layout & Padding" },
     { "type": "checkbox", "id": "full_width", "label": "Full width (align to screen edges)", "default": true },

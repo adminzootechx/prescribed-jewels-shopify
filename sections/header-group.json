@@ -73,7 +73,7 @@
         "custom_font": "jost_n4",
         "text_color": "#e9d2af",
         "text_color_light": "#E9D2AF",
-        "accent_color": "#40200E",
+        "accent_color": "#000000",
         "overlay_hero": true,
         "bg_color_hero": "#120e0a",
         "bg_opacity_hero": 30,

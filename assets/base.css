@@ -362,7 +362,7 @@ textarea {
 
 .pj-header__link:hover {
   opacity: 1;
-  color: var(--pj-hdr-accent, #B69156);
+  color: var(--pj-hdr-accent, #000000) !important;
 }
 
 .pj-header__actions {
@@ -400,7 +400,7 @@ textarea {
 
 .pj-header__cart-link:hover {
   opacity: 1;
-  color: var(--pj-hdr-accent, #B69156);
+  color: var(--pj-hdr-accent, #000000) !important;
 }
 
 .pj-header__mobile-toggle {
