@@ -27,18 +27,39 @@
     });
   }
 
-  /* Sticky / Scrolled Header Floating Effect once Hero section ends */
+  /* Sticky / Scrolled Header Floating Effect & Dynamic Dark/Light Tone */
   const header = document.querySelector('.pj-header');
   if (header) {
     const hero = document.querySelector('.pj-hero');
 
-    const handleScroll = () => {
+    const updateHeaderTone = () => {
+      const headerH = header.offsetHeight || 60;
+      const headerMidY = headerH * 0.55;
+
+      // Non-index pages (products, collections, cart, journal) default to light theme
+      const isHomepage = document.body.classList.contains('template-index');
+      if (!isHomepage) {
+        header.classList.add('is-light-section');
+        header.classList.add('is-scrolled');
+        return;
+      }
+
+      // Dark sections on homepage: hero, gemstones atlas wheel, editorial story
+      const darkSections = document.querySelectorAll('.pj-hero, [data-gem-wheel-section], .pj-gemstones-wheel-outer, .pj-story, [data-theme="dark"], [data-dark-section]');
+      let isOverDark = false;
+      for (let i = 0; i < darkSections.length; i++) {
+        const rect = darkSections[i].getBoundingClientRect();
+        if (rect.top <= headerMidY && rect.bottom >= headerMidY) {
+          isOverDark = true;
+          break;
+        }
+      }
+
+      header.classList.toggle('is-light-section', !isOverDark);
+
       let isPastHero = false;
       if (hero) {
         const heroRect = hero.getBoundingClientRect();
-        const headerH = header.offsetHeight || 64;
-        // Header stays transparent while over the hero picture;
-        // transitions to dark translucent glass the exact moment the hero ends.
         isPastHero = heroRect.bottom <= headerH;
       } else {
         isPastHero = window.scrollY > 40;
@@ -46,9 +67,9 @@
       header.classList.toggle('is-scrolled', isPastHero);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-    handleScroll();
+    window.addEventListener('scroll', updateHeaderTone, { passive: true });
+    window.addEventListener('resize', updateHeaderTone, { passive: true });
+    updateHeaderTone();
   }
 
   /* --------------------------------------------------------------------------

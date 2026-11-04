@@ -72,7 +72,7 @@
         "cart_action": "page",
         "custom_font": "jost_n4",
         "text_color": "#e9d2af",
-        "text_color_light": "#E9D2AF",
+        "text_color_light": "#2b241c",
         "accent_color": "#000000",
         "overlay_hero": true,
         "bg_color_hero": "#120e0a",
