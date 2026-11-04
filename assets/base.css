@@ -765,6 +765,16 @@ textarea {
   color: var(--pj-designs-color, inherit);
 }
 
+.pj-designs__subtext {
+  margin: 0.35rem 0 0;
+  font-family: var(--pj-font-serif);
+  font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+  line-height: 1.35;
+  color: var(--pj-designs-color, inherit);
+  opacity: 0.88;
+  max-width: 44ch;
+}
+
 .pj-designs__header-line {
   display: none;
   height: 1px;
