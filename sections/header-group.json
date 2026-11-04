@@ -80,6 +80,8 @@
         "bar_color_light": "#201108",
         "bg_opacity_scrolled": 60,
         "header_padding_y": 12,
+        "header_padding_x": 15,
+        "full_width": true,
         "max_width": 1400
       }
     }

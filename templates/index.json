@@ -14,8 +14,7 @@
       "custom_css": [
         ".pj-eyebrow {color: #E9D2AF;}",
         ".pj-hero__lead {color: #e9d2af;}",
-        ".pj-hero__mantra {color: #e9d2af;}",
-        ".pj-hero__content {padding-left: 20px;}"
+        ".pj-hero__mantra {color: #e9d2af;}"
       ],
       "settings": {
         "image_1": "shopify://shop_images/Emerald_Pendant_in_Cinematic_Shadow.png",
@@ -30,6 +29,7 @@
         "cta_link": "",
         "mantra": "YOUR BIRTHPLACE. YOUR TIME. YOUR GEMSTONE. YOUR STORY.",
         "text_color": "#E9D2AF",
+        "content_offset_x": 15,
         "height": 100
       }
     },

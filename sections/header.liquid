@@ -70,7 +70,8 @@
     --pj-hdr-bar-light: {{ hs.bar_color_light | default: '#f3ece0' }};
     --pj-hdr-bg-opacity: {{ hs.bg_opacity_scrolled | default: 85 | divided_by: 100.0 }};
     --pj-hdr-py: {{ hs.header_padding_y | default: 18 }}px;
-    --pj-hdr-max-w: {{ hs.max_width | default: 1400 }}px;
+    --pj-hdr-px: {{ hs.header_padding_x | default: 15 }}px;
+    --pj-hdr-max-w: {% if hs.full_width or hs.full_width == nil %}100%{% else %}{{ hs.max_width | default: 1400 }}px{% endif %};
     --pj-hdr-logo-size: {{ hs.logo_font_size | default: 100 | divided_by: 100.0 }};
     --pj-hdr-logo-spacing: {{ hs.logo_letter_spacing | default: 22 | divided_by: 100.0 }}em;
     --pj-hdr-logo-sub-spacing: {{ hs.logo_sub_letter_spacing | default: 44 | divided_by: 100.0 }}em;
@@ -196,6 +197,8 @@
     { "type": "color", "id": "accent_color", "label": "Link hover colour", "default": "#B69156" },
 
     { "type": "header", "content": "Behaviour and bar" },
+    { "type": "checkbox", "id": "full_width", "label": "Full width (align to screen edges)", "default": true },
+    { "type": "range", "id": "header_padding_x", "label": "Side padding (Left & Right)", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 15, "info": "Distance from the left and right screen edges." },
     { "type": "checkbox", "id": "overlay_hero", "label": "Sit over the top of the page", "default": true, "info": "The first section starts behind the bar." },
     { "type": "checkbox", "id": "enable_sticky", "label": "Stay visible while scrolling", "default": true },
     { "type": "color", "id": "bg_color_scrolled", "label": "Bar colour over dark sections", "default": "#120E0A" },

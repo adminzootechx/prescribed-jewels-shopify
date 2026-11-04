@@ -222,9 +222,11 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  max-width: var(--pj-hdr-max-w, 1400px);
+  max-width: var(--pj-hdr-max-w, 100%);
   margin: 0 auto;
   width: 100%;
+  padding-left: var(--pj-hdr-px, 15px) !important;
+  padding-right: var(--pj-hdr-px, 15px) !important;
 }
 
 .pj-header__brand {
@@ -536,16 +538,20 @@ textarea {
   .pj-hero__bg-img { animation: none; }
 }
 
-.pj-hero__overlay {
+.pj-hero .pj-hero__overlay {
   position: relative;
   z-index: 3;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 100% !important;
 }
 
 .pj-hero__content {
   max-width: var(--pj-hero-content-w, 540px);
-  margin-left: var(--pj-hero-content-x, 80px);
+  margin-left: var(--pj-hero-content-x, 15px);
+  padding-left: 0;
   transform: translateY(var(--pj-hero-content-y, 0px));
   text-align: var(--pj-hero-align, left);
   color: var(--pj-hero-text, inherit);
@@ -628,7 +634,7 @@ textarea {
     min-height: 540px;
   }
   .pj-hero__content {
-    margin-left: clamp(1.5rem, 5vw, var(--pj-hero-content-x, 80px));
+    margin-left: var(--pj-hero-content-x, 15px);
     max-width: min(500px, 90%);
   }
   .pj-hero__title {
@@ -645,9 +651,9 @@ textarea {
     padding-bottom: var(--pj-sec-pb-mobile, 0px);
   }
   .pj-hero__content {
-    margin-left: clamp(0.75rem, 4vw, var(--pj-hero-content-x, 80px));
+    margin-left: var(--pj-hero-content-x, 15px);
     margin-right: auto;
-    padding: 0 clamp(0.85rem, 4.5vw, 1.75rem);
+    padding: 0 var(--pj-hero-content-x, 15px) 0 0;
     max-width: 100%;
     transform: translateY(calc(var(--pj-hero-content-y, 0px) * 0.5));
   }
