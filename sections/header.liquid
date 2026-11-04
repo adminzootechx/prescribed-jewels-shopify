@@ -3,6 +3,12 @@
 {%- assign scrolled_bg = hs.bg_color_scrolled | default: '#120E0A' -%}
 {%- assign scrolled_rgba = scrolled_bg | color_modify: 'alpha', scrolled_opacity -%}
 
+{%- assign hero_bg_color = hs.bg_color_hero | default: '#120E0A' -%}
+{%- assign hero_opacity_val = hs.bg_opacity_hero | default: 55 -%}
+{%- assign hero_opacity = hero_opacity_val | divided_by: 100.0 -%}
+{%- assign hero_rgba = hero_bg_color | color_modify: 'alpha', hero_opacity -%}
+{%- assign hero_text_color = hs.text_color_hero | default: '#E9D2AF' -%}
+
 {%- if hs.custom_font != blank -%}<style>{{ hs.custom_font | font_face: font_display: 'swap' }}</style>{%- endif -%}
 {%- assign custom_fam = hs.custom_font.family | append: ', ' | append: hs.custom_font.fallback_families -%}
 {%- capture logo_font_css -%}{%- if hs.logo_font == 'custom' -%}font-family: {{ custom_fam }};{%- endif -%}{%- endcapture -%}
@@ -25,11 +31,19 @@
     transition: background-color 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
   }
   .template-index .pj-header:not(.is-scrolled) {
-    background-color: transparent !important;
-    border-bottom: 1px solid transparent !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    background-color: {{ hero_rgba }} !important;
+    background-color: color-mix(in srgb, {{ hero_bg_color }} {{ hero_opacity_val }}%, transparent) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-bottom: 1px solid rgba(244, 235, 225, 0.08) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+  }
+  .template-index .pj-header:not(.is-scrolled) .pj-header__wordmark,
+  .template-index .pj-header:not(.is-scrolled) .pj-header__logo-text,
+  .template-index .pj-header:not(.is-scrolled) .pj-header__link,
+  .template-index .pj-header:not(.is-scrolled) .pj-header__cart-link,
+  .template-index .pj-header:not(.is-scrolled) .pj-header__mobile-toggle {
+    color: {{ hero_text_color }} !important;
   }
   .template-index .pj-header.is-scrolled {
     background-color: {{ scrolled_rgba }} !important;
@@ -38,6 +52,13 @@
     -webkit-backdrop-filter: blur(14px) !important;
     border-bottom: 1px solid rgba(244, 235, 225, 0.1) !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+  }
+  .template-index .pj-header.is-scrolled .pj-header__wordmark,
+  .template-index .pj-header.is-scrolled .pj-header__logo-text,
+  .template-index .pj-header.is-scrolled .pj-header__link,
+  .template-index .pj-header.is-scrolled .pj-header__cart-link,
+  .template-index .pj-header.is-scrolled .pj-header__mobile-toggle {
+    color: {{ hs.text_color | default: '#E9D2AF' }} !important;
   }
   .template-index .pj-header:has(#pj-mobile-nav:not([hidden])) {
     background-color: {{ scrolled_bg }} !important;
@@ -201,6 +222,9 @@
     { "type": "range", "id": "header_padding_x", "label": "Side padding (Left & Right)", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 15, "info": "Distance from the left and right screen edges." },
     { "type": "checkbox", "id": "overlay_hero", "label": "Sit over the top of the page", "default": true, "info": "The first section starts behind the bar." },
     { "type": "checkbox", "id": "enable_sticky", "label": "Stay visible while scrolling", "default": true },
+    { "type": "color", "id": "bg_color_hero", "label": "Hero bar background colour", "default": "#120E0A" },
+    { "type": "range", "id": "bg_opacity_hero", "label": "Hero bar background opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 55, "info": "0% is transparent, 100% is solid." },
+    { "type": "color", "id": "text_color_hero", "label": "Hero bar text colour", "default": "#E9D2AF" },
     { "type": "color", "id": "bg_color_scrolled", "label": "Bar colour over dark sections", "default": "#120E0A" },
     { "type": "color", "id": "bar_color_light", "label": "Bar colour over light sections", "default": "#F3ECE0" },
     { "type": "range", "id": "bg_opacity_scrolled", "label": "Bar strength after scrolling", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 60, "info": "0% is fully transparent." },
