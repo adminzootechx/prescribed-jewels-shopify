@@ -3,9 +3,11 @@
 {%- assign scrolled_bg = hs.bg_color_scrolled | default: '#120E0A' -%}
 {%- assign scrolled_rgba = scrolled_bg | color_modify: 'alpha', scrolled_opacity -%}
 
+{%- assign hero_bar_style = hs.hero_bar_style | default: 'gradient' -%}
 {%- assign hero_bg_color = hs.bg_color_hero | default: '#120E0A' -%}
-{%- assign hero_opacity_val = hs.bg_opacity_hero | default: 55 -%}
+{%- assign hero_opacity_val = hs.bg_opacity_hero | default: 25 -%}
 {%- assign hero_opacity = hero_opacity_val | divided_by: 100.0 -%}
+{%- assign hero_blur = hs.bg_blur_hero | default: 6 -%}
 {%- assign hero_rgba = hero_bg_color | color_modify: 'alpha', hero_opacity -%}
 {%- assign hero_text_color = hs.text_color_hero | default: '#E9D2AF' -%}
 
@@ -28,15 +30,39 @@
     right: 0;
     width: 100%;
     z-index: 1000;
-    transition: background-color 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    transition: background-color 0.35s ease, background 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
   }
   .template-index .pj-header:not(.is-scrolled) {
-    background-color: {{ hero_rgba }} !important;
-    background-color: color-mix(in srgb, {{ hero_bg_color }} {{ hero_opacity_val }}%, transparent) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    border-bottom: 1px solid rgba(244, 235, 225, 0.08) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+    {%- if hero_bar_style == 'transparent' or hero_opacity_val == 0 -%}
+      background: transparent !important;
+      background-color: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    {%- elsif hero_bar_style == 'glass' -%}
+      background: none !important;
+      background-color: {{ hero_rgba }} !important;
+      background-color: color-mix(in srgb, {{ hero_bg_color }} {{ hero_opacity_val }}%, transparent) !important;
+      {%- if hero_blur > 0 -%}
+        backdrop-filter: blur({{ hero_blur }}px) !important;
+        -webkit-backdrop-filter: blur({{ hero_blur }}px) !important;
+      {%- else -%}
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      {%- endif -%}
+    {%- else -%}
+      /* 'gradient' (default): Soft, seamless vignette fade from top - no harsh cutoff box */
+      background: linear-gradient(to bottom, color-mix(in srgb, {{ hero_bg_color }} {{ hero_opacity_val }}%, transparent) 0%, color-mix(in srgb, {{ hero_bg_color }} calc({{ hero_opacity_val }}% * 0.4), transparent) 65%, transparent 100%) !important;
+      background-color: transparent !important;
+      {%- if hero_blur > 0 -%}
+        backdrop-filter: blur({{ hero_blur }}px) !important;
+        -webkit-backdrop-filter: blur({{ hero_blur }}px) !important;
+      {%- else -%}
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      {%- endif -%}
+    {%- endif -%}
+    border-bottom: {%- if hs.hero_show_border -%}1px solid rgba(244, 235, 225, 0.08){%- else -%}none{%- endif -%} !important;
+    box-shadow: {%- if hs.hero_show_shadow -%}0 4px 20px rgba(0, 0, 0, 0.25){%- else -%}none{%- endif -%} !important;
   }
   .template-index .pj-header:not(.is-scrolled) .pj-header__wordmark,
   .template-index .pj-header:not(.is-scrolled) .pj-header__logo-text,
@@ -217,19 +243,35 @@
     { "type": "color", "id": "text_color_light", "label": "Text on light sections", "default": "#2B241C" },
     { "type": "color", "id": "accent_color", "label": "Link hover colour", "default": "#B69156" },
 
-    { "type": "header", "content": "Behaviour and bar" },
+    { "type": "header", "content": "Layout & Padding" },
     { "type": "checkbox", "id": "full_width", "label": "Full width (align to screen edges)", "default": true },
     { "type": "range", "id": "header_padding_x", "label": "Side padding (Left & Right)", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 15, "info": "Distance from the left and right screen edges." },
-    { "type": "checkbox", "id": "overlay_hero", "label": "Sit over the top of the page", "default": true, "info": "The first section starts behind the bar." },
+    { "type": "range", "id": "header_padding_y", "label": "Bar height padding (Top & Bottom)", "min": 6, "max": 40, "step": 2, "unit": "px", "default": 18 },
+    { "type": "range", "id": "max_width", "label": "Content width", "min": 960, "max": 1920, "step": 20, "unit": "px", "default": 1400, "info": "Only used when Full width is unchecked." },
+
+    { "type": "header", "content": "Hero Page Bar (Top of Page)" },
+    { "type": "checkbox", "id": "overlay_hero", "label": "Sit over the top of the hero image", "default": true, "info": "The hero photograph extends behind the bar." },
+    {
+      "type": "select",
+      "id": "hero_bar_style",
+      "label": "Background style over hero",
+      "options": [
+        { "value": "gradient", "label": "Soft gradient fade (seamless, no harsh box)" },
+        { "value": "glass", "label": "Translucent glass bar" },
+        { "value": "transparent", "label": "Fully transparent" }
+      ],
+      "default": "gradient"
+    },
+    { "type": "color", "id": "bg_color_hero", "label": "Background tint colour", "default": "#120E0A" },
+    { "type": "range", "id": "bg_opacity_hero", "label": "Darkness / Opacity", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 25, "info": "Lower = lighter / softer. 0% is fully transparent." },
+    { "type": "range", "id": "bg_blur_hero", "label": "Glass blur strength", "min": 0, "max": 30, "step": 1, "unit": "px", "default": 6 },
+    { "type": "color", "id": "text_color_hero", "label": "Text colour over hero", "default": "#E9D2AF" },
+
+    { "type": "header", "content": "Scrolled Bar (After Scrolling)" },
     { "type": "checkbox", "id": "enable_sticky", "label": "Stay visible while scrolling", "default": true },
-    { "type": "color", "id": "bg_color_hero", "label": "Hero bar background colour", "default": "#120E0A" },
-    { "type": "range", "id": "bg_opacity_hero", "label": "Hero bar background opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 55, "info": "0% is transparent, 100% is solid." },
-    { "type": "color", "id": "text_color_hero", "label": "Hero bar text colour", "default": "#E9D2AF" },
     { "type": "color", "id": "bg_color_scrolled", "label": "Bar colour over dark sections", "default": "#120E0A" },
     { "type": "color", "id": "bar_color_light", "label": "Bar colour over light sections", "default": "#F3ECE0" },
-    { "type": "range", "id": "bg_opacity_scrolled", "label": "Bar strength after scrolling", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 60, "info": "0% is fully transparent." },
-    { "type": "range", "id": "header_padding_y", "label": "Bar height padding", "min": 6, "max": 40, "step": 2, "unit": "px", "default": 18 },
-    { "type": "range", "id": "max_width", "label": "Content width", "min": 960, "max": 1920, "step": 20, "unit": "px", "default": 1400 }
+    { "type": "range", "id": "bg_opacity_scrolled", "label": "Bar strength after scrolling", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 60, "info": "0% is fully transparent." }
   ],
   "blocks": [
     {
