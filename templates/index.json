@@ -282,62 +282,52 @@
     },
     "prescription_process": {
       "type": "prescription-process",
+      "settings": {
+        "eyebrow": "THE PROCESS",
+        "heading": "A PIECE THAT'S TRULY YOURS",
+        "padding_top": 72,
+        "padding_bottom": 72
+      },
       "blocks": {
-        "step1": {
+        "step_1": {
           "type": "step",
           "settings": {
-            "when": "DAY 0",
-            "title": "ORDER PLACED",
-            "text": "Select your design, share your birth details, and receive immediate confirmation (5–7 weeks delivery)."
+            "step_number": "01",
+            "title": "Share your details",
+            "description": "Tell us your date, time, and place of birth."
           }
         },
-        "step2": {
+        "step_2": {
           "type": "step",
           "settings": {
-            "when": "DAYS 1–5",
-            "title": "GEMSTONE PRESCRIBED",
-            "text": "Our astrologer studies your birth chart and prescribes your stone. No customer action is required."
+            "step_number": "02",
+            "title": "Receive your gemstone guidance",
+            "description": "Discover the stone recommended for you."
           }
         },
-        "step3": {
+        "step_3": {
           "type": "step",
           "settings": {
-            "when": "DAYS 3–7",
-            "title": "PRESCRIPTION REVEALED",
-            "text": "A branded email reveals your gemstone and meaning as production begins — no approvals or revisions."
+            "step_number": "03",
+            "title": "Choose your piece",
+            "description": "Select the setting and design you love."
           }
         },
-        "step4": {
+        "step_4": {
           "type": "step",
           "settings": {
-            "when": "WEEKS 1–5",
-            "title": "JEWELLERY PRODUCTION",
-            "text": "Handcrafted according to your chosen design and prescribed gemstone with quiet precision."
-          }
-        },
-        "step5": {
-          "type": "step",
-          "settings": {
-            "when": "WEEKS 5–7",
-            "title": "DELIVERED TO YOU",
-            "text": "Tracking sent; your physical box arrives with the small printed prescription alongside your jewel."
+            "step_number": "04",
+            "title": "Made for you",
+            "description": "Your piece is prepared with care."
           }
         }
       },
       "block_order": [
-        "step1",
-        "step2",
-        "step3",
-        "step4",
-        "step5"
-      ],
-      "disabled": true,
-      "settings": {
-        "eyebrow": "HOW IT WORKS",
-        "heading": "A THOUGHTFUL JOURNEY",
-        "heading_size": 100,
-        "circle_size": 136
-      }
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ]
     },
     "closing_split": {
       "type": "closing-split",
