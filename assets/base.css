@@ -1275,7 +1275,7 @@ textarea {
 
 @media (min-width: 769px) {
   .pj-gemstones-wheel__info {
-    transform: translateX(var(--pj-info-offset-x, 45px));
+    transform: translate(var(--pj-info-offset-x, 45px), var(--pj-info-offset-y, 52px));
   }
 }
 

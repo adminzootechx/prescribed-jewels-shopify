@@ -647,7 +647,7 @@
       const reach = Math.max(60, sx - ex);
       const dip = Math.min(130, reach * 0.34 * arrowCurviness);
       const cp1x = sx - reach * 0.48;
-      const cp1y = sy + (dip * 1.25);
+      const cp1y = Math.max(sy, ey) + (dip * 0.95);
       const cp2x = ex + reach * 0.32;
       const cp2y = ey + (dip * 0.18);
       const d = `M ${sx.toFixed(1)} ${sy.toFixed(1)} C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${ex.toFixed(1)} ${ey.toFixed(1)}`;
@@ -727,6 +727,22 @@
       window.addEventListener('load', () => setTimeout(() => placeAndAnimateArrow(true), 400));
     }
     if (photoImg) photoImg.addEventListener('load', () => placeAndAnimateArrow(false));
+    if (wheelSection && window.MutationObserver) {
+      const mo = new MutationObserver(() => {
+        placeAndAnimateArrow(false);
+      });
+      mo.observe(wheelSection, { attributes: true, attributeFilter: ['style', 'class'] });
+    }
+    document.addEventListener('shopify:section:load', (e) => {
+      if (e.target && ((e.target.matches && e.target.matches('[data-gem-wheel-section]')) || (e.target.querySelector && e.target.querySelector('[data-gem-wheel-section]')))) {
+        placeAndAnimateArrow(false);
+      }
+    });
+    document.addEventListener('shopify:section:select', (e) => {
+      if (e.target && ((e.target.matches && e.target.matches('[data-gem-wheel-section]')) || (e.target.querySelector && e.target.querySelector('[data-gem-wheel-section]')))) {
+        placeAndAnimateArrow(false);
+      }
+    });
 
     const updateInfo = (animate) => {
       const currentStone = GEMSTONES[activeStoneIndex];
