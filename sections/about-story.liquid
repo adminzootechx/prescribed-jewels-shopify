@@ -12,6 +12,7 @@
   class="pj-about pj-about--{{ image_span }} pj-about--blend-{{ s.blend_style | default: 'gradient' }}{% if s.image_side == 'right' %} pj-about--image-right{% endif %}{% if s.fade_image %} pj-about--fade{% else %} pj-about--hard-edge{% endif %}"
   aria-labelledby="pj-about-heading"
   style="
+    --pj-about-scale: {{ s.section_scale | default: 80 | divided_by: 100.0 }};
     --pj-about-image: {{ s.image_width | default: 50 }}%;
     --pj-about-pad: {{ s.padding | default: 0 }}px;
     --pj-about-blend-color: {{ s.bg_color | default: '#E9D2AF' }};
@@ -101,8 +102,19 @@
     },
     { "type": "checkbox", "id": "fade_image", "label": "Fade edge in side-by-side mode", "default": true },
 
-    { "type": "header", "content": "Layout & Screen Fit" },
-    { "type": "range", "id": "section_height", "label": "Section Min Height (Screen Fit)", "min": 0, "max": 100, "step": 5, "unit": "vh", "default": 0, "info": "0 = Auto fit content. 100 = 100vh full screen fit." },
+    { "type": "header", "content": "Layout & Section Size" },
+    {
+      "type": "range",
+      "id": "section_scale",
+      "label": "Overall Section Size (%)",
+      "min": 50,
+      "max": 130,
+      "step": 5,
+      "unit": "%",
+      "default": 80,
+      "info": "Scales the overall banner height, spacing, and typography together (80% = 20% smaller)."
+    },
+    { "type": "range", "id": "section_height", "label": "Section Min Height (Screen Fit)", "min": 0, "max": 100, "step": 5, "unit": "vh", "default": 0, "info": "0 = Auto fit to Section Size (%). Or set a custom vh height." },
     { "type": "select", "id": "image_side", "label": "Text alignment / side-by-side position", "default": "left", "options": [ { "value": "left", "label": "Photo Left / Text Right" }, { "value": "right", "label": "Photo Right / Text Left" } ] },
     { "type": "range", "id": "image_width", "label": "Photo width in side-by-side mode", "min": 30, "max": 70, "step": 5, "unit": "%", "default": 50 },
     { "type": "range", "id": "padding", "label": "Extra vertical padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 0 },

@@ -141,6 +141,7 @@
         "blend_opacity": 100,
         "blend_style": "uniform",
         "fade_image": true,
+        "section_scale": 80,
         "section_height": 0,
         "image_side": "left",
         "image_width": 55,
