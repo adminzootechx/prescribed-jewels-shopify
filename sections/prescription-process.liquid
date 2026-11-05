@@ -6,20 +6,22 @@
   aria-labelledby="pj-process-heading"
   style="
     {% if s.bg_color != blank %}--pj-ps-bg: {{ s.bg_color }};{% endif %}
+    {% if s.card_bg != blank %}--pj-ps-card-bg: {{ s.card_bg }};{% endif %}
+    {% if s.card_border != blank %}--pj-ps-card-border: {{ s.card_border }};{% endif %}
     --pj-ps-eyebrow-color: {{ s.eyebrow_color | default: '#B69156' }};
     --pj-ps-heading-color: {{ s.heading_color | default: '#1A1815' }};
-    --pj-ps-step-num-color: {{ s.step_num_color | default: '#B69156' }};
+    --pj-ps-step-num-color: {{ s.step_num_color | default: '#9E743A' }};
     --pj-ps-step-title-color: {{ s.step_title_color | default: '#1A1815' }};
     --pj-ps-step-desc-color: {{ s.step_desc_color | default: '#4A4237' }};
-    --pj-ps-img-border: {{ s.image_border_color | default: 'rgba(26, 24, 21, 0.12)' }};
-    --pj-ps-max-w: {{ s.max_width | default: 1240 }}px;
-    --pj-ps-gap: {{ s.grid_gap | default: 28 }}px;
-    --pj-ps-pt: {{ s.padding_top | default: 72 }}px;
-    --pj-ps-pb: {{ s.padding_bottom | default: 72 }}px;
+    --pj-ps-img-border: {{ s.image_border_color | default: 'rgba(92, 39, 8, 0.10)' }};
+    --pj-ps-max-w: {{ s.max_width | default: 1280 }}px;
+    --pj-ps-gap: {{ s.grid_gap | default: 24 }}px;
+    --pj-ps-pt: {{ s.padding_top | default: 80 }}px;
+    --pj-ps-pb: {{ s.padding_bottom | default: 80 }}px;
   "
 >
   <div class="pj-container pj-process-steps__container">
-    {%- if s.eyebrow != blank or s.heading != blank -%}
+    {%- if s.eyebrow != blank or s.heading != blank or s.subtext != blank -%}
       <div class="pj-process-steps__header">
         {%- if s.eyebrow != blank -%}
           <p class="pj-eyebrow pj-process-steps__eyebrow">{{ s.eyebrow }}</p>
@@ -28,6 +30,9 @@
           <h2 id="pj-process-heading" class="pj-process-steps__title">
             {{ s.heading | escape }}
           </h2>
+        {%- endif -%}
+        {%- if s.subtext != blank -%}
+          <p class="pj-process-steps__subtext">{{ s.subtext | escape }}</p>
         {%- endif -%}
       </div>
     {%- endif -%}
@@ -58,6 +63,15 @@
         </article>
       {%- endfor -%}
     </div>
+
+    {%- if s.cta_label != blank -%}
+      <div class="pj-process-steps__cta">
+        <button type="button" class="pj-btn pj-process-cta-btn" data-open-prescription>
+          <span>{{ s.cta_label | escape }}</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -80,15 +94,39 @@
       "default": "A PIECE THAT'S TRULY YOURS"
     },
     {
+      "type": "text",
+      "id": "subtext",
+      "label": "Supporting Subtext",
+      "default": "From your birth details to your finished bespoke piece."
+    },
+    {
       "type": "color",
       "id": "bg_color",
-      "label": "Background Color (leave blank for theme default)"
+      "label": "Background Color (leave blank for ambient gradient)"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Card Border Color",
+      "default": "rgba(92, 39, 8, 0.12)"
     },
     {
       "type": "color",
       "id": "eyebrow_color",
-      "label": "Eyebrow & Number Color",
+      "label": "Eyebrow Color",
       "default": "#B69156"
+    },
+    {
+      "type": "color",
+      "id": "step_num_color",
+      "label": "Step Number Color",
+      "default": "#9E743A"
     },
     {
       "type": "color",
@@ -107,6 +145,12 @@
       "id": "step_desc_color",
       "label": "Step Description Color",
       "default": "#4A4237"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Label",
+      "default": "Begin your prescription"
     },
     {
       "type": "color",
