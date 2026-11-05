@@ -8,9 +8,9 @@
     --pj-hs-sec: {{ section.settings.heading_size | divided_by: 100.0 }};
     --pj-w-veil: {{ section.settings.veil }}%;
     --pj-w-veil-color: {{ section.settings.veil_color }};
-    --pj-w-text: {{ section.settings.text_color }};
-    --pj-w-muted: {{ section.settings.muted_color }};
-    --pj-w-bg: {{ section.settings.veil_color }};
+    --pj-w-text: {{ section.settings.text_color | default: '#1A1815' }};
+    --pj-w-muted: {{ section.settings.muted_color | default: '#4A4237' }};
+    --pj-w-bg: {{ section.settings.bg_color | default: section.settings.veil_color | default: '#FAF4EC' }};
     --pj-w-ns: {{ section.settings.notes_size | divided_by: 100.0 }};
     --pj-w-nts: {{ section.settings.note_title_size | divided_by: 100.0 }};
     --pj-w-ps: {{ section.settings.planet_size | divided_by: 100.0 }};
@@ -36,14 +36,12 @@
   "
   {% unless section.settings.use_stone_color %} data-fixed-accent{% endunless %}
 >
-  <div class="pj-gemstones-wheel-section">
-    <div class="pj-wheel-bg" aria-hidden="true">
-      {%- if section.settings.bg_image != blank -%}
+  <div class="pj-gemstones-wheel-section{% if section.settings.bg_image != blank %} has-bg-image{% endif %}">
+    {%- if section.settings.bg_image != blank -%}
+      <div class="pj-wheel-bg" aria-hidden="true">
         {{ section.settings.bg_image | image_url: width: 2400 | image_tag: class: 'pj-wheel-bg__img', widths: '800, 1400, 2000, 2400', sizes: '100vw', alt: '', loading: 'lazy' }}
-      {%- else -%}
-        <img src="{{ 'wheel-velvet-bg.jpg' | asset_url }}" alt="" class="pj-wheel-bg__img" width="2400" height="1350" loading="lazy">
-      {%- endif -%}
-    </div>
+      </div>
+    {%- endif -%}
     <div class="pj-wheel-glow" aria-hidden="true"></div>
     <div class="pj-gemstones-wheel__layout">
       <!-- Curved arrow from the highlighted stone to its photograph, drawn in the stone's own colour -->
@@ -180,15 +178,16 @@
     { "type": "range", "id": "arrow_start_offset_y", "label": "Arrow Start Point Y Offset", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0 },
 
     { "type": "header", "content": "Background" },
-    { "type": "image_picker", "id": "bg_image", "label": "Background image", "info": "Leave blank to use the built-in dark satin photograph." },
-    { "type": "range", "id": "veil", "label": "Dark overlay strength", "min": 0, "max": 95, "step": 5, "unit": "%", "default": 25 },
-    { "type": "color", "id": "veil_color", "label": "Dark overlay tint colour", "default": "#120E0A" },
+    { "type": "color", "id": "bg_color", "label": "Background colour", "default": "#FAF4EC" },
+    { "type": "image_picker", "id": "bg_image", "label": "Background image (optional)", "info": "Leave empty to use the background colour above. Upload an image whenever you want an image background." },
+    { "type": "range", "id": "veil", "label": "Image overlay strength", "min": 0, "max": 95, "step": 5, "unit": "%", "default": 0 },
+    { "type": "color", "id": "veil_color", "label": "Image overlay tint colour", "default": "#120E0A" },
     { "type": "color", "id": "glow_color", "label": "Warm light colour", "default": "#D9A25A", "info": "A soft pool of light behind the wheel and the stone." },
-    { "type": "range", "id": "glow_strength", "label": "Warm light strength", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 30 },
+    { "type": "range", "id": "glow_strength", "label": "Warm light strength", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 20 },
 
     { "type": "header", "content": "Colours" },
-    { "type": "color", "id": "text_color", "label": "Stone name and note titles", "default": "#F4EBE1" },
-    { "type": "color", "id": "muted_color", "label": "Note text", "default": "#D9CFC2" },
+    { "type": "color", "id": "text_color", "label": "Stone name and note titles", "default": "#1A1815" },
+    { "type": "color", "id": "muted_color", "label": "Note text", "default": "#4A4237" },
     { "type": "checkbox", "id": "use_stone_color", "label": "Colour the lines and arrow to match each stone", "default": true },
     { "type": "color", "id": "accent_color", "label": "Line and arrow colour", "default": "#C9A15B", "info": "Used when the option above is off." },
 

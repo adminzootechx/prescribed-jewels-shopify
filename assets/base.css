@@ -1207,8 +1207,8 @@ textarea {
 
 .pj-gemstones-wheel-section {
   isolation: isolate;
-  background-color: var(--pj-w-bg, #120E0A);
-  color: var(--pj-w-text, #F4EBE1);
+  background-color: var(--pj-w-bg, #FAF4EC);
+  color: var(--pj-w-text, #1A1815);
   min-height: calc((100vh - 54px) * var(--pj-w-minh, 1));
   display: flex;
   align-items: center;
@@ -1216,13 +1216,14 @@ textarea {
   position: relative;
   padding-top: var(--pj-w-pt, 1.25rem);
   padding-bottom: var(--pj-w-pb, 1.25rem);
-  border-bottom: 1px solid rgba(244, 235, 225, 0.12);
+  border-top: 1px solid rgba(92, 39, 8, 0.08);
+  border-bottom: 1px solid rgba(92, 39, 8, 0.08);
 }
 
-/* Textured stone, darkened with a brown veil and vignette like the sections above */
+/* Textured stone/image, darkened with a veil only when an image is present */
 .pj-wheel-bg { position: absolute; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
 .pj-wheel-bg__img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
-.pj-gemstones-wheel-section::after {
+.pj-gemstones-wheel-section.has-bg-image::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -1231,7 +1232,7 @@ textarea {
   background:
     radial-gradient(ellipse at 50% 50%, rgba(14, 11, 9, 0) 40%, rgba(10, 8, 6, 0.5) 100%),
     linear-gradient(to bottom, rgba(12, 10, 8, 0.55) 0%, transparent 20%, transparent 80%, rgba(12, 10, 8, 0.65) 100%),
-    color-mix(in srgb, var(--pj-w-veil-color, #120E0A) var(--pj-w-veil, 60%), transparent);
+    color-mix(in srgb, var(--pj-w-veil-color, #120E0A) var(--pj-w-veil, 0%), transparent);
 }
 
 /* Pools of warm light: one behind the wheel, a softer one behind the stone */
