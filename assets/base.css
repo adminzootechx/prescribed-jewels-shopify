@@ -3653,49 +3653,94 @@ textarea {
 
 
 /* ==========================================================================
-   HOW IT WORKS / THE PROCESS (4 LIGHT EDITORIAL BOXES)
+   HOW IT WORKS / THE PROCESS (4 EDITORIAL BOXES — COLLECTION HEADER + SCREEN FIT)
    ========================================================================== */
 
 .pj-process-steps-section {
   position: relative;
-  scroll-margin-top: 100px;
+  scroll-margin-top: 54px;
   background-color: var(--pj-ps-bg, transparent);
   border-top: 1px solid rgba(92, 39, 8, 0.08);
   border-bottom: 1px solid rgba(92, 39, 8, 0.08);
-  padding-top: var(--pj-ps-pt, 64px);
-  padding-bottom: var(--pj-ps-pb, 64px);
+  min-height: calc(var(--pj-ps-h, 100vh) - 54px);
+  min-height: calc(var(--pj-ps-dvh, 100dvh) - 54px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: var(--pj-ps-pt, 24px);
+  padding-bottom: var(--pj-ps-pb, 24px);
 }
 
 .pj-process-steps__container {
-  max-width: var(--pj-ps-max-w, 1240px);
+  width: 100%;
+  max-width: calc(var(--pj-ps-max-w, 1420px) * var(--pj-ps-box-scale, 1.05));
   margin: 0 auto;
-  padding-left: clamp(1rem, 2.5vw, 2rem);
-  padding-right: clamp(1rem, 2.5vw, 2rem);
+  padding-left: clamp(1rem, 2.5vw, 2.5rem);
+  padding-right: clamp(1rem, 2.5vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* Header styled like The Collection section (.pj-designs__header) */
 .pj-process-steps__header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: clamp(1rem, 2.4vh, 1.85rem);
+  text-align: left;
+}
+
+.pj-process-steps--header-center .pj-process-steps__header {
+  display: block;
   text-align: center;
-  margin-bottom: clamp(1.8rem, 3.5vw, 2.8rem);
 }
 
 .pj-process-steps__eyebrow {
   color: var(--pj-ps-eyebrow-color, #B69156);
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.25rem;
   letter-spacing: 0.22em;
-  font-size: 0.72rem;
+  font-size: calc(0.72rem * var(--pj-ps-eyebrow-s, 1));
   font-weight: 500;
   text-transform: uppercase;
+  opacity: 0.95;
 }
 
 .pj-process-steps__title {
   margin: 0;
   font-family: var(--pj-font-serif);
-  font-size: calc(clamp(1.7rem, 2.8vw, 2.35rem) * var(--pj-hs, 1));
+  font-size: calc(clamp(1.55rem, 2.3vw, 2.1rem) * var(--pj-hs, 1) * var(--pj-ps-heading-s, 1));
   font-weight: 400;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  line-height: 1.06;
   color: var(--pj-ps-heading-color, #1A1815);
-  line-height: 1.2;
+}
+
+.pj-process-steps__subtext {
+  margin: 0.35rem 0 0;
+  font-family: var(--pj-font-serif);
+  font-size: calc(clamp(0.94rem, 1.12vw, 1.08rem) * var(--pj-ps-subtext-s, 1));
+  line-height: 1.38;
+  color: var(--pj-ps-subtext-color, #5A5247);
+  opacity: 0.9;
+  max-width: 48ch;
+}
+
+.pj-process-steps--header-center .pj-process-steps__subtext {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pj-process-steps__header-line {
+  display: none;
+  height: 1px;
+  background-color: var(--pj-border-strong, rgba(26, 24, 21, 0.22));
+}
+
+@media (min-width: 960px) {
+  .pj-process-steps__header-line {
+    display: block;
+  }
 }
 
 .pj-process-steps__grid {
@@ -3708,27 +3753,28 @@ textarea {
 .pj-process-step {
   display: flex;
   flex-direction: column;
-  background: transparent;
-  padding: 0;
+  background: var(--pj-ps-box-bg, transparent);
+  padding: var(--pj-ps-box-pad, 0px);
+  border-radius: var(--pj-ps-box-radius, 2px);
   border: none;
   box-shadow: none;
 }
 
 .pj-process-step__head {
   text-align: center;
-  margin-bottom: 0.85rem;
-  min-height: 52px;
+  margin-bottom: 0.7rem;
+  min-height: 46px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.22rem;
 }
 
 .pj-process-step__num {
   display: block;
   font-family: var(--pj-font-sans);
-  font-size: 0.72rem;
+  font-size: calc(0.75rem * var(--pj-ps-num-s, 1.05));
   font-weight: 500;
   letter-spacing: 0.2em;
   color: var(--pj-ps-step-num-color, #B69156);
@@ -3737,30 +3783,31 @@ textarea {
 .pj-process-step__name {
   margin: 0;
   font-family: var(--pj-font-sans);
-  font-size: 0.76rem;
+  font-size: calc(0.8rem * var(--pj-ps-title-s, 1.05));
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--pj-ps-step-title-color, #1A1815);
-  line-height: 1.3;
+  line-height: 1.28;
 }
 
 .pj-process-step__media {
   position: relative;
   width: 100%;
-  aspect-ratio: var(--pj-ps-img-ratio, 191 / 133);
+  aspect-ratio: var(--pj-ps-img-ratio, 1 / 1);
+  max-height: calc(54vh * var(--pj-ps-box-scale, 1.05));
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: var(--pj-ps-box-radius, 2px);
   border: 1px solid var(--pj-ps-img-border, rgba(26, 24, 21, 0.14));
-  background-color: #EFE8DD;
-  margin-bottom: 0.95rem;
-  box-shadow: 0 8px 22px rgba(26, 24, 21, 0.07);
+  background-color: var(--pj-ps-img-bg, #EFE8DD);
+  margin-bottom: 0.85rem;
+  box-shadow: 0 10px 26px rgba(26, 24, 21, 0.08);
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
 .pj-process-step:hover .pj-process-step__media {
   transform: translateY(-3px);
-  box-shadow: 0 14px 30px rgba(26, 24, 21, 0.12);
+  box-shadow: 0 16px 32px rgba(26, 24, 21, 0.13);
   border-color: rgba(182, 145, 86, 0.5);
 }
 
@@ -3780,8 +3827,8 @@ textarea {
 .pj-process-step__desc {
   margin: 0;
   font-family: var(--pj-font-serif);
-  font-size: clamp(0.94rem, 1.05vw, 1.05rem);
-  line-height: 1.5;
+  font-size: calc(clamp(0.98rem, 1.12vw, 1.12rem) * var(--pj-ps-desc-s, 1.05));
+  line-height: 1.48;
   color: var(--pj-ps-step-desc-color, #4A4237);
   text-align: left;
 }
@@ -3795,13 +3842,16 @@ textarea {
 
 @media (max-width: 640px) {
   .pj-process-steps-section {
-    padding-top: calc(var(--pj-ps-pt, 64px) * 0.75);
-    padding-bottom: calc(var(--pj-ps-pb, 64px) * 0.75);
+    padding-top: calc(var(--pj-ps-pt, 24px) * 1);
+    padding-bottom: calc(var(--pj-ps-pb, 24px) * 1);
+  }
+  .pj-process-steps__header {
+    grid-template-columns: 1fr;
   }
   .pj-process-steps__grid {
     grid-template-columns: 1fr;
     gap: 2rem;
-    max-width: 380px;
+    max-width: 400px;
     margin: 0 auto;
   }
   .pj-process-step__head {

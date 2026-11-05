@@ -2,33 +2,57 @@
 
 <section
   id="pj-process"
-  class="pj-process-steps-section"
+  class="pj-process-steps-section pj-process-steps--header-{{ s.header_align | default: 'left' }}"
   aria-labelledby="pj-process-heading"
   style="
-    {% if s.bg_color != blank %}--pj-ps-bg: {{ s.bg_color }};{% endif %}
+    {% if s.bg_color != blank and s.bg_color != 'rgba(0,0,0,0)' %}--pj-ps-bg: {{ s.bg_color }};{% endif %}
+    {% if s.box_bg_color != blank and s.box_bg_color != 'rgba(0,0,0,0)' %}--pj-ps-box-bg: {{ s.box_bg_color }};{% endif %}
+    --pj-ps-img-bg: {{ s.image_bg_color | default: '#EFE8DD' }};
     --pj-ps-eyebrow-color: {{ s.eyebrow_color | default: '#B69156' }};
     --pj-ps-heading-color: {{ s.heading_color | default: '#1A1815' }};
+    --pj-ps-subtext-color: {{ s.subtext_color | default: '#5A5247' }};
     --pj-ps-step-num-color: {{ s.step_num_color | default: '#B69156' }};
     --pj-ps-step-title-color: {{ s.step_title_color | default: '#1A1815' }};
     --pj-ps-step-desc-color: {{ s.step_desc_color | default: '#4A4237' }};
     --pj-ps-img-border: {{ s.image_border_color | default: 'rgba(26, 24, 21, 0.14)' }};
-    --pj-ps-img-ratio: {{ s.image_aspect_ratio | default: '191 / 133' }};
-    --pj-ps-max-w: {{ s.max_width | default: 1240 }}px;
+    --pj-ps-img-ratio: {{ s.image_aspect_ratio | default: '1 / 1' }};
+    --pj-ps-box-scale: {{ s.box_size | default: 105 | divided_by: 100.0 }};
+    --pj-ps-box-pad: {{ s.box_padding | default: 0 }}px;
+    --pj-ps-box-radius: {{ s.box_radius | default: 2 }}px;
+    --pj-ps-max-w: {{ s.max_width | default: 1420 }}px;
     --pj-ps-gap: {{ s.grid_gap | default: 24 }}px;
-    --pj-ps-pt: {{ s.padding_top | default: 64 }}px;
-    --pj-ps-pb: {{ s.padding_bottom | default: 64 }}px;
+    --pj-ps-pt: {{ s.padding_top | default: 24 }}px;
+    --pj-ps-pb: {{ s.padding_bottom | default: 24 }}px;
+    --pj-ps-eyebrow-s: {{ s.eyebrow_size | default: 100 | divided_by: 100.0 }};
+    --pj-ps-heading-s: {{ s.heading_size | default: 100 | divided_by: 100.0 }};
+    --pj-ps-subtext-s: {{ s.subtext_size | default: 100 | divided_by: 100.0 }};
+    --pj-ps-num-s: {{ s.step_num_size | default: 105 | divided_by: 100.0 }};
+    --pj-ps-title-s: {{ s.step_title_size | default: 105 | divided_by: 100.0 }};
+    --pj-ps-desc-s: {{ s.step_desc_size | default: 105 | divided_by: 100.0 }};
+    {% if s.section_height > 0 %}
+      --pj-ps-h: {{ s.section_height }}vh;
+      --pj-ps-dvh: {{ s.section_height }}dvh;
+    {% endif %}
   "
 >
   <div class="pj-container pj-process-steps__container">
-    {%- if s.eyebrow != blank or s.heading != blank -%}
+    {%- if s.eyebrow != blank or s.heading != blank or s.subtext != blank -%}
       <div class="pj-process-steps__header">
-        {%- if s.eyebrow != blank -%}
-          <p class="pj-eyebrow pj-process-steps__eyebrow">{{ s.eyebrow }}</p>
-        {%- endif -%}
-        {%- if s.heading != blank -%}
-          <h2 id="pj-process-heading" class="pj-process-steps__title">
-            {{ s.heading | escape }}
-          </h2>
+        <div class="pj-process-steps__header-left">
+          {%- if s.eyebrow != blank -%}
+            <p class="pj-eyebrow pj-process-steps__eyebrow">{{ s.eyebrow }}</p>
+          {%- endif -%}
+          {%- if s.heading != blank -%}
+            <h2 id="pj-process-heading" class="pj-section-title pj-process-steps__title">
+              {{ s.heading | escape | newline_to_br }}
+            </h2>
+          {%- endif -%}
+          {%- if s.subtext != blank -%}
+            <p class="pj-process-steps__subtext">{{ s.subtext | escape | newline_to_br }}</p>
+          {%- endif -%}
+        </div>
+        {%- if s.show_header_line and s.header_align != 'center' -%}
+          <div class="pj-process-steps__header-line" aria-hidden="true"></div>
         {%- endif -%}
       </div>
     {%- endif -%}
@@ -37,7 +61,15 @@
       {%- assign fallback_imgs = 'process-step-light-1.png,process-step-light-2.png,process-step-light-3.png,process-step-light-4.png' | split: ',' -%}
       {%- for block in section.blocks -%}
         {%- assign b = block.settings -%}
-        <article class="pj-process-step" {{ block.shopify_attributes }}>
+        <article
+          class="pj-process-step"
+          style="
+            {% if b.box_bg != blank and b.box_bg != 'rgba(0,0,0,0)' %}--pj-ps-box-bg: {{ b.box_bg }};{% endif %}
+            {% if b.title_color != blank and b.title_color != 'rgba(0,0,0,0)' %}--pj-ps-step-title-color: {{ b.title_color }};{% endif %}
+            {% if b.desc_color != blank and b.desc_color != 'rgba(0,0,0,0)' %}--pj-ps-step-desc-color: {{ b.desc_color }};{% endif %}
+          "
+          {{ block.shopify_attributes }}
+        >
           <div class="pj-process-step__head">
             <span class="pj-process-step__num">{{ b.step_number | default: forloop.index | prepend: '0' | slice: -2, 2 }}</span>
             <h3 class="pj-process-step__name">{{ b.title }}</h3>
@@ -45,16 +77,16 @@
 
           <div class="pj-process-step__media">
             {%- if b.image != blank -%}
-              {{ b.image | image_url: width: 700 | image_tag: class: 'pj-process-step__img', widths: '350, 500, 700', sizes: '(min-width: 960px) 24vw, 85vw', alt: b.title, loading: 'lazy' }}
+              {{ b.image | image_url: width: 900 | image_tag: class: 'pj-process-step__img', widths: '400, 600, 900', sizes: '(min-width: 960px) 24vw, 85vw', alt: b.title, loading: 'lazy' }}
             {%- else -%}
               {%- assign idx = forloop.index0 | modulo: 4 -%}
               {%- assign def_img = fallback_imgs[idx] -%}
-              <img src="{{ def_img | asset_url }}" alt="{{ b.title | escape }}" class="pj-process-step__img" width="500" height="350" loading="lazy">
+              <img src="{{ def_img | asset_url }}" alt="{{ b.title | escape }}" class="pj-process-step__img" width="600" height="600" loading="lazy">
             {%- endif -%}
           </div>
 
           {%- if b.description != blank -%}
-            <p class="pj-process-step__desc">{{ b.description | escape }}</p>
+            <p class="pj-process-step__desc">{{ b.description | escape | newline_to_br }}</p>
           {%- endif -%}
         </article>
       {%- endfor -%}
@@ -69,21 +101,169 @@
   "class": "pj-section-process",
   "settings": [
     {
+      "type": "header",
+      "content": "Header Content (Collection Style)"
+    },
+    {
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
       "default": "THE PROCESS"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "heading",
       "label": "Heading",
-      "default": "A PIECE THAT'S TRULY YOURS"
+      "info": "Press Enter for a new line.",
+      "default": "A piece that's\ntruly yours."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "info": "Optional description below the heading (like The Collection section).",
+      "default": "From your birth details to a finished piece of fine jewelry, crafted for everyday wear."
+    },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "Header Layout Style",
+      "options": [
+        { "value": "left", "label": "Collection Style (Left + Horizontal Line)" },
+        { "value": "center", "label": "Centered Header" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header_line",
+      "label": "Show decorative line next to header",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Screen Fit & Steps Box Sizing"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Screen Fit Height",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "vh",
+      "default": 100,
+      "info": "100vh = Full screen fit like The Collection section (0 = auto height)."
+    },
+    {
+      "type": "range",
+      "id": "box_size",
+      "label": "Steps Box Size (%)",
+      "min": 70,
+      "max": 140,
+      "step": 5,
+      "unit": "%",
+      "default": 105,
+      "info": "Increase or decrease the size of the 4 step boxes."
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Section Max Width",
+      "min": 1000,
+      "max": 1680,
+      "step": 20,
+      "unit": "px",
+      "default": 1420
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Gap between step boxes",
+      "min": 12,
+      "max": 56,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Step Box Image Shape",
+      "options": [
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 5", "label": "Portrait (4:5)" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "191 / 133", "label": "Editorial Landscape (191:133)" },
+        { "value": "16 / 9", "label": "Wide (16:9)" }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "range",
+      "id": "box_padding",
+      "label": "Step Box Inner Padding",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "box_radius",
+      "label": "Step Box Corner Radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Colors (Section, Boxes & All Text)"
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Background Color (leave blank for theme default)"
+      "label": "Section Background Color"
+    },
+    {
+      "type": "color",
+      "id": "box_bg_color",
+      "label": "Step Box Card Background Color"
+    },
+    {
+      "type": "color",
+      "id": "image_bg_color",
+      "label": "Step Image Frame Background",
+      "default": "#EFE8DD"
+    },
+    {
+      "type": "color",
+      "id": "image_border_color",
+      "label": "Step Box / Image Border Color",
+      "default": "rgba(26, 24, 21, 0.14)"
     },
     {
       "type": "color",
@@ -93,15 +273,21 @@
     },
     {
       "type": "color",
-      "id": "step_num_color",
-      "label": "Step Number Color",
-      "default": "#B69156"
+      "id": "heading_color",
+      "label": "Main Heading Color",
+      "default": "#1A1815"
     },
     {
       "type": "color",
-      "id": "heading_color",
-      "label": "Heading Color",
-      "default": "#1A1815"
+      "id": "subtext_color",
+      "label": "Subtext Color",
+      "default": "#5A5247"
+    },
+    {
+      "type": "color",
+      "id": "step_num_color",
+      "label": "Step Number (01-04) Color",
+      "default": "#B69156"
     },
     {
       "type": "color",
@@ -116,68 +302,74 @@
       "default": "#4A4237"
     },
     {
-      "type": "select",
-      "id": "image_aspect_ratio",
-      "label": "Image Aspect Ratio",
-      "options": [
-        { "value": "191 / 133", "label": "Editorial Landscape (191:133)" },
-        { "value": "4 / 3", "label": "Landscape (4:3)" },
-        { "value": "1 / 1", "label": "Square (1:1)" },
-        { "value": "16 / 9", "label": "Wide (16:9)" }
-      ],
-      "default": "191 / 133"
-    },
-    {
-      "type": "color",
-      "id": "image_border_color",
-      "label": "Image Border Color",
-      "default": "rgba(26, 24, 21, 0.12)"
+      "type": "header",
+      "content": "Text Sizes (All Text Elements)"
     },
     {
       "type": "range",
-      "id": "max_width",
-      "label": "Max Container Width",
-      "min": 1000,
-      "max": 1400,
-      "step": 20,
-      "unit": "px",
-      "default": 1240
+      "id": "eyebrow_size",
+      "label": "Eyebrow Text Size (%)",
+      "min": 70,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "default": 100
     },
     {
       "type": "range",
-      "id": "grid_gap",
-      "label": "Gap between boxes",
-      "min": 16,
-      "max": 48,
-      "step": 4,
-      "unit": "px",
-      "default": 28
+      "id": "heading_size",
+      "label": "Main Heading Size (%)",
+      "min": 70,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "default": 100
     },
     {
       "type": "range",
-      "id": "padding_top",
-      "label": "Padding Top",
-      "min": 24,
-      "max": 120,
-      "step": 8,
-      "unit": "px",
-      "default": 72
+      "id": "subtext_size",
+      "label": "Subtext Size (%)",
+      "min": 70,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "default": 100
     },
     {
       "type": "range",
-      "id": "padding_bottom",
-      "label": "Padding Bottom",
-      "min": 24,
-      "max": 120,
-      "step": 8,
-      "unit": "px",
-      "default": 72
+      "id": "step_num_size",
+      "label": "Step Number Size (%)",
+      "min": 70,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "default": 105
+    },
+    {
+      "type": "range",
+      "id": "step_title_size",
+      "label": "Step Title Size (%)",
+      "min": 70,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "default": 105
+    },
+    {
+      "type": "range",
+      "id": "step_desc_size",
+      "label": "Step Description Size (%)",
+      "min": 70,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "default": 105
     }
   ],
   "blocks": [
     {
       "type": "step",
-      "name": "Step",
+      "name": "Step Box",
       "settings": [
         {
           "type": "text",
@@ -194,13 +386,32 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Step Image"
         },
         {
           "type": "textarea",
           "id": "description",
-          "label": "Description",
+          "label": "Step Description",
           "default": "Tell us your date, time, and place of birth."
+        },
+        {
+          "type": "header",
+          "content": "Optional Single-Box Color Overrides"
+        },
+        {
+          "type": "color",
+          "id": "box_bg",
+          "label": "Custom Box Background Color"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Custom Step Title Color"
+        },
+        {
+          "type": "color",
+          "id": "desc_color",
+          "label": "Custom Step Description Color"
         }
       ]
     }
