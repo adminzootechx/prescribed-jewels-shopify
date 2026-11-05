@@ -3666,30 +3666,36 @@ textarea {
   min-height: calc(var(--pj-ps-dvh, 100dvh) - 54px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding-top: var(--pj-ps-pt, 24px);
-  padding-bottom: var(--pj-ps-pb, 24px);
+  padding-bottom: var(--pj-ps-pb, 28px);
 }
 
 .pj-process-steps__container {
   width: 100%;
-  max-width: calc(var(--pj-ps-max-w, 1420px) * var(--pj-ps-box-scale, 1.05));
+  max-width: var(--pj-ps-max-w, 1360px);
   margin: 0 auto;
   padding-left: clamp(1rem, 2.5vw, 2.5rem);
   padding-right: clamp(1rem, 2.5vw, 2.5rem);
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-/* Header styled like The Collection section (.pj-designs__header) */
+/* Top-Left Header styled identically to The Collection section (.pj-designs__header) */
 .pj-process-steps__header {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1.5rem;
   align-items: center;
-  margin-bottom: clamp(1rem, 2.4vh, 1.85rem);
+  margin-bottom: var(--pj-ps-header-mb, 24px);
   text-align: left;
+  transform: translate(var(--pj-ps-header-ox, 0px), var(--pj-ps-header-oy, 0px));
+}
+
+.pj-process-steps__header--no-line {
+  grid-template-columns: 1fr;
 }
 
 .pj-process-steps--header-center .pj-process-steps__header {
@@ -3699,9 +3705,9 @@ textarea {
 
 .pj-process-steps__eyebrow {
   color: var(--pj-ps-eyebrow-color, #B69156);
-  margin-bottom: 0.25rem;
-  letter-spacing: 0.22em;
-  font-size: calc(0.72rem * var(--pj-ps-eyebrow-s, 1));
+  margin: 0 0 0.2rem 0;
+  letter-spacing: 0.2em;
+  font-size: calc(0.75rem * var(--pj-ps-eyebrow-s, 1));
   font-weight: 500;
   text-transform: uppercase;
   opacity: 0.95;
@@ -3710,20 +3716,22 @@ textarea {
 .pj-process-steps__title {
   margin: 0;
   font-family: var(--pj-font-serif);
-  font-size: calc(clamp(1.55rem, 2.3vw, 2.1rem) * var(--pj-hs, 1) * var(--pj-ps-heading-s, 1));
+  font-size: calc(clamp(1.45rem, 2.2vw, 1.95rem) * var(--pj-hs, 1) * var(--pj-ps-heading-s, 1));
   font-weight: 400;
-  line-height: 1.06;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-transform: none;
   color: var(--pj-ps-heading-color, #1A1815);
 }
 
 .pj-process-steps__subtext {
   margin: 0.35rem 0 0;
   font-family: var(--pj-font-serif);
-  font-size: calc(clamp(0.94rem, 1.12vw, 1.08rem) * var(--pj-ps-subtext-s, 1));
-  line-height: 1.38;
+  font-size: calc(clamp(0.92rem, 1.1vw, 1.05rem) * var(--pj-ps-subtext-s, 1));
+  line-height: 1.35;
   color: var(--pj-ps-subtext-color, #5A5247);
-  opacity: 0.9;
-  max-width: 48ch;
+  opacity: 0.88;
+  max-width: 44ch;
 }
 
 .pj-process-steps--header-center .pj-process-steps__subtext {
@@ -3734,7 +3742,7 @@ textarea {
 .pj-process-steps__header-line {
   display: none;
   height: 1px;
-  background-color: var(--pj-border-strong, rgba(26, 24, 21, 0.22));
+  background-color: var(--pj-border-strong, rgba(26, 24, 21, 0.25));
 }
 
 @media (min-width: 960px) {
@@ -3748,21 +3756,25 @@ textarea {
   grid-template-columns: repeat(4, 1fr);
   gap: var(--pj-ps-gap, 24px);
   align-items: start;
+  width: 100%;
+  margin: auto 0;
 }
 
 .pj-process-step {
   display: flex;
   flex-direction: column;
+  align-items: center;
   background: var(--pj-ps-box-bg, transparent);
   padding: var(--pj-ps-box-pad, 0px);
-  border-radius: var(--pj-ps-box-radius, 2px);
+  border-radius: var(--pj-ps-box-radius, 3px);
   border: none;
   box-shadow: none;
 }
 
 .pj-process-step__head {
+  width: var(--pj-ps-box-w, 100%);
   text-align: center;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.75rem;
   min-height: 46px;
   display: flex;
   flex-direction: column;
@@ -3787,28 +3799,36 @@ textarea {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--pj-ps-step-title-color, #1A1815);
+  color: var(--pj-ps-step-title-color, #5C2708);
   line-height: 1.28;
 }
 
 .pj-process-step__media {
   position: relative;
-  width: 100%;
-  aspect-ratio: var(--pj-ps-img-ratio, 1 / 1);
-  max-height: calc(54vh * var(--pj-ps-box-scale, 1.05));
+  width: var(--pj-ps-box-w, 100%);
+  height: calc(var(--pj-ps-box-h, 290px) * var(--pj-ps-box-scale, 1));
   overflow: hidden;
-  border-radius: var(--pj-ps-box-radius, 2px);
+  border-radius: var(--pj-ps-box-radius, 3px);
   border: 1px solid var(--pj-ps-img-border, rgba(26, 24, 21, 0.14));
   background-color: var(--pj-ps-img-bg, #EFE8DD);
-  margin-bottom: 0.85rem;
-  box-shadow: 0 10px 26px rgba(26, 24, 21, 0.08);
+  margin-bottom: 0.9rem;
+  box-shadow:
+    0 16px 36px rgba(36, 22, 10, calc(var(--pj-ps-shadow, 0.45) * 0.42)),
+    0 5px 14px rgba(36, 22, 10, calc(var(--pj-ps-shadow, 0.45) * 0.24));
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
+.pj-process-steps-section:not(.pj-process-steps--shape-custom) .pj-process-step__media {
+  height: auto;
+  aspect-ratio: var(--pj-ps-img-ratio, 1 / 1);
+}
+
 .pj-process-step:hover .pj-process-step__media {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 32px rgba(26, 24, 21, 0.13);
-  border-color: rgba(182, 145, 86, 0.5);
+  transform: translateY(-4px);
+  box-shadow:
+    0 22px 44px rgba(36, 22, 10, calc(var(--pj-ps-shadow, 0.45) * 0.54)),
+    0 8px 18px rgba(36, 22, 10, calc(var(--pj-ps-shadow, 0.45) * 0.3));
+  border-color: rgba(182, 145, 86, 0.55);
 }
 
 .pj-process-step__img {
@@ -3825,11 +3845,12 @@ textarea {
 }
 
 .pj-process-step__desc {
+  width: var(--pj-ps-box-w, 100%);
   margin: 0;
   font-family: var(--pj-font-serif);
   font-size: calc(clamp(0.98rem, 1.12vw, 1.12rem) * var(--pj-ps-desc-s, 1.05));
   line-height: 1.48;
-  color: var(--pj-ps-step-desc-color, #4A4237);
+  color: var(--pj-ps-step-desc-color, #301D0A);
   text-align: left;
 }
 
@@ -3843,10 +3864,11 @@ textarea {
 @media (max-width: 640px) {
   .pj-process-steps-section {
     padding-top: calc(var(--pj-ps-pt, 24px) * 1);
-    padding-bottom: calc(var(--pj-ps-pb, 24px) * 1);
+    padding-bottom: calc(var(--pj-ps-pb, 28px) * 1);
   }
   .pj-process-steps__header {
     grid-template-columns: 1fr;
+    transform: none;
   }
   .pj-process-steps__grid {
     grid-template-columns: 1fr;

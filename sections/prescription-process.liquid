@@ -2,7 +2,7 @@
 
 <section
   id="pj-process"
-  class="pj-process-steps-section pj-process-steps--header-{{ s.header_align | default: 'left' }}"
+  class="pj-process-steps-section pj-process-steps--header-{{ s.header_align | default: 'left' }} pj-process-steps--shape-{{ s.image_aspect_ratio | default: 'custom' }}"
   aria-labelledby="pj-process-heading"
   style="
     {% if s.bg_color != blank and s.bg_color != 'rgba(0,0,0,0)' %}--pj-ps-bg: {{ s.bg_color }};{% endif %}
@@ -12,17 +12,23 @@
     --pj-ps-heading-color: {{ s.heading_color | default: '#1A1815' }};
     --pj-ps-subtext-color: {{ s.subtext_color | default: '#5A5247' }};
     --pj-ps-step-num-color: {{ s.step_num_color | default: '#B69156' }};
-    --pj-ps-step-title-color: {{ s.step_title_color | default: '#1A1815' }};
-    --pj-ps-step-desc-color: {{ s.step_desc_color | default: '#4A4237' }};
+    --pj-ps-step-title-color: {{ s.step_title_color | default: '#5C2708' }};
+    --pj-ps-step-desc-color: {{ s.step_desc_color | default: '#301D0A' }};
     --pj-ps-img-border: {{ s.image_border_color | default: 'rgba(26, 24, 21, 0.14)' }};
-    --pj-ps-img-ratio: {{ s.image_aspect_ratio | default: '1 / 1' }};
-    --pj-ps-box-scale: {{ s.box_size | default: 105 | divided_by: 100.0 }};
+    {% if s.image_aspect_ratio != 'custom' %}--pj-ps-img-ratio: {{ s.image_aspect_ratio }};{% endif %}
+    --pj-ps-box-h: {{ s.box_height | default: 290 }}px;
+    --pj-ps-box-w: {{ s.box_width | default: 100 }}%;
+    --pj-ps-box-scale: {{ s.box_size | default: 100 | divided_by: 100.0 }};
+    --pj-ps-shadow: {{ s.box_shadow | default: 45 | divided_by: 100.0 }};
     --pj-ps-box-pad: {{ s.box_padding | default: 0 }}px;
-    --pj-ps-box-radius: {{ s.box_radius | default: 2 }}px;
-    --pj-ps-max-w: {{ s.max_width | default: 1420 }}px;
+    --pj-ps-box-radius: {{ s.box_radius | default: 3 }}px;
+    --pj-ps-max-w: {{ s.max_width | default: 1360 }}px;
     --pj-ps-gap: {{ s.grid_gap | default: 24 }}px;
     --pj-ps-pt: {{ s.padding_top | default: 24 }}px;
-    --pj-ps-pb: {{ s.padding_bottom | default: 24 }}px;
+    --pj-ps-pb: {{ s.padding_bottom | default: 28 }}px;
+    --pj-ps-header-mb: {{ s.header_bottom_gap | default: 28 }}px;
+    --pj-ps-header-ox: {{ s.header_offset_x | default: 0 }}px;
+    --pj-ps-header-oy: {{ s.header_offset_y | default: 0 }}px;
     --pj-ps-eyebrow-s: {{ s.eyebrow_size | default: 100 | divided_by: 100.0 }};
     --pj-ps-heading-s: {{ s.heading_size | default: 100 | divided_by: 100.0 }};
     --pj-ps-subtext-s: {{ s.subtext_size | default: 100 | divided_by: 100.0 }};
@@ -36,13 +42,17 @@
   "
 >
   <div class="pj-container pj-process-steps__container">
-    {%- if s.eyebrow != blank or s.heading != blank or s.subtext != blank -%}
-      <div class="pj-process-steps__header">
+    {%- assign has_eyebrow = false -%}
+    {%- if s.show_eyebrow and s.eyebrow != blank -%}{%- assign has_eyebrow = true -%}{%- endif -%}
+    {%- assign has_heading = false -%}
+    {%- if s.show_heading and s.heading != blank -%}{%- assign has_heading = true -%}{%- endif -%}
+    {%- if has_eyebrow or has_heading or s.subtext != blank -%}
+      <div class="pj-process-steps__header{% unless s.show_header_line %} pj-process-steps__header--no-line{% endunless %}">
         <div class="pj-process-steps__header-left">
-          {%- if s.eyebrow != blank -%}
+          {%- if has_eyebrow -%}
             <p class="pj-eyebrow pj-process-steps__eyebrow">{{ s.eyebrow }}</p>
           {%- endif -%}
-          {%- if s.heading != blank -%}
+          {%- if has_heading -%}
             <h2 id="pj-process-heading" class="pj-section-title pj-process-steps__title">
               {{ s.heading | escape | newline_to_br }}
             </h2>
@@ -102,102 +112,158 @@
   "settings": [
     {
       "type": "header",
-      "content": "Header Content (Collection Style)"
+      "content": "Top-Left Header (Eyebrow, Heading & Line)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "label": "Show Eyebrow",
+      "default": true
     },
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Eyebrow",
+      "label": "Eyebrow Text",
       "default": "THE PROCESS"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_heading",
+      "label": "Show Heading",
+      "default": true
     },
     {
       "type": "textarea",
       "id": "heading",
-      "label": "Heading",
+      "label": "Heading Text",
       "info": "Press Enter for a new line.",
-      "default": "A piece that's\ntruly yours."
+      "default": "How your piece comes to life"
     },
     {
       "type": "textarea",
       "id": "subtext",
-      "label": "Subtext",
-      "info": "Optional description below the heading (like The Collection section).",
-      "default": "From your birth details to a finished piece of fine jewelry, crafted for everyday wear."
-    },
-    {
-      "type": "select",
-      "id": "header_align",
-      "label": "Header Layout Style",
-      "options": [
-        { "value": "left", "label": "Collection Style (Left + Horizontal Line)" },
-        { "value": "center", "label": "Centered Header" }
-      ],
-      "default": "left"
+      "label": "Subtext (Optional)",
+      "info": "Leave blank to hide."
     },
     {
       "type": "checkbox",
       "id": "show_header_line",
-      "label": "Show decorative line next to header",
-      "default": true
+      "label": "Show Horizontal Line Next to Heading",
+      "default": false,
+      "info": "Uncheck to remove the horizontal line next to the heading."
+    },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Top Left (Collection Style)" },
+        { "value": "center", "label": "Centered" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "header_bottom_gap",
+      "label": "Space Below Header",
+      "min": 8,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "header_offset_x",
+      "label": "Header Horizontal Offset (X)",
+      "min": -80,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "header_offset_y",
+      "label": "Header Vertical Offset (Y)",
+      "min": -60,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "header",
-      "content": "Screen Fit & Steps Box Sizing"
-    },
-    {
-      "type": "range",
-      "id": "section_height",
-      "label": "Section Screen Fit Height",
-      "min": 0,
-      "max": 120,
-      "step": 5,
-      "unit": "vh",
-      "default": 100,
-      "info": "100vh = Full screen fit like The Collection section (0 = auto height)."
-    },
-    {
-      "type": "range",
-      "id": "box_size",
-      "label": "Steps Box Size (%)",
-      "min": 70,
-      "max": 140,
-      "step": 5,
-      "unit": "%",
-      "default": 105,
-      "info": "Increase or decrease the size of the 4 step boxes."
-    },
-    {
-      "type": "range",
-      "id": "max_width",
-      "label": "Section Max Width",
-      "min": 1000,
-      "max": 1680,
-      "step": 20,
-      "unit": "px",
-      "default": 1420
-    },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "Gap between step boxes",
-      "min": 12,
-      "max": 56,
-      "step": 4,
-      "unit": "px",
-      "default": 24
+      "content": "Step Box Shape, Size & Shadow Controls"
     },
     {
       "type": "select",
       "id": "image_aspect_ratio",
-      "label": "Step Box Image Shape",
+      "label": "Step Box Shape Mode",
       "options": [
+        { "value": "custom", "label": "Custom Box Height & Width (Use Sliders Below)" },
         { "value": "1 / 1", "label": "Square (1:1)" },
         { "value": "4 / 5", "label": "Portrait (4:5)" },
         { "value": "4 / 3", "label": "Landscape (4:3)" },
         { "value": "191 / 133", "label": "Editorial Landscape (191:133)" },
         { "value": "16 / 9", "label": "Wide (16:9)" }
       ],
-      "default": "1 / 1"
+      "default": "1 / 1",
+      "info": "Choose a preset shape or select 'Custom Box Height & Width' to shape the boxes freely."
+    },
+    {
+      "type": "range",
+      "id": "box_height",
+      "label": "Step Box Height (Shape Control)",
+      "min": 160,
+      "max": 480,
+      "step": 5,
+      "unit": "px",
+      "default": 290,
+      "info": "Adjusts the vertical height/shape of the step image boxes."
+    },
+    {
+      "type": "range",
+      "id": "box_width",
+      "label": "Step Box Width (%)",
+      "min": 65,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100,
+      "info": "Adjusts the horizontal width of each step box inside its column."
+    },
+    {
+      "type": "range",
+      "id": "box_size",
+      "label": "Overall Steps Box Scale (%)",
+      "min": 70,
+      "max": 140,
+      "step": 5,
+      "unit": "%",
+      "default": 100,
+      "info": "Scales all 4 step boxes larger or smaller together."
+    },
+    {
+      "type": "range",
+      "id": "box_shadow",
+      "label": "Shadow Behind Boxes (%)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 45,
+      "info": "Controls the depth and intensity of the drop shadow behind the 4 step boxes."
+    },
+    {
+      "type": "range",
+      "id": "box_radius",
+      "label": "Step Box Corner Radius",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 3
     },
     {
       "type": "range",
@@ -211,13 +277,38 @@
     },
     {
       "type": "range",
-      "id": "box_radius",
-      "label": "Step Box Corner Radius",
-      "min": 0,
-      "max": 24,
-      "step": 2,
+      "id": "grid_gap",
+      "label": "Gap Between Step Boxes",
+      "min": 12,
+      "max": 60,
+      "step": 4,
       "unit": "px",
-      "default": 2
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Section Screen Fit & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Screen Fit Height",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "vh",
+      "default": 100,
+      "info": "100vh = Full screen fit (0 = auto height)."
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Section Max Width",
+      "min": 1000,
+      "max": 1680,
+      "step": 20,
+      "unit": "px",
+      "default": 1360
     },
     {
       "type": "range",
@@ -237,7 +328,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "default": 24
+      "default": 28
     },
     {
       "type": "header",
@@ -262,7 +353,7 @@
     {
       "type": "color",
       "id": "image_border_color",
-      "label": "Step Box / Image Border Color",
+      "label": "Step Box Border Color",
       "default": "rgba(26, 24, 21, 0.14)"
     },
     {
@@ -293,13 +384,13 @@
       "type": "color",
       "id": "step_title_color",
       "label": "Step Title Color",
-      "default": "#1A1815"
+      "default": "#5C2708"
     },
     {
       "type": "color",
       "id": "step_desc_color",
       "label": "Step Description Color",
-      "default": "#4A4237"
+      "default": "#301D0A"
     },
     {
       "type": "header",
