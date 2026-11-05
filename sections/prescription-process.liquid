@@ -17,6 +17,12 @@
     --pj-ps-gap: {{ s.grid_gap | default: 24 }}px;
     --pj-ps-pt: {{ s.padding_top | default: 64 }}px;
     --pj-ps-pb: {{ s.padding_bottom | default: 64 }}px;
+    {% if s.section_height > 0 %}
+      --pj-ps-h: {{ s.section_height }}vh;
+      --pj-ps-dvh: {{ s.section_height }}dvh;
+      min-height: {{ s.section_height }}vh;
+      min-height: {{ s.section_height }}dvh;
+    {% endif %}
   "
 >
   <div class="pj-container pj-process-steps__container">
@@ -132,6 +138,17 @@
       "id": "image_border_color",
       "label": "Image Border Color",
       "default": "rgba(26, 24, 21, 0.12)"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height (vh)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 100,
+      "info": "100 = full screen fit (0 = auto height)"
     },
     {
       "type": "range",

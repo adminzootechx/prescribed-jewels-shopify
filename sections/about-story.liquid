@@ -25,7 +25,12 @@
         --pj-s-bg: {{ s.bg_color }};
       {% endif %}
     {% endif %}
-    {% if s.section_height > 0 %} --pj-about-h: {{ s.section_height }}vh; min-height: {{ s.section_height }}vh;{% endif %}
+    {% if s.section_height > 0 %}
+      --pj-about-h: {{ s.section_height }}vh;
+      --pj-about-dvh: {{ s.section_height }}dvh;
+      min-height: {{ s.section_height }}vh;
+      min-height: {{ s.section_height }}dvh;
+    {% endif %}
   "
 >
   <div class="pj-about__media" aria-hidden="true">
