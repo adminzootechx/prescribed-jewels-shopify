@@ -1270,8 +1270,8 @@ textarea {
   position: relative;
   z-index: 4;
   padding-right: 1rem;
-  /* Nudge the stone and its notes in from the page edge, towards the wheel */
-  padding-left: clamp(1rem, 3.5vw, 4rem);
+  /* Shift the circle, stone, and info toward the center to match the annotated layout */
+  padding-left: clamp(2.5rem, 6.5vw, 7.5rem);
 }
 
 @media (min-width: 769px) {
@@ -1369,7 +1369,7 @@ textarea {
 }
 
 /* --------------------------------------------------------------------------
- * Gemstones Atlas: Curved Display Layout (Large Stone + Orbit Arc + 3 Items)
+ * Gemstones Atlas: Curved Display Layout (Large Stone + Constant Circle + 3 Items)
  * -------------------------------------------------------------------------- */
 .pj-gem-display-layout {
   display: flex;
@@ -1378,30 +1378,38 @@ textarea {
   justify-content: flex-start;
   gap: 0;
   width: 100%;
-  max-width: 760px;
+  max-width: 960px;
   margin: 0;
+}
+
+/* Keep the golden orbit circle constantly visible throughout stone transitions */
+.pj-gem-orbit-wrap .pj-gem-diagram__photo,
+.pj-gem-display-name,
+.pj-gem-display-details {
   transition: opacity 0.25s ease;
 }
 
-.pj-gem-display-layout.is-fading {
+.pj-gem-display-layout.is-fading .pj-gem-diagram__photo,
+.pj-gem-display-layout.is-fading .pj-gem-display-name,
+.pj-gem-display-layout.is-fading .pj-gem-display-details {
   opacity: 0;
 }
 
-/* Left Column: Large Gemstone within Golden Orbit Arc & Spaced Title */
+/* Left Column: Large Gemstone Centered in Constant Golden Circle & Spaced Title */
 .pj-gem-display-stone {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  flex: 0 0 340px;
-  width: 340px;
+  flex: 0 0 460px;
+  width: 460px;
   text-align: center;
 }
 
 .pj-gem-orbit-wrap {
   position: relative;
-  width: 340px;
-  height: 340px;
+  width: 460px;
+  height: 460px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1421,22 +1429,22 @@ textarea {
   position: relative !important;
   left: auto !important;
   top: auto !important;
-  width: 295px !important;
-  height: 295px !important;
+  width: 390px !important;
+  height: 390px !important;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   perspective: 900px;
-  transform: translate(-22px, 6px);
+  transform: translate(0, 4px);
   z-index: 2;
 }
 
 .pj-gem-orbit-wrap .pj-gem-diagram__photo::before {
   inset: auto 10% 8% 10% !important;
-  height: 28px !important;
+  height: 32px !important;
   background: radial-gradient(ellipse at center, rgba(42, 26, 12, 0.26) 0%, rgba(42, 26, 12, 0.1) 48%, rgba(42, 26, 12, 0) 75%) !important;
-  filter: blur(4px);
+  filter: blur(5px);
   z-index: 0;
 }
 
@@ -1447,31 +1455,31 @@ textarea {
   height: 100%;
   object-fit: contain;
   transform: scale(1.12);
-  filter: drop-shadow(0 14px 18px rgba(38, 22, 10, 0.18));
+  filter: drop-shadow(0 16px 22px rgba(38, 22, 10, 0.2));
 }
 
 .pj-gem-display-name {
-  margin: 0.35rem 0 0 0;
-  transform: translateX(-16px);
+  margin: 0.7rem 0 0 0;
+  transform: none;
   font-family: var(--font-heading-family, Cormorant Garamond, serif);
-  font-size: clamp(1.65rem, 2.3vw, 2.15rem);
+  font-size: clamp(2rem, 2.8vw, 2.65rem);
   font-weight: 500;
-  letter-spacing: 0.22em;
-  text-indent: 0.22em;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
   text-transform: uppercase;
   color: #2B2118;
   line-height: 1.15;
   text-align: center;
 }
 
-/* Right Column: 3 Info Points Following the Orbit Curve */
+/* Right Column: 3 Info Points Positioned Along the Outside Right Curve of the Circle */
 .pj-gem-display-details {
   display: flex;
   flex-direction: column;
   gap: 0;
   flex: 1 1 auto;
-  max-width: 380px;
-  padding-top: 6px;
+  max-width: 420px;
+  padding-top: 10px;
   position: relative;
   z-index: 3;
 }
@@ -1479,50 +1487,50 @@ textarea {
 .pj-gem-info-card {
   display: flex;
   align-items: flex-start;
-  gap: 1.15rem;
+  gap: 1.25rem;
 }
 
-/* 1. Color: tucked left at top-right of the golden arc */
+/* 1. Color: top-right outside the golden circle */
 .pj-gem-info-card--color {
-  transform: translateX(-92px);
+  transform: translateX(-56px);
   margin-bottom: 0;
 }
 
 .pj-gem-info-card--color .pj-gem-info-icon-col {
-  padding-top: 18px;
+  padding-top: 16px;
 }
 
-/* 2. Symbolism: outermost point on the curve; Lotus sits in the 3 o'clock arc break */
+/* 2. Symbolism: middle-right outside the golden circle (outermost point of arc) */
 .pj-gem-info-card--symbolism {
-  transform: translateX(-29px);
-  margin-top: 54px;
+  transform: translateX(18px);
+  margin-top: 84px;
 }
 
 .pj-gem-info-card--symbolism .pj-gem-info-icon-col {
-  padding-top: 30px;
+  padding-top: 28px;
 }
 
-/* 3. Everyday Note: lower-right of the curve; text aligns with Symbolism */
+/* 3. Everyday Note: bottom-right outside the golden circle (curving back inward) */
 .pj-gem-info-card--everyday {
-  transform: translateX(-29px);
-  margin-top: 40px;
+  transform: translateX(-18px);
+  margin-top: 72px;
 }
 
 .pj-gem-info-card--everyday .pj-gem-info-icon-col {
-  padding-top: 26px;
+  padding-top: 24px;
 }
 
 .pj-gem-info-icon-col {
-  flex: 0 0 38px;
-  width: 38px;
+  flex: 0 0 44px;
+  width: 44px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .pj-gem-color-swatch {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: inline-block;
   background-color: var(--gem-c, #9B6B9E);
@@ -1538,13 +1546,13 @@ textarea {
 }
 
 .pj-gem-info-icon--lotus {
-  width: 38px;
-  height: 32px;
+  width: 44px;
+  height: 36px;
 }
 
 .pj-gem-info-icon--star {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
 }
 
 .pj-gem-info-content {
@@ -1552,9 +1560,9 @@ textarea {
 }
 
 .pj-gem-info-heading {
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 0.28rem 0;
   font-family: var(--pj-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: 1.32rem;
+  font-size: 1.44rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: #231A12;
@@ -1564,11 +1572,32 @@ textarea {
 .pj-gem-info-value {
   margin: 0;
   font-family: var(--pj-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: 1.04rem;
-  line-height: 1.46;
+  font-size: 1.1rem;
+  line-height: 1.48;
   color: #382E26;
-  max-width: 245px;
+  max-width: 280px;
   text-wrap: pretty;
+}
+
+@media (max-width: 1180px) {
+  .pj-gem-display-stone {
+    flex: 0 0 360px;
+    width: 360px;
+  }
+  .pj-gem-orbit-wrap {
+    width: 360px;
+    height: 360px;
+  }
+  .pj-gem-orbit-wrap .pj-gem-diagram__photo {
+    width: 300px !important;
+    height: 300px !important;
+  }
+  .pj-gem-info-card--symbolism {
+    margin-top: 52px;
+  }
+  .pj-gem-info-card--everyday {
+    margin-top: 44px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -1585,13 +1614,13 @@ textarea {
     width: 100%;
   }
   .pj-gem-orbit-wrap {
-    width: 280px;
-    height: 280px;
+    width: 300px;
+    height: 300px;
   }
   .pj-gem-orbit-wrap .pj-gem-diagram__photo {
-    width: 235px !important;
-    height: 235px !important;
-    transform: translate(-10px, 4px);
+    width: 250px !important;
+    height: 250px !important;
+    transform: translate(0, 4px);
   }
   .pj-gem-display-name {
     transform: none;
