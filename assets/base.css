@@ -1378,7 +1378,7 @@ textarea {
   justify-content: flex-start;
   gap: 0;
   width: 100%;
-  max-width: 820px;
+  max-width: 980px;
   margin: 0;
 }
 
@@ -1401,15 +1401,15 @@ textarea {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  flex: 0 0 468px;
-  width: 468px;
+  flex: 0 0 calc(var(--pj-orbit-r, 250px) * 2.176);
+  width: calc(var(--pj-orbit-r, 250px) * 2.176);
   text-align: center;
 }
 
 .pj-gem-orbit-wrap {
   position: relative;
-  width: 468px;
-  height: 468px;
+  width: calc(var(--pj-orbit-r, 250px) * 2.176);
+  height: calc(var(--pj-orbit-r, 250px) * 2.176);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1429,14 +1429,14 @@ textarea {
   position: relative !important;
   left: auto !important;
   top: auto !important;
-  width: 385px !important;
-  height: 385px !important;
+  width: var(--pj-gem-size, 410px) !important;
+  height: var(--pj-gem-size, 410px) !important;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   perspective: 900px;
-  transform: translate(-46px, 6px);
+  transform: translate(var(--pj-gem-ox, -54px), 6px);
   z-index: 2;
 }
 
@@ -1459,16 +1459,16 @@ textarea {
 }
 
 .pj-gem-display-name {
-  margin: 0.55rem 0 0 0;
-  transform: translateX(-28px);
+  margin: 0.6rem 0 0 0;
+  transform: translate(calc(var(--pj-gem-ox, -54px) * 0.55), var(--pj-gem-name-y, 0px));
   font-family: var(--font-heading-family, Cormorant Garamond, serif);
-  font-size: clamp(1.5rem, 2vw, 1.9rem);
+  font-size: calc(clamp(1.55rem, 2.1vw, 1.95rem) * var(--pj-hs-sec, 1));
   font-weight: 500;
   letter-spacing: 0.22em;
   text-indent: 0.22em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #2B2118;
+  color: var(--pj-w-text, #2B2118);
   line-height: 1.15;
   text-align: center;
 }
@@ -1479,8 +1479,8 @@ textarea {
   flex-direction: column;
   gap: 0;
   flex: 1 1 auto;
-  max-width: 390px;
-  padding-top: 14px;
+  max-width: 440px;
+  padding-top: 16px;
   position: relative;
   z-index: 3;
 }
@@ -1488,50 +1488,50 @@ textarea {
 .pj-gem-info-card {
   display: flex;
   align-items: flex-start;
-  gap: 1.15rem;
+  gap: 1.2rem;
 }
 
 /* 1. Color: top-right outside the golden circle */
 .pj-gem-info-card--color {
-  transform: translate(-68px, 6px);
+  transform: translate(calc(-78px + var(--pj-info-gap-x, 0px)), 8px);
   margin-bottom: 0;
 }
 
 .pj-gem-info-card--color .pj-gem-info-icon-col {
-  padding-top: 16px;
+  padding-top: 18px;
 }
 
 /* 2. Symbolism: middle-right outside the golden circle (outermost point of arc) */
 .pj-gem-info-card--symbolism {
-  transform: translateX(16px);
-  margin-top: 94px;
+  transform: translateX(calc(18px + var(--pj-info-gap-x, 0px)));
+  margin-top: calc(var(--pj-orbit-r, 250px) * 0.44);
 }
 
 .pj-gem-info-card--symbolism .pj-gem-info-icon-col {
-  padding-top: 26px;
+  padding-top: 28px;
 }
 
 /* 3. Everyday Note: bottom-right outside the golden circle (curving back inward) */
 .pj-gem-info-card--everyday {
-  transform: translateX(-34px);
-  margin-top: 82px;
+  transform: translateX(calc(-42px + var(--pj-info-gap-x, 0px)));
+  margin-top: calc(var(--pj-orbit-r, 250px) * 0.38);
 }
 
 .pj-gem-info-card--everyday .pj-gem-info-icon-col {
-  padding-top: 22px;
+  padding-top: 24px;
 }
 
 .pj-gem-info-icon-col {
-  flex: 0 0 38px;
-  width: 38px;
+  flex: 0 0 42px;
+  width: 42px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .pj-gem-color-swatch {
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   display: inline-block;
   background-color: var(--gem-c, #9B6B9E);
@@ -1547,13 +1547,13 @@ textarea {
 }
 
 .pj-gem-info-icon--lotus {
-  width: 38px;
-  height: 32px;
+  width: 42px;
+  height: 35px;
 }
 
 .pj-gem-info-icon--star {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
 }
 
 .pj-gem-info-content {
@@ -1561,22 +1561,22 @@ textarea {
 }
 
 .pj-gem-info-heading {
-  margin: 0 0 0.22rem 0;
+  margin: 0 0 0.26rem 0;
   font-family: var(--pj-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: 1.3rem;
+  font-size: calc(1.52rem * var(--pj-w-nts, 1));
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: #231A12;
+  color: var(--pj-w-text, #231A12);
   line-height: 1.22;
 }
 
 .pj-gem-info-value {
   margin: 0;
   font-family: var(--pj-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-  font-size: 1.02rem;
-  line-height: 1.46;
-  color: #382E26;
-  max-width: 255px;
+  font-size: calc(1.18rem * var(--pj-w-ns, 1));
+  line-height: 1.48;
+  color: var(--pj-w-muted, #382E26);
+  max-width: calc(295px * var(--pj-w-ns, 1));
   text-wrap: pretty;
 }
 

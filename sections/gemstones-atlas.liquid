@@ -23,6 +23,10 @@
     --pj-w-glow-a: {{ section.settings.glow_strength }}%;
     --pj-note-spread-x: {{ section.settings.note_spread_x | default: 36 }}px;
     --pj-note-spread-y: {{ section.settings.note_spread_y | default: 30 }}px;
+    --pj-orbit-r: {{ section.settings.orbit_radius | default: 250 }}px;
+    --pj-gem-size: {{ section.settings.gem_size | default: 410 }}px;
+    --pj-gem-ox: {{ section.settings.gem_offset_x | default: -54 }}px;
+    --pj-info-gap-x: {{ section.settings.info_curve_gap | default: 0 }}px;
     --pj-gem-name-y: {{ section.settings.gem_name_y | default: 0 }}px;
     --pj-info-offset-x: {{ section.settings.info_offset_x | default: 45 }}px;
     --pj-info-offset-y: {{ section.settings.info_offset_y | default: 52 }}px;
@@ -59,7 +63,7 @@
           <!-- Left Column: Gemstone within Golden Orbit Arc & Name -->
           <div class="pj-gem-display-stone">
             <div class="pj-gem-orbit-wrap">
-              <svg class="pj-gem-orbit" viewBox="0 0 468 468" aria-hidden="true" focusable="false">
+              <svg class="pj-gem-orbit" viewBox="0 0 544 544" aria-hidden="true" focusable="false">
                 <defs>
                   <linearGradient id="pj-orbit-grad" x1="0%" y1="50%" x2="100%" y2="50%">
                     <stop offset="0%" stop-color="#966F38" stop-opacity="0"/>
@@ -68,17 +72,17 @@
                     <stop offset="100%" stop-color="#966F38" stop-opacity="1"/>
                   </linearGradient>
                 </defs>
-                <!-- Continuous golden orbit curve with radius increased by 1.7cm (64px -> r=212) -->
-                <path d="M 66 128 A 212 212 0 0 1 462 234 A 212 212 0 0 1 66 340" fill="none" stroke="url(#pj-orbit-grad)" stroke-width="1.6" stroke-linecap="round" />
+                <!-- Continuous golden orbit curve with radius increased by 1cm more (r=250px default, scalable via Theme Editor) -->
+                <path d="M 72 147 A 250 250 0 0 1 538 272 A 250 250 0 0 1 72 397" fill="none" stroke="url(#pj-orbit-grad)" stroke-width="1.65" stroke-linecap="round" vector-effect="non-scaling-stroke" />
                 <!-- Upper-right bead accent -->
-                <circle cx="400" cy="84" r="4.5" fill="#966F38" />
+                <circle cx="465" cy="95" r="4.6" fill="#966F38" />
                 <!-- Lower-right double-bead crescent accent -->
-                <circle cx="400" cy="384" r="4" fill="#966F38" />
-                <circle cx="388" cy="395" r="4" fill="#966F38" />
-                <path d="M 388 395 A 13 13 0 0 1 400 384" fill="none" stroke="#966F38" stroke-width="1.4" stroke-linecap="round" />
+                <circle cx="465" cy="449" r="4.2" fill="#966F38" />
+                <circle cx="450" cy="462" r="4.2" fill="#966F38" />
+                <path d="M 450 462 A 15 15 0 0 1 465 449" fill="none" stroke="#966F38" stroke-width="1.45" stroke-linecap="round" vector-effect="non-scaling-stroke" />
               </svg>
               <div class="pj-gem-diagram__photo" id="pj-gem-photo-wrap">
-                <img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="460" height="460" decoding="async">
+                <img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="480" height="480" decoding="async">
               </div>
             </div>
             <h2 id="pj-gemstones-heading" class="pj-gem-display-name">
@@ -217,7 +221,11 @@
     { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 20 },
     { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 20 },
 
-    { "type": "header", "content": "Diagram Layout & Arrow Positioning" },
+    { "type": "header", "content": "Gemstone, Circle Radius & Info Controls" },
+    { "type": "range", "id": "orbit_radius", "label": "Circle Radius (px)", "min": 140, "max": 340, "step": 2, "unit": "px", "default": 250, "info": "Adjusts the radius of the golden orbit circle around the gemstone (1 cm ≈ 38px). Default 250px." },
+    { "type": "range", "id": "gem_size", "label": "Featured Gemstone Size (px)", "min": 200, "max": 560, "step": 5, "unit": "px", "default": 410, "info": "Adjusts the size of the featured 3D gemstone inside the circle." },
+    { "type": "range", "id": "gem_offset_x", "label": "Gemstone Left / Right Position (px)", "min": -140, "max": 80, "step": 4, "unit": "px", "default": -54, "info": "Shifts the gemstone left or right inside the golden circle." },
+    { "type": "range", "id": "info_curve_gap", "label": "Info Distance from Circle (px)", "min": -80, "max": 100, "step": 4, "unit": "px", "default": 0, "info": "Moves Color, Symbolism, and Everyday Note closer to or further from the circle." },
     { "type": "range", "id": "note_spread_x", "label": "Spread Notes Horizontally", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 36, "info": "Moves the 4 note boxes outward left and right away from the gem" },
     { "type": "range", "id": "note_spread_y", "label": "Spread Notes Vertically", "min": 0, "max": 100, "step": 2, "unit": "px", "default": 30, "info": "Moves the 4 note boxes outward top and bottom away from the gem" },
     { "type": "range", "id": "gem_name_y", "label": "Stone Name & Planet (Up/Down)", "min": -60, "max": 60, "step": 2, "unit": "px", "default": 0, "info": "Fine-tune vertical position of the stone title centered directly below the big gem" },
@@ -249,8 +257,8 @@
     { "type": "font_picker", "id": "font_body", "label": "Note titles font", "default": "jost_n5" },
     { "type": "header", "content": "Text Sizes & Spacing" },
     { "type": "range", "id": "right_notes_gap", "label": "Right notes distance from dot", "min": 20, "max": 120, "step": 5, "unit": "px", "default": 55, "info": "Default 55px (approx 1.5cm). Moves 'Uses' and 'Traditionally worn' further away from the leader dot." },
-    { "type": "range", "id": "note_title_size", "label": "Note Heading Size (Features, Uses, etc.)", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 },
-    { "type": "range", "id": "notes_size", "label": "Note Subtext Info Size", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "note_title_size", "label": "Info Heading Size (Color, Symbolism, Everyday Note)", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 },
+    { "type": "range", "id": "notes_size", "label": "Info Text Size (Descriptions)", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 },
     { "type": "range", "id": "heading_size", "label": "Gemstone Title Size", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 },
     { "type": "range", "id": "planet_size", "label": "Ruling Planet Subtitle Size", "min": 50, "max": 200, "step": 5, "unit": "%", "default": 100 }
   ],
