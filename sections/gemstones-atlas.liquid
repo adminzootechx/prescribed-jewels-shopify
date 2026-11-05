@@ -59,7 +59,7 @@
           <!-- Left Column: Gemstone within Golden Orbit Arc & Name -->
           <div class="pj-gem-display-stone">
             <div class="pj-gem-orbit-wrap">
-              <svg class="pj-gem-orbit" viewBox="0 0 340 340" aria-hidden="true" focusable="false">
+              <svg class="pj-gem-orbit" viewBox="0 0 468 468" aria-hidden="true" focusable="false">
                 <defs>
                   <linearGradient id="pj-orbit-grad" x1="0%" y1="50%" x2="100%" y2="50%">
                     <stop offset="0%" stop-color="#966F38" stop-opacity="0"/>
@@ -68,17 +68,17 @@
                     <stop offset="100%" stop-color="#966F38" stop-opacity="1"/>
                   </linearGradient>
                 </defs>
-                <!-- Continuous golden orbit curve along top, right, and bottom (fades softly on far left behind stone) -->
-                <path d="M 57 96 A 148 148 0 0 1 333 170 A 148 148 0 0 1 57 244" fill="none" stroke="url(#pj-orbit-grad)" stroke-width="1.5" stroke-linecap="round" />
+                <!-- Continuous golden orbit curve with radius increased by 1.7cm (64px -> r=212) -->
+                <path d="M 66 128 A 212 212 0 0 1 462 234 A 212 212 0 0 1 66 340" fill="none" stroke="url(#pj-orbit-grad)" stroke-width="1.6" stroke-linecap="round" />
                 <!-- Upper-right bead accent -->
-                <circle cx="290" cy="65" r="4.2" fill="#966F38" />
+                <circle cx="400" cy="84" r="4.5" fill="#966F38" />
                 <!-- Lower-right double-bead crescent accent -->
-                <circle cx="290" cy="275" r="3.8" fill="#966F38" />
-                <circle cx="277" cy="287" r="3.8" fill="#966F38" />
-                <path d="M 277 287 A 11 11 0 0 1 290 275" fill="none" stroke="#966F38" stroke-width="1.35" stroke-linecap="round" />
+                <circle cx="400" cy="384" r="4" fill="#966F38" />
+                <circle cx="388" cy="395" r="4" fill="#966F38" />
+                <path d="M 388 395 A 13 13 0 0 1 400 384" fill="none" stroke="#966F38" stroke-width="1.4" stroke-linecap="round" />
               </svg>
               <div class="pj-gem-diagram__photo" id="pj-gem-photo-wrap">
-                <img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="400" height="400" decoding="async">
+                <img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="460" height="460" decoding="async">
               </div>
             </div>
             <h2 id="pj-gemstones-heading" class="pj-gem-display-name">
