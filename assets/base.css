@@ -3675,12 +3675,10 @@ textarea {
   width: 100%;
   max-width: var(--pj-ps-max-w, 1360px);
   margin: 0 auto;
-  padding-left: clamp(1rem, 2.5vw, 2.5rem);
-  padding-right: clamp(1rem, 2.5vw, 2.5rem);
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 /* Top-Left Header styled identically to The Collection section (.pj-designs__header) */
@@ -3704,11 +3702,12 @@ textarea {
 }
 
 .pj-process-steps__eyebrow {
-  color: var(--pj-ps-eyebrow-color, #B69156);
+  color: var(--pj-ps-eyebrow-color, var(--pj-accent-gold, #B69156));
   margin: 0 0 0.2rem 0;
-  letter-spacing: 0.2em;
-  font-size: calc(0.75rem * var(--pj-ps-eyebrow-s, 1));
-  font-weight: 500;
+  font-family: var(--pj-font-sans);
+  letter-spacing: 0.24em;
+  font-size: calc(0.68rem * var(--pj-ps-eyebrow-s, 1));
+  font-weight: 400;
   text-transform: uppercase;
   opacity: 0.95;
 }
@@ -3719,9 +3718,9 @@ textarea {
   font-size: calc(clamp(1.45rem, 2.2vw, 1.95rem) * var(--pj-hs, 1) * var(--pj-ps-heading-s, 1));
   font-weight: 400;
   line-height: 1.05;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.02em;
   text-transform: none;
-  color: var(--pj-ps-heading-color, #1A1815);
+  color: var(--pj-ps-heading-color, var(--pj-text-primary, #1A1815));
 }
 
 .pj-process-steps__subtext {

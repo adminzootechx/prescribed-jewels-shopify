@@ -41,7 +41,7 @@
     {% endif %}
   "
 >
-  <div class="pj-container pj-process-steps__container">
+  <div class="pj-container">
     {%- assign has_eyebrow = false -%}
     {%- if s.show_eyebrow and s.eyebrow != blank -%}{%- assign has_eyebrow = true -%}{%- endif -%}
     {%- assign has_heading = false -%}
@@ -66,7 +66,9 @@
         {%- endif -%}
       </div>
     {%- endif -%}
+  </div>
 
+  <div class="pj-container pj-process-steps__container">
     <div class="pj-process-steps__grid">
       {%- assign fallback_imgs = 'process-step-light-1.png,process-step-light-2.png,process-step-light-3.png,process-step-light-4.png' | split: ',' -%}
       {%- for block in section.blocks -%}
@@ -149,7 +151,7 @@
       "type": "checkbox",
       "id": "show_header_line",
       "label": "Show Horizontal Line Next to Heading",
-      "default": false,
+      "default": true,
       "info": "Uncheck to remove the horizontal line next to the heading."
     },
     {
