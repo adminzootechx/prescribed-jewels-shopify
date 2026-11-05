@@ -6,22 +6,21 @@
   aria-labelledby="pj-process-heading"
   style="
     {% if s.bg_color != blank %}--pj-ps-bg: {{ s.bg_color }};{% endif %}
-    {% if s.card_bg != blank %}--pj-ps-card-bg: {{ s.card_bg }};{% endif %}
-    {% if s.card_border != blank %}--pj-ps-card-border: {{ s.card_border }};{% endif %}
     --pj-ps-eyebrow-color: {{ s.eyebrow_color | default: '#B69156' }};
     --pj-ps-heading-color: {{ s.heading_color | default: '#1A1815' }};
-    --pj-ps-step-num-color: {{ s.step_num_color | default: '#9E743A' }};
+    --pj-ps-step-num-color: {{ s.step_num_color | default: '#B69156' }};
     --pj-ps-step-title-color: {{ s.step_title_color | default: '#1A1815' }};
     --pj-ps-step-desc-color: {{ s.step_desc_color | default: '#4A4237' }};
-    --pj-ps-img-border: {{ s.image_border_color | default: 'rgba(92, 39, 8, 0.10)' }};
-    --pj-ps-max-w: {{ s.max_width | default: 1280 }}px;
+    --pj-ps-img-border: {{ s.image_border_color | default: 'rgba(26, 24, 21, 0.14)' }};
+    --pj-ps-img-ratio: {{ s.image_aspect_ratio | default: '191 / 133' }};
+    --pj-ps-max-w: {{ s.max_width | default: 1240 }}px;
     --pj-ps-gap: {{ s.grid_gap | default: 24 }}px;
-    --pj-ps-pt: {{ s.padding_top | default: 80 }}px;
-    --pj-ps-pb: {{ s.padding_bottom | default: 80 }}px;
+    --pj-ps-pt: {{ s.padding_top | default: 64 }}px;
+    --pj-ps-pb: {{ s.padding_bottom | default: 64 }}px;
   "
 >
   <div class="pj-container pj-process-steps__container">
-    {%- if s.eyebrow != blank or s.heading != blank or s.subtext != blank -%}
+    {%- if s.eyebrow != blank or s.heading != blank -%}
       <div class="pj-process-steps__header">
         {%- if s.eyebrow != blank -%}
           <p class="pj-eyebrow pj-process-steps__eyebrow">{{ s.eyebrow }}</p>
@@ -30,9 +29,6 @@
           <h2 id="pj-process-heading" class="pj-process-steps__title">
             {{ s.heading | escape }}
           </h2>
-        {%- endif -%}
-        {%- if s.subtext != blank -%}
-          <p class="pj-process-steps__subtext">{{ s.subtext | escape }}</p>
         {%- endif -%}
       </div>
     {%- endif -%}
@@ -53,7 +49,7 @@
             {%- else -%}
               {%- assign idx = forloop.index0 | modulo: 4 -%}
               {%- assign def_img = fallback_imgs[idx] -%}
-              <img src="{{ def_img | asset_url }}" alt="{{ b.title | escape }}" class="pj-process-step__img" width="500" height="500" loading="lazy">
+              <img src="{{ def_img | asset_url }}" alt="{{ b.title | escape }}" class="pj-process-step__img" width="500" height="350" loading="lazy">
             {%- endif -%}
           </div>
 
@@ -63,15 +59,6 @@
         </article>
       {%- endfor -%}
     </div>
-
-    {%- if s.cta_label != blank -%}
-      <div class="pj-process-steps__cta">
-        <button type="button" class="pj-btn pj-process-cta-btn" data-open-prescription>
-          <span>{{ s.cta_label | escape }}</span>
-          <span aria-hidden="true">→</span>
-        </button>
-      </div>
-    {%- endif -%}
   </div>
 </section>
 
@@ -94,27 +81,9 @@
       "default": "A PIECE THAT'S TRULY YOURS"
     },
     {
-      "type": "text",
-      "id": "subtext",
-      "label": "Supporting Subtext",
-      "default": "From your birth details to your finished bespoke piece."
-    },
-    {
       "type": "color",
       "id": "bg_color",
-      "label": "Background Color (leave blank for ambient gradient)"
-    },
-    {
-      "type": "color",
-      "id": "card_bg",
-      "label": "Card Background Color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "card_border",
-      "label": "Card Border Color",
-      "default": "rgba(92, 39, 8, 0.12)"
+      "label": "Background Color (leave blank for theme default)"
     },
     {
       "type": "color",
@@ -126,7 +95,7 @@
       "type": "color",
       "id": "step_num_color",
       "label": "Step Number Color",
-      "default": "#9E743A"
+      "default": "#B69156"
     },
     {
       "type": "color",
@@ -147,10 +116,16 @@
       "default": "#4A4237"
     },
     {
-      "type": "text",
-      "id": "cta_label",
-      "label": "CTA Button Label",
-      "default": "Begin your prescription"
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "191 / 133", "label": "Editorial Landscape (191:133)" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "16 / 9", "label": "Wide (16:9)" }
+      ],
+      "default": "191 / 133"
     },
     {
       "type": "color",

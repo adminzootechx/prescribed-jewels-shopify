@@ -175,21 +175,18 @@
       "settings": {
         "eyebrow": "THE PROCESS",
         "heading": "A PIECE THAT'S TRULY YOURS",
-        "subtext": "From your birth details to your finished bespoke piece.",
         "bg_color": "",
-        "card_bg": "#FFFFFF",
-        "card_border": "#5C27081F",
-        "eyebrow_color": "#9E743A",
-        "step_num_color": "#9E743A",
+        "eyebrow_color": "#B69156",
+        "step_num_color": "#B69156",
         "heading_color": "#1A1815",
         "step_title_color": "#1A1815",
         "step_desc_color": "#4A4237",
-        "image_border_color": "#5C270814",
-        "max_width": 1280,
+        "image_aspect_ratio": "191 / 133",
+        "image_border_color": "#1A18151F",
+        "max_width": 1240,
         "grid_gap": 24,
-        "padding_top": 80,
-        "padding_bottom": 80,
-        "cta_label": "Begin your prescription"
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "personal_by_design": {
