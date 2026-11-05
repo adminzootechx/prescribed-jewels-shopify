@@ -1873,11 +1873,33 @@ textarea {
 .pj-story--right .pj-story__text { margin-left: auto; }
 
 .pj-story .pj-btn--primary {
-  background-color: var(--pj-s-accent, #FBF6EC);
-  border-color: var(--pj-s-accent, #FBF6EC);
-  color: #1A1410;
+  background-color: transparent;
+  border: 1px solid var(--pj-s-accent, #FBF6EC);
+  color: var(--pj-s-accent, #FBF6EC);
+  padding: 0.85rem 2.2rem;
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.28s ease;
 }
-.pj-story .pj-btn--primary:hover { filter: brightness(0.94); }
+.pj-story .pj-btn--primary:hover {
+  background-color: var(--pj-s-accent, #FBF6EC);
+  color: #1A1410;
+  transform: translateY(-1px);
+}
+.pj-story .pj-btn--primary span:last-child {
+  transition: transform 0.28s ease;
+  display: inline-block;
+}
+.pj-story .pj-btn--primary:hover span:last-child {
+  transform: translateX(4px);
+}
 .pj-story .pj-btn:focus-visible { outline: 2px solid var(--pj-s-text, #FBF6EC); outline-offset: 3px; }
 
 /* Card Mode (matches Image 3 on top of Image 1) */
@@ -1952,22 +1974,36 @@ textarea {
 }
 
 .pj-story--has-card .pj-btn--primary {
-  background-color: var(--pj-story-card-btn-bg, #B69156);
-  border-color: var(--pj-story-card-btn-bg, #B69156);
-  color: var(--pj-story-card-btn-text, #120E0A);
-  padding: 0.95rem 2.2rem;
-  letter-spacing: 0.16em;
+  background-color: transparent;
+  border: 1px solid var(--pj-story-card-btn-bg, #5C2708);
+  color: var(--pj-story-card-btn-bg, #5C2708);
+  padding: 0.85rem 2.2rem;
+  letter-spacing: 0.14em;
   font-size: 0.8rem;
   font-weight: 500;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.25s ease;
+  gap: 10px;
+  border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.28s ease;
 }
 
 .pj-story--has-card .pj-btn--primary:hover {
-  filter: brightness(1.1);
+  background-color: var(--pj-story-card-btn-bg, #5C2708);
+  color: var(--pj-story-card-btn-text, #F9E7CE);
   transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(92, 39, 8, 0.16);
+}
+
+.pj-story--has-card .pj-btn--primary span:last-child {
+  transition: transform 0.28s ease;
+  display: inline-block;
+}
+
+.pj-story--has-card .pj-btn--primary:hover span:last-child {
+  transform: translateX(4px);
 }
 
 /* ==========================================================================

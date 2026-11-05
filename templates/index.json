@@ -525,9 +525,9 @@
       "type": "editorial-story",
       "settings": {
         "eyebrow": "OUR STORY",
-        "heading": "A Piece of Your Own Story",
-        "body_text": "Prescribed Jewels is born from the belief that fine jewelry should carry personal meaning — uniting modern silhouettes with a single natural gemstone prescribed from your Vedic birth details.",
-        "button_label": "BEGIN YOUR PRESCRIPTION",
+        "heading": "Begin with your gemstone.",
+        "body_text": "Tell us where your story began. We will guide you toward a gemstone and the piece that makes it yours.",
+        "button_label": "Begin your prescription",
         "show_monogram": true,
         "show_card": true,
         "focus_x": 50,
