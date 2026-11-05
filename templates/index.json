@@ -141,7 +141,7 @@
         "blend_opacity": 100,
         "blend_style": "uniform",
         "fade_image": true,
-        "section_height": 100,
+        "section_height": 0,
         "image_side": "left",
         "image_width": 55,
         "padding": 0,
@@ -210,11 +210,10 @@
         "step_desc_color": "#4a4237",
         "image_aspect_ratio": "1 / 1",
         "image_border_color": "#1a18151f",
-        "section_height": 100,
         "max_width": 1240,
         "grid_gap": 24,
-        "padding_top": 32,
-        "padding_bottom": 32
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "personal_by_design": {
@@ -267,7 +266,7 @@
         "statement": "Your birth details.\nYour gemstone.\nYour piece.",
         "button_label": "Begin your prescription",
         "button_link": "",
-        "section_height": 100,
+        "section_height": 0,
         "padding_top": 0,
         "padding_bottom": 0,
         "image_side": "left",
@@ -596,7 +595,7 @@
         "veil_color": "#f9e7ce",
         "veil": 20,
         "align": "center",
-        "section_height": 100,
+        "section_height": 0,
         "min_height": 640,
         "padding_top": 64,
         "padding_bottom": 64,
