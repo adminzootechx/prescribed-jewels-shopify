@@ -1480,7 +1480,7 @@ textarea {
   gap: 0;
   flex: 1 1 auto;
   max-width: 440px;
-  padding-top: 16px;
+  padding-top: 24px;
   position: relative;
   z-index: 3;
 }
@@ -1493,7 +1493,7 @@ textarea {
 
 /* 1. Color: top-right outside the golden circle */
 .pj-gem-info-card--color {
-  transform: translate(calc(-78px + var(--pj-info-gap-x, 0px)), 8px);
+  transform: translate(calc(-66px + var(--pj-info-gap-x, 0px)), 8px);
   margin-bottom: 0;
 }
 
@@ -1503,7 +1503,7 @@ textarea {
 
 /* 2. Symbolism: middle-right outside the golden circle (outermost point of arc) */
 .pj-gem-info-card--symbolism {
-  transform: translateX(calc(18px + var(--pj-info-gap-x, 0px)));
+  transform: translateX(calc(20px + var(--pj-info-gap-x, 0px)));
   margin-top: calc(var(--pj-orbit-r, 250px) * 0.44);
 }
 
@@ -1513,7 +1513,7 @@ textarea {
 
 /* 3. Everyday Note: bottom-right outside the golden circle (curving back inward) */
 .pj-gem-info-card--everyday {
-  transform: translateX(calc(-42px + var(--pj-info-gap-x, 0px)));
+  transform: translateX(calc(-52px + var(--pj-info-gap-x, 0px)));
   margin-top: calc(var(--pj-orbit-r, 250px) * 0.38);
 }
 
