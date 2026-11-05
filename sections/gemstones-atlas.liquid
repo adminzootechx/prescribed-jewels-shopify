@@ -53,33 +53,73 @@
         </g>
       </svg>
 
-      <!-- Left: the chosen stone, with what is known about it set out around its photograph -->
+      <!-- Left: the chosen stone in orbit ring with Name below & 3 info items (Color, Symbolism, Everyday Note) -->
       <div class="pj-gemstones-wheel__info">
-        <div class="pj-gem-diagram" id="pj-wheel-info-box" aria-live="polite">
-          <svg class="pj-gem-diagram__lines" viewBox="0 0 720 540" aria-hidden="true" focusable="false">
-            <g class="pj-gem-diagram__leaders">
-              <path d="M 160 32 C 195 32, 230 75, 240 125" />
-              <path d="M 560 32 C 525 32, 490 75, 480 125" />
-              <path d="M 160 328 C 195 328, 230 280, 240 225" />
-              <path d="M 560 328 C 525 328, 490 280, 480 225" />
-              <circle cx="160" cy="32" r="3.5" />
-              <circle cx="560" cy="32" r="3.5" />
-              <circle cx="160" cy="328" r="3.5" />
-              <circle cx="560" cy="328" r="3.5" />
-            </g>
-          </svg>
-
-          <div class="pj-gem-diagram__photo" id="pj-gem-photo-wrap"><img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="400" height="400" decoding="async"></div>
-
-          <div class="pj-gem-diagram__name">
-            <p class="pj-gemstones-wheel__planet" id="pj-wheel-planet">MERCURY · BUDHA</p>
-            <h2 id="pj-gemstones-heading" class="pj-gemstones-wheel__title"><span class="pj-gem-bracket">(</span><span id="pj-wheel-stone-name">EMERALD</span><span class="pj-gem-bracket">)</span></h2>
+        <div class="pj-gem-display-layout" id="pj-wheel-info-box" aria-live="polite">
+          <!-- Left Column: Gemstone within Orbit Ring & Name -->
+          <div class="pj-gem-display-stone">
+            <div class="pj-gem-orbit-wrap">
+              <svg class="pj-gem-orbit" viewBox="0 0 340 340" aria-hidden="true" focusable="false">
+                <circle cx="170" cy="170" r="145" fill="none" stroke="var(--gem-c, #B69156)" stroke-width="1.35" opacity="0.85"/>
+                <circle cx="272" cy="68" r="3.5" fill="var(--gem-c, #B69156)"/>
+                <circle cx="272" cy="272" r="3.5" fill="var(--gem-c, #B69156)"/>
+                <circle cx="68" cy="68" r="3.5" fill="var(--gem-c, #B69156)"/>
+                <circle cx="68" cy="272" r="3.5" fill="var(--gem-c, #B69156)"/>
+                <circle cx="170" cy="25" r="2.5" fill="var(--gem-c, #B69156)"/>
+                <circle cx="170" cy="315" r="2.5" fill="var(--gem-c, #B69156)"/>
+              </svg>
+              <div class="pj-gem-diagram__photo" id="pj-gem-photo-wrap">
+                <img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="300" height="300" decoding="async">
+              </div>
+            </div>
+            <h2 id="pj-gemstones-heading" class="pj-gem-display-name">
+              <span id="pj-wheel-stone-name">EMERALD</span>
+            </h2>
           </div>
 
-          <div class="pj-gem-note pj-gem-note--tl"><h3 class="pj-gem-note__title">Features</h3><p id="pj-gem-features"></p></div>
-          <div class="pj-gem-note pj-gem-note--tr"><h3 class="pj-gem-note__title">Uses</h3><p id="pj-gem-uses"></p></div>
-          <div class="pj-gem-note pj-gem-note--bl"><h3 class="pj-gem-note__title">Importance</h3><p id="pj-wheel-desc">Cultivates intellect, eloquent speech, emotional composure, and clear discernment.</p></div>
-          <div class="pj-gem-note pj-gem-note--br"><h3 class="pj-gem-note__title">Traditionally worn</h3><p id="pj-gem-wear"></p></div>
+          <!-- Right Column: 3 Info Points (Color, Symbolism, Everyday Note) -->
+          <div class="pj-gem-display-details">
+            <!-- 1. Color -->
+            <div class="pj-gem-info-card">
+              <div class="pj-gem-info-icon-col">
+                <span class="pj-gem-color-swatch" id="pj-gem-color-swatch" aria-hidden="true"></span>
+              </div>
+              <div class="pj-gem-info-content">
+                <h3 class="pj-gem-info-heading">Color</h3>
+                <p class="pj-gem-info-value" id="pj-gem-color-val">Vivid Green</p>
+              </div>
+            </div>
+
+            <!-- 2. Symbolism -->
+            <div class="pj-gem-info-card">
+              <div class="pj-gem-info-icon-col">
+                <svg class="pj-gem-info-icon" viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="var(--gem-c, #B69156)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 6 C13 13, 13 21, 16 24 C19 21, 19 13, 16 6 Z"/>
+                  <path d="M16 24 C12 23, 7 19, 9 13 C11 11, 14 13, 16 17"/>
+                  <path d="M16 24 C20 23, 25 19, 23 13 C21 11, 18 13, 16 17"/>
+                  <path d="M16 24 C10 24, 4 20, 5 16 C6 14, 9 16, 12 19"/>
+                  <path d="M16 24 C22 24, 28 20, 27 16 C26 14, 23 16, 20 19"/>
+                </svg>
+              </div>
+              <div class="pj-gem-info-content">
+                <h3 class="pj-gem-info-heading">Symbolism</h3>
+                <p class="pj-gem-info-value" id="pj-gem-symbolism-val">Cultivates intellect, eloquent speech, emotional composure, and clear discernment.</p>
+              </div>
+            </div>
+
+            <!-- 3. Everyday Note -->
+            <div class="pj-gem-info-card">
+              <div class="pj-gem-info-icon-col">
+                <svg class="pj-gem-info-icon" viewBox="0 0 28 28" width="24" height="24" fill="none" stroke="var(--gem-c, #B69156)" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14 2 C14 8, 20 14, 26 14 C20 14, 14 20, 14 26 C14 20, 8 14, 2 14 C8 14, 14 8, 14 2 Z"/>
+                </svg>
+              </div>
+              <div class="pj-gem-info-content">
+                <h3 class="pj-gem-info-heading">Everyday Note</h3>
+                <p class="pj-gem-info-value" id="pj-gem-everyday-val">“A signature touch of color, easy to make your own.”</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -131,6 +171,9 @@
               class="pj-wheel-rotor"
               id="pj-wheel-rotor"
               data-gem-names="{%- for block in section.blocks -%}{{ block.settings.name | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-colors="{%- for block in section.blocks -%}{{ block.settings.color_name | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-symbolisms="{%- for block in section.blocks -%}{{ block.settings.symbolism | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
+              data-gem-everydays="{%- for block in section.blocks -%}{{ block.settings.everyday_note | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
               data-gem-descs="{%- for block in section.blocks -%}{{ block.settings.text | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
               data-gem-features="{%- for block in section.blocks -%}{{ block.settings.features | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
               data-gem-uses="{%- for block in section.blocks -%}{{ block.settings.uses | escape }}{%- unless forloop.last -%}|{%- endunless -%}{%- endfor -%}"
@@ -212,6 +255,9 @@
         { "type": "image_picker", "id": "angle_2", "label": "Second angle (optional)", "info": "Same framing, turned. Shown on the left in turn with the main photo." },
         { "type": "image_picker", "id": "angle_3", "label": "Third angle (optional)" },
         { "type": "text", "id": "name", "label": "Name", "default": "EMERALD" },
+        { "type": "text", "id": "color_name", "label": "Color description", "info": "e.g. Violet, Vibrant Green, Deep Red" },
+        { "type": "textarea", "id": "symbolism", "label": "Symbolism", "info": "Leave empty to use curated default." },
+        { "type": "textarea", "id": "everyday_note", "label": "Everyday Note", "info": "Leave empty to use curated default." },
         { "type": "textarea", "id": "text", "label": "Importance", "default": "Cultivates intellect, eloquent speech, emotional composure, and clear discernment." },
         { "type": "textarea", "id": "features", "label": "Features", "info": "Leave empty to use the built-in text." },
         { "type": "textarea", "id": "uses", "label": "Uses", "info": "Leave empty to use the built-in text." },

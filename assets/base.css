@@ -1365,9 +1365,196 @@ textarea {
 }
 
 @media (min-width: 768px) {
-  .pj-gem-arrow { display: block; }
+  .pj-gem-arrow { display: none !important; }
 }
 
+/* --------------------------------------------------------------------------
+ * Gemstones Atlas: Clean Display Layout (Orbit Ring + 3 Information Items)
+ * -------------------------------------------------------------------------- */
+.pj-gem-display-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(2.2rem, 4.2vw, 4.8rem);
+  width: 100%;
+  max-width: 720px;
+  margin: 0;
+  transition: opacity 0.25s ease;
+}
+
+.pj-gem-display-layout.is-fading {
+  opacity: 0;
+}
+
+/* Left Column: Gemstone within Delicate Orbit Ring & Title */
+.pj-gem-display-stone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 250px;
+  text-align: center;
+}
+
+.pj-gem-orbit-wrap {
+  position: relative;
+  width: 235px;
+  height: 235px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pj-gem-orbit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.pj-gem-orbit circle {
+  transition: stroke 0.4s ease, fill 0.4s ease;
+}
+
+.pj-gem-orbit-wrap .pj-gem-diagram__photo {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: 170px !important;
+  height: 170px !important;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 900px;
+}
+
+.pj-gem-orbit-wrap .pj-gem-diagram__photo::before {
+  inset: -15% !important;
+  background: radial-gradient(circle, rgba(214, 178, 108, 0.22) 0%, rgba(214, 178, 108, 0.06) 50%, rgba(214, 178, 108, 0) 70%) !important;
+}
+
+.pj-gem-orbit-wrap .pj-gem-diagram__photo img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.04);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.12));
+}
+
+.pj-gem-display-name {
+  margin: 1.35rem 0 0 0;
+  font-family: var(--font-heading-family, Cormorant Garamond, serif);
+  font-size: clamp(1.25rem, 1.7vw, 1.6rem);
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  text-transform: uppercase;
+  color: var(--pj-w-text, #1A1815);
+  line-height: 1.15;
+  text-align: center;
+}
+
+/* Right Column: 3 Stacked Info Cards (Color, Symbolism, Everyday Note) */
+.pj-gem-display-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  flex: 1 1 auto;
+  max-width: 400px;
+  justify-content: center;
+}
+
+.pj-gem-info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.15rem;
+}
+
+.pj-gem-info-icon-col {
+  flex: 0 0 28px;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.pj-gem-color-swatch {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: var(--gem-c, #B69156);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
+  transition: background-color 0.4s ease;
+}
+
+.pj-gem-info-icon {
+  width: 26px;
+  height: 26px;
+  display: block;
+  stroke: var(--gem-c, #B69156);
+  transition: stroke 0.4s ease;
+}
+
+.pj-gem-info-content {
+  flex: 1 1 auto;
+}
+
+.pj-gem-info-heading {
+  margin: 0 0 0.25rem 0;
+  font-family: var(--font-heading-family, Cormorant Garamond, serif);
+  font-size: 1.22rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--pj-w-text, #1A1815);
+  line-height: 1.2;
+}
+
+.pj-gem-info-value {
+  margin: 0;
+  font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: 0.93rem;
+  line-height: 1.52;
+  color: #4A453E;
+  text-wrap: pretty;
+}
+
+@media (max-width: 820px) {
+  .pj-gem-display-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.2rem;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .pj-gem-display-stone {
+    width: 100%;
+  }
+  .pj-gem-orbit-wrap {
+    width: 210px;
+    height: 210px;
+  }
+  .pj-gem-orbit-wrap .pj-gem-diagram__photo {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  .pj-gem-display-details {
+    width: 100%;
+    max-width: 340px;
+    gap: 1.45rem;
+    text-align: left;
+  }
+}
 /* The diagram: photograph in the middle, four notes around it, each tied back by a fine leader line */
 .pj-gem-diagram {
   position: relative;

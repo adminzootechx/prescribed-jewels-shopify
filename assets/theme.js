@@ -183,9 +183,13 @@
   const wheelPlanet = document.getElementById('pj-wheel-planet');
   const wheelStoneName = document.getElementById('pj-wheel-stone-name');
   const wheelDesc = document.getElementById('pj-wheel-desc');
+  const gemColorSwatch = document.getElementById('pj-gem-color-swatch');
+  const gemColorVal = document.getElementById('pj-gem-color-val');
+  const gemSymbolismVal = document.getElementById('pj-gem-symbolism-val');
+  const gemEverydayVal = document.getElementById('pj-gem-everyday-val');
   const wheelSection = document.querySelector('[data-gem-wheel-section]');
 
-  if (wheelRotor && wheelStoneName && wheelDesc) {
+  if (wheelRotor && wheelStoneName) {
     const GEMSTONES = [
       {
         num: '01 / 18',
@@ -391,6 +395,118 @@
       ['Vivid green crystal that comes in many shades.', 'Worn for growth, creativity and well-being.', 'Gold, little finger, Wednesday']
     ];
 
+    // Curated details (Color, Symbolism, Everyday Note) for each gemstone
+    const GEM_DETAILS = [
+      {
+        color: 'Vivid Green',
+        hex: '#136F42',
+        symbolism: 'Often associated with wisdom, eloquent speech, and clarity.',
+        everyday: '“A signature splash of green, commanding yet effortless.”'
+      },
+      {
+        color: 'Deep Red',
+        hex: '#B81D33',
+        symbolism: 'Often associated with vitality, sovereign confidence, and courage.',
+        everyday: '“A bold touch of warmth that elevates daily tailoring.”'
+      },
+      {
+        color: 'Golden Yellow',
+        hex: '#D69E2E',
+        symbolism: 'Often associated with prosperity, auspicious grace, and higher learning.',
+        everyday: '“Warm golden light designed for every room you enter.”'
+      },
+      {
+        color: 'Royal Blue',
+        hex: '#1E4E8C',
+        symbolism: 'Often associated with discipline, karmic focus, and decisive clarity.',
+        everyday: '“Quiet architectural depth that anchors everyday style.”'
+      },
+      {
+        color: 'Luminous White',
+        hex: '#CBD5E1',
+        symbolism: 'Often associated with pure devotion, luminous strength, and harmony.',
+        everyday: '“Pure daily brilliance, timeless beside any metal.”'
+      },
+      {
+        color: 'Soft Ivory',
+        hex: '#EDE6D6',
+        symbolism: 'Often associated with serene calm, intuition, and emotional balance.',
+        everyday: '“Organic, gentle luster that softens clean modern silhouettes.”'
+      },
+      {
+        color: 'Warm Vermillion',
+        hex: '#DD3B2A',
+        symbolism: 'Often associated with physical stamina, resilience, and fearless initiative.',
+        everyday: '“A grounding vibrant talisman with rich Mediterranean warmth.”'
+      },
+      {
+        color: 'Spiced Honey',
+        hex: '#B25E00',
+        symbolism: 'Often associated with mental clarity, grounding, and ambition.',
+        everyday: '“An earthy amber glow that pairs seamlessly with gold.”'
+      },
+      {
+        color: 'Golden Chrysoberyl',
+        hex: '#A08020',
+        symbolism: 'Often associated with spiritual insight, protective shielding, and instinct.',
+        everyday: '“A mesmerizing chatoyant line that catches ambient light.”'
+      },
+      {
+        color: 'Iridescent Blue',
+        hex: '#9BB8D3',
+        symbolism: 'Often associated with creative flow, restful calm, and gentle rhythm.',
+        everyday: '“A celestial flash that subtly shifts with your movement.”'
+      },
+      {
+        color: 'Violet',
+        hex: '#6B46C1',
+        symbolism: 'Often associated with calm, clarity, and reflection.',
+        everyday: '“A considered touch of color, easy to make your own.”'
+      },
+      {
+        color: 'Golden Amber',
+        hex: '#D68910',
+        symbolism: 'Often associated with joyful optimism, abundance, and warmth.',
+        everyday: '“Sunny golden radiance to brighten everyday wear.”'
+      },
+      {
+        color: 'Fresh Olive',
+        hex: '#68A325',
+        symbolism: 'Often associated with mental renewal, adaptable wit, and growth.',
+        everyday: '“Fresh citrus sparkle that feels crisp through every season.”'
+      },
+      {
+        color: 'Clear Brilliant',
+        hex: '#CBD5E1',
+        symbolism: 'Often associated with poised grace, artistic vision, and harmony.',
+        everyday: '“Diamond-like clarity with an understated everyday modesty.”'
+      },
+      {
+        color: 'Deep Wine',
+        hex: '#9B1C2C',
+        symbolism: 'Often associated with grounded warmth, devotion, and life force.',
+        everyday: '“Deep crimson richness that feels intimate and timeless.”'
+      },
+      {
+        color: 'Warm Terracotta',
+        hex: '#C84B17',
+        symbolism: 'Often associated with bold motivation, vitality, and creative drive.',
+        everyday: '“Warm terracotta fire to inspire everyday confidence.”'
+      },
+      {
+        color: 'Twilight Indigo',
+        hex: '#3C489E',
+        symbolism: 'Often associated with inner vision, purposeful direction, and self-mastery.',
+        everyday: '“A moody violet-indigo that shifts as light moves across it.”'
+      },
+      {
+        color: 'Forest Green',
+        hex: '#155E4B',
+        symbolism: 'Often associated with heart-centered intellect, prosperity, and insight.',
+        everyday: '“Deep botanical green with crisp architectural facets.”'
+      }
+    ];
+
     const buildGemSvg = (stone, uid) => {
       const gradId = `pjGemGrad_${uid}`;
       const shineId = `pjGemShine_${uid}`;
@@ -469,8 +585,14 @@
     const editNames = (wheelRotor.getAttribute('data-gem-names') || '').split('|');
     const editDescs = (wheelRotor.getAttribute('data-gem-descs') || '').split('|');
     const editPhotos = (wheelRotor.getAttribute('data-gem-photos') || '').split('|');
+    const editColors = (wheelRotor.getAttribute('data-gem-colors') || '').split('|');
+    const editSymbolisms = (wheelRotor.getAttribute('data-gem-symbolisms') || '').split('|');
+    const editEverydays = (wheelRotor.getAttribute('data-gem-everydays') || '').split('|');
     editNames.forEach((n, i) => { if (n && GEMSTONES[i]) GEMSTONES[i].name = n; });
     editDescs.forEach((d, i) => { if (d && GEMSTONES[i]) GEMSTONES[i].desc = d; });
+    editColors.forEach((c, i) => { if (c && GEM_DETAILS[i]) GEM_DETAILS[i].color = c; });
+    editSymbolisms.forEach((s, i) => { if (s && GEM_DETAILS[i]) GEM_DETAILS[i].symbolism = s; });
+    editEverydays.forEach((e, i) => { if (e && GEM_DETAILS[i]) GEM_DETAILS[i].everyday = e; });
     ['features', 'uses', 'wear'].forEach((key, k) => {
       (wheelRotor.getAttribute('data-gem-' + key) || '').split('|').forEach((v, i) => { if (v && GEM_NOTES[i]) GEM_NOTES[i][k] = v; });
     });
@@ -493,6 +615,7 @@
       if (!gemUrls[i]) {
         GEMSTONES.splice(i, 1);
         GEM_NOTES.splice(i, 1);
+        GEM_DETAILS.splice(i, 1);
         gemUrls.splice(i, 1);
         sideUrls.splice(i, 1);
         views.splice(i, 1);
@@ -746,9 +869,15 @@
 
     const updateInfo = (animate) => {
       const currentStone = GEMSTONES[activeStoneIndex];
+      const currentDetail = GEM_DETAILS[activeStoneIndex] || {};
       const apply = () => {
         wheelStoneName.textContent = currentStone.name;
-        wheelDesc.textContent = currentStone.desc;
+        if (wheelDesc) wheelDesc.textContent = currentStone.desc;
+        if (gemColorVal) gemColorVal.textContent = currentDetail.color || currentStone.name;
+        if (gemColorSwatch) gemColorSwatch.style.backgroundColor = currentDetail.hex || currentStone.c2 || 'var(--gem-c, #B69156)';
+        if (gemSymbolismVal) gemSymbolismVal.textContent = currentDetail.symbolism || currentStone.desc;
+        if (gemEverydayVal) gemEverydayVal.textContent = currentDetail.everyday || '';
+
         if (wheelCounter) wheelCounter.textContent = currentStone.num;
         if (wheelPlanet) {
           const cap = (t) => t.toLowerCase().replace(/(^|[\s-])([a-z])/g, (m, s, ch) => s + ch.toUpperCase());
@@ -758,7 +887,7 @@
         if (wheelSection) {
           wheelSection.style.setProperty('--gem-c1', currentStone.c1);
           wheelSection.style.setProperty('--gem-c2', currentStone.c2);
-          if (!wheelSection.hasAttribute('data-fixed-accent')) wheelSection.style.setProperty('--gem-c', currentStone.c1);
+          if (!wheelSection.hasAttribute('data-fixed-accent')) wheelSection.style.setProperty('--gem-c', currentDetail.hex || currentStone.c1);
         }
         const notes = GEM_NOTES[activeStoneIndex] || ['', '', ''];
         if (noteFeatures) noteFeatures.textContent = notes[0];
