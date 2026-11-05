@@ -53,23 +53,41 @@
         </g>
       </svg>
 
-      <!-- Left: the chosen stone in orbit ring with Name below & 3 info items (Color, Symbolism, Everyday Note) -->
+      <!-- Left: the chosen stone in orbit ring with Name below & 3 curved info items (Color, Symbolism, Everyday Note) -->
       <div class="pj-gemstones-wheel__info">
         <div class="pj-gem-display-layout" id="pj-wheel-info-box" aria-live="polite">
-          <!-- Left Column: Gemstone within Orbit Ring & Name -->
+          <!-- Left Column: Gemstone within Golden Orbit Arc & Name -->
           <div class="pj-gem-display-stone">
             <div class="pj-gem-orbit-wrap">
               <svg class="pj-gem-orbit" viewBox="0 0 340 340" aria-hidden="true" focusable="false">
-                <circle cx="170" cy="170" r="145" fill="none" stroke="var(--gem-c, #B69156)" stroke-width="1.35" opacity="0.85"/>
-                <circle cx="272" cy="68" r="3.5" fill="var(--gem-c, #B69156)"/>
-                <circle cx="272" cy="272" r="3.5" fill="var(--gem-c, #B69156)"/>
-                <circle cx="68" cy="68" r="3.5" fill="var(--gem-c, #B69156)"/>
-                <circle cx="68" cy="272" r="3.5" fill="var(--gem-c, #B69156)"/>
-                <circle cx="170" cy="25" r="2.5" fill="var(--gem-c, #B69156)"/>
-                <circle cx="170" cy="315" r="2.5" fill="var(--gem-c, #B69156)"/>
+                <defs>
+                  <linearGradient id="pj-orbit-grad-top" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#966F38" stop-opacity="0"/>
+                    <stop offset="22%" stop-color="#966F38" stop-opacity="0.45"/>
+                    <stop offset="55%" stop-color="#966F38" stop-opacity="0.95"/>
+                    <stop offset="100%" stop-color="#966F38" stop-opacity="1"/>
+                  </linearGradient>
+                  <linearGradient id="pj-orbit-grad-bot" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#966F38" stop-opacity="0"/>
+                    <stop offset="25%" stop-color="#966F38" stop-opacity="0.35"/>
+                    <stop offset="60%" stop-color="#966F38" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#966F38" stop-opacity="1"/>
+                  </linearGradient>
+                </defs>
+                <!-- Upper golden arc: fades in on top-left, arches over stone, stops above Lotus icon at 3 o'clock -->
+                <path d="M 55 104 A 148 148 0 0 1 325 127" fill="none" stroke="url(#pj-orbit-grad-top)" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- Upper-right bead accent -->
+                <circle cx="290" cy="70" r="4.5" fill="#966F38"/>
+
+                <!-- Lower golden arc: starts below Lotus icon at 3 o'clock, curves down bottom-right and fades out under stone -->
+                <path d="M 331 200 A 148 148 0 0 1 65 262" fill="none" stroke="url(#pj-orbit-grad-bot)" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- Lower-right double-bead crescent accent -->
+                <circle cx="288" cy="281" r="4" fill="#966F38"/>
+                <circle cx="274" cy="294" r="4" fill="#966F38"/>
+                <path d="M 274 294 A 11 11 0 0 1 288 281" fill="none" stroke="#966F38" stroke-width="1.35" stroke-linecap="round"/>
               </svg>
               <div class="pj-gem-diagram__photo" id="pj-gem-photo-wrap">
-                <img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="300" height="300" decoding="async">
+                <img id="pj-gem-photo" class="is-cutout" src="{{ 'gemx-emerald-2.webp' | asset_url }}" alt="" width="420" height="420" decoding="async">
               </div>
             </div>
             <h2 id="pj-gemstones-heading" class="pj-gem-display-name">
@@ -77,10 +95,10 @@
             </h2>
           </div>
 
-          <!-- Right Column: 3 Info Points (Color, Symbolism, Everyday Note) -->
+          <!-- Right Column: 3 Info Points Arranged Along the Curve (Color, Symbolism, Everyday Note) -->
           <div class="pj-gem-display-details">
-            <!-- 1. Color -->
-            <div class="pj-gem-info-card">
+            <!-- 1. Color (Top of curve) -->
+            <div class="pj-gem-info-card pj-gem-info-card--color">
               <div class="pj-gem-info-icon-col">
                 <span class="pj-gem-color-swatch" id="pj-gem-color-swatch" aria-hidden="true"></span>
               </div>
@@ -90,33 +108,33 @@
               </div>
             </div>
 
-            <!-- 2. Symbolism -->
-            <div class="pj-gem-info-card">
+            <!-- 2. Symbolism (Middle of curve — Lotus sits in orbit gap) -->
+            <div class="pj-gem-info-card pj-gem-info-card--symbolism">
               <div class="pj-gem-info-icon-col">
-                <svg class="pj-gem-info-icon" viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="var(--gem-c, #B69156)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M16 6 C13 13, 13 21, 16 24 C19 21, 19 13, 16 6 Z"/>
-                  <path d="M16 24 C12 23, 7 19, 9 13 C11 11, 14 13, 16 17"/>
-                  <path d="M16 24 C20 23, 25 19, 23 13 C21 11, 18 13, 16 17"/>
-                  <path d="M16 24 C10 24, 4 20, 5 16 C6 14, 9 16, 12 19"/>
-                  <path d="M16 24 C22 24, 28 20, 27 16 C26 14, 23 16, 20 19"/>
+                <svg class="pj-gem-info-icon pj-gem-info-icon--lotus" viewBox="0 0 36 30" width="38" height="32" fill="none" stroke="#966F38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M18 3 C14 11, 14 20, 18 25 C22 20, 22 11, 18 3 Z"/>
+                  <path d="M18 25 C13 23, 8 18, 10 10 C12.5 9, 15.5 12, 17 17"/>
+                  <path d="M18 25 C23 23, 28 18, 26 10 C23.5 9, 20.5 12, 19 17"/>
+                  <path d="M18 25 C11 25, 3.5 21, 4 15 C6.5 13.5, 10 15.5, 13 20"/>
+                  <path d="M18 25 C25 25, 32.5 21, 32 15 C29.5 13.5, 26 15.5, 23 20"/>
                 </svg>
               </div>
               <div class="pj-gem-info-content">
                 <h3 class="pj-gem-info-heading">Symbolism</h3>
-                <p class="pj-gem-info-value" id="pj-gem-symbolism-val">Cultivates intellect, eloquent speech, emotional composure, and clear discernment.</p>
+                <p class="pj-gem-info-value" id="pj-gem-symbolism-val">Often associated with wisdom, eloquent speech, and clarity.</p>
               </div>
             </div>
 
-            <!-- 3. Everyday Note -->
-            <div class="pj-gem-info-card">
+            <!-- 3. Everyday Note (Bottom of curve) -->
+            <div class="pj-gem-info-card pj-gem-info-card--everyday">
               <div class="pj-gem-info-icon-col">
-                <svg class="pj-gem-info-icon" viewBox="0 0 28 28" width="24" height="24" fill="none" stroke="var(--gem-c, #B69156)" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M14 2 C14 8, 20 14, 26 14 C20 14, 14 20, 14 26 C14 20, 8 14, 2 14 C8 14, 14 8, 14 2 Z"/>
+                <svg class="pj-gem-info-icon pj-gem-info-icon--star" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="#966F38" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 2 C16 10.5, 21.5 16, 30 16 C21.5 16, 16 21.5, 16 30 C16 21.5, 10.5 16, 2 16 C10.5 16, 16 10.5, 16 2 Z"/>
                 </svg>
               </div>
               <div class="pj-gem-info-content">
                 <h3 class="pj-gem-info-heading">Everyday Note</h3>
-                <p class="pj-gem-info-value" id="pj-gem-everyday-val">“A signature touch of color, easy to make your own.”</p>
+                <p class="pj-gem-info-value" id="pj-gem-everyday-val">“A signature splash of green, commanding yet effortless.”</p>
               </div>
             </div>
           </div>
