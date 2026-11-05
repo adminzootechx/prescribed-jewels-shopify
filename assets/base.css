@@ -1382,16 +1382,16 @@ textarea {
   margin: 0;
 }
 
-/* Keep the golden orbit circle constantly visible throughout stone transitions */
+/* Keep the golden orbit circle AND the 3 info titles (Color, Symbolism, Everyday Note) constantly fixed throughout stone transitions */
 .pj-gem-orbit-wrap .pj-gem-diagram__photo,
 .pj-gem-display-name,
-.pj-gem-display-details {
+.pj-gem-info-value {
   transition: opacity 0.25s ease;
 }
 
 .pj-gem-display-layout.is-fading .pj-gem-diagram__photo,
 .pj-gem-display-layout.is-fading .pj-gem-display-name,
-.pj-gem-display-layout.is-fading .pj-gem-display-details {
+.pj-gem-display-layout.is-fading .pj-gem-info-value {
   opacity: 0;
 }
 
@@ -1495,6 +1495,7 @@ textarea {
 .pj-gem-info-card--color {
   transform: translate(calc(-66px + var(--pj-info-gap-x, 0px)), 8px);
   margin-bottom: 0;
+  min-height: 64px;
 }
 
 .pj-gem-info-card--color .pj-gem-info-icon-col {
@@ -1505,6 +1506,7 @@ textarea {
 .pj-gem-info-card--symbolism {
   transform: translateX(calc(20px + var(--pj-info-gap-x, 0px)));
   margin-top: calc(var(--pj-orbit-r, 250px) * 0.44);
+  min-height: 96px;
 }
 
 .pj-gem-info-card--symbolism .pj-gem-info-icon-col {
@@ -1515,6 +1517,7 @@ textarea {
 .pj-gem-info-card--everyday {
   transform: translateX(calc(-52px + var(--pj-info-gap-x, 0px)));
   margin-top: calc(var(--pj-orbit-r, 250px) * 0.38);
+  min-height: 92px;
 }
 
 .pj-gem-info-card--everyday .pj-gem-info-icon-col {
@@ -1562,19 +1565,20 @@ textarea {
 
 .pj-gem-info-heading {
   margin: 0 0 0.26rem 0;
-  font-family: var(--pj-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-family: var(--pj-s-fh, var(--pj-font-serif));
   font-size: calc(1.52rem * var(--pj-w-nts, 1));
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--pj-w-text, #231A12);
-  line-height: 1.22;
+  line-height: 1.2;
 }
 
 .pj-gem-info-value {
   margin: 0;
-  font-family: var(--pj-font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-family: var(--pj-s-fb, var(--pj-font-serif));
   font-size: calc(1.18rem * var(--pj-w-ns, 1));
-  line-height: 1.48;
+  font-weight: 500;
+  line-height: 1.45;
   color: var(--pj-w-muted, #382E26);
   max-width: calc(295px * var(--pj-w-ns, 1));
   text-wrap: pretty;

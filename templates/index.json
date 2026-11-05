@@ -168,19 +168,19 @@
             "title": "Share your details",
             "description": "Tell us your date, time, and place of birth.",
             "box_bg": "",
-            "title_color": "#5C2708",
-            "desc_color": "#301D0A"
+            "title_color": "#5c2708",
+            "desc_color": "#301d0a"
           }
         },
         "step_2": {
           "type": "step",
           "settings": {
             "step_number": "02",
-            "title": "Receive your gemstone guidance",
+            "title": "Receive gemstone guidance",
             "description": "Discover the stone recommended for you.",
             "box_bg": "",
-            "title_color": "#5C2708",
-            "desc_color": "#301D0A"
+            "title_color": "#5c2708",
+            "desc_color": "#301d0a"
           }
         },
         "step_3": {
@@ -190,8 +190,8 @@
             "title": "Choose your piece",
             "description": "Select the setting and design you love.",
             "box_bg": "",
-            "title_color": "#5C2708",
-            "desc_color": "#301D0A"
+            "title_color": "#5c2708",
+            "desc_color": "#301d0a"
           }
         },
         "step_4": {
@@ -201,8 +201,8 @@
             "title": "Made for you",
             "description": "Your piece is prepared with care.",
             "box_bg": "",
-            "title_color": "#5C2708",
-            "desc_color": "#301D0A"
+            "title_color": "#5c2708",
+            "desc_color": "#301d0a"
           }
         }
       },
@@ -223,7 +223,7 @@
         "header_bottom_gap": 8,
         "header_offset_x": 0,
         "header_offset_y": 0,
-        "image_aspect_ratio": "custom",
+        "image_aspect_ratio": "4 / 5",
         "box_height": 295,
         "box_width": 100,
         "box_size": 100,
@@ -249,8 +249,8 @@
         "heading_size": 100,
         "subtext_size": 100,
         "step_num_size": 105,
-        "step_title_size": 105,
-        "step_desc_size": 105
+        "step_title_size": 110,
+        "step_desc_size": 115
       }
     },
     "personal_by_design": {
