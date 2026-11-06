@@ -75,7 +75,7 @@
   }
 
   /* --------------------------------------------------------------------------
-   * 3. The 7 Designs — Scoped Hover-Wheel Scroll + Spotlight Pop-up
+   * 3. The 7 Designs — Silky Center Spotlight Wave & Damped Wheel Gliding
    * -------------------------------------------------------------------------- */
   const designsOuter = document.querySelector('[data-horizontal-designs]');
   const designsViewport = document.getElementById('pj-designs-viewport');
@@ -88,6 +88,7 @@
     let currentTranslateX = 0;
     let targetTranslateX = 0;
     let isAnimating = false;
+    let snapTimeout = null;
 
     const getCardSpacing = () => {
       if (cards.length > 1) {
@@ -100,34 +101,39 @@
     };
 
     const getMaxTranslate = () => {
-      const trackWidth = designsTrack.scrollWidth;
-      const viewportWidth = designsViewport.clientWidth;
-      return Math.max(0, trackWidth - viewportWidth + 60);
+      const spacing = getCardSpacing();
+      return Math.max(0, (cards.length - 1) * spacing);
     };
 
+    // Smooth continuous proximity wave: computes real-time scale, lift, and opacity
     const updateActiveSpotlight = () => {
       if (!cards.length) return;
 
-      if (window.innerWidth < 960) {
-        const scrollLeft = designsViewport.scrollLeft;
-        const spacing = getCardSpacing();
-        const activeIdx = Math.max(0, Math.min(cards.length - 1, Math.round(scrollLeft / spacing)));
-        cards.forEach((card, idx) => {
-          if (idx === activeIdx) {
-            card.classList.add('is-active');
-            card.classList.remove('is-receding');
-          } else {
-            card.classList.remove('is-active');
-            card.classList.add('is-receding');
-          }
-        });
-        return;
-      }
-
+      const viewportRect = designsViewport.getBoundingClientRect();
+      const viewportCenter = viewportRect.left + viewportRect.width / 2;
       const spacing = getCardSpacing();
-      const activeIdx = Math.max(0, Math.min(cards.length - 1, Math.round(currentTranslateX / spacing)));
-      cards.forEach((card, idx) => {
-        if (idx === activeIdx) {
+      const influenceRadius = spacing * 1.15;
+
+      cards.forEach((card) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const dist = Math.abs(cardCenter - viewportCenter);
+
+        // Continuous factor: 1.0 at center, smoothly fading to 0.0 at influenceRadius
+        const rawT = Math.max(0, Math.min(1, 1 - dist / influenceRadius));
+        const easeT = rawT * rawT * (3 - 2 * rawT); // Smoothstep curve
+
+        const scale = (0.92 + 0.16 * easeT).toFixed(3);
+        const opacity = (0.70 + 0.30 * easeT).toFixed(3);
+        const lift = (14 * easeT).toFixed(1);
+        const isUp = card.classList.contains('pj-design-tile--up');
+        const baseTranslateY = isUp ? '-0.65rem' : '1.15rem';
+
+        card.style.transform = `translateY(calc(${baseTranslateY} - ${lift}px)) scale(${scale})`;
+        card.style.opacity = opacity;
+        card.style.zIndex = Math.round(1 + 10 * easeT);
+
+        if (easeT > 0.55) {
           card.classList.add('is-active');
           card.classList.remove('is-receding');
         } else {
@@ -140,13 +146,14 @@
     const renderDesignsScroll = () => {
       if (window.innerWidth < 960) {
         designsTrack.style.transform = 'none';
+        updateActiveSpotlight();
         isAnimating = false;
         return;
       }
 
       const diff = targetTranslateX - currentTranslateX;
-      if (Math.abs(diff) > 0.4) {
-        currentTranslateX += diff * 0.18;
+      if (Math.abs(diff) > 0.2) {
+        currentTranslateX += diff * 0.12; // buttery luxurious damping
         designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(1)}px, 0, 0)`;
         updateActiveSpotlight();
         requestAnimationFrame(renderDesignsScroll);
@@ -165,26 +172,54 @@
       }
     };
 
-    // Scoped Wheel event: only intercepts scroll when hovering inside the cards viewport
+    // Soft magnetic settling: when wheel stops, gently snaps the closest card dead-center
+    const scheduleMagneticSnap = () => {
+      clearTimeout(snapTimeout);
+      snapTimeout = setTimeout(() => {
+        if (window.innerWidth < 960) return;
+        const spacing = getCardSpacing();
+        const maxTranslate = getMaxTranslate();
+        const nearestIdx = Math.round(targetTranslateX / spacing);
+        targetTranslateX = Math.max(0, Math.min(maxTranslate, nearestIdx * spacing));
+        requestTick();
+      }, 180);
+    };
+
+    // Scoped Wheel event: glides through cards; seamlessly hands off to page scroll at boundaries
     designsViewport.addEventListener('wheel', (e) => {
       if (window.innerWidth < 960) return;
 
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
       const maxTranslate = getMaxTranslate();
 
-      // Scrolling down/forward while cards remain to be revealed
-      if (delta > 0 && targetTranslateX < maxTranslate - 2) {
-        e.preventDefault();
-        targetTranslateX = Math.min(maxTranslate, targetTranslateX + delta * 1.15);
-        requestTick();
+      // Scrolling down/forward
+      if (delta > 0) {
+        if (targetTranslateX < maxTranslate - 1) {
+          e.preventDefault();
+          targetTranslateX = Math.min(maxTranslate, targetTranslateX + delta * 0.85);
+          requestTick();
+          scheduleMagneticSnap();
+        } else if (Math.abs(currentTranslateX - maxTranslate) > 4) {
+          // Absorb wheel until the last card finishes settling
+          e.preventDefault();
+          targetTranslateX = maxTranslate;
+          requestTick();
+        }
       }
-      // Scrolling up/backward while cards remain to the left
-      else if (delta < 0 && targetTranslateX > 2) {
-        e.preventDefault();
-        targetTranslateX = Math.max(0, targetTranslateX + delta * 1.15);
-        requestTick();
+      // Scrolling up/backward
+      else if (delta < 0) {
+        if (targetTranslateX > 1) {
+          e.preventDefault();
+          targetTranslateX = Math.max(0, targetTranslateX + delta * 0.85);
+          requestTick();
+          scheduleMagneticSnap();
+        } else if (Math.abs(currentTranslateX) > 4) {
+          // Absorb wheel until the first card finishes settling
+          e.preventDefault();
+          targetTranslateX = 0;
+          requestTick();
+        }
       }
-      // Boundary reached: DO NOT preventDefault! Natural page scroll takes over immediately!
     }, { passive: false });
 
     // Mobile swipe listener
@@ -194,29 +229,33 @@
       }
     }, { passive: true });
 
-    // Arrow navigation
+    // Arrow navigation: snaps 1 card cleanly
     prevBtn?.addEventListener('click', () => {
       if (window.innerWidth < 960) {
-        designsViewport.scrollBy({ left: -320, behavior: 'smooth' });
+        const spacing = getCardSpacing();
+        designsViewport.scrollBy({ left: -spacing, behavior: 'smooth' });
       } else {
         const spacing = getCardSpacing();
-        targetTranslateX = Math.max(0, targetTranslateX - spacing);
+        const nearestIdx = Math.round(targetTranslateX / spacing);
+        targetTranslateX = Math.max(0, (nearestIdx - 1) * spacing);
         requestTick();
       }
     });
 
     nextBtn?.addEventListener('click', () => {
       if (window.innerWidth < 960) {
-        designsViewport.scrollBy({ left: 320, behavior: 'smooth' });
+        const spacing = getCardSpacing();
+        designsViewport.scrollBy({ left: spacing, behavior: 'smooth' });
       } else {
         const maxTranslate = getMaxTranslate();
         const spacing = getCardSpacing();
-        targetTranslateX = Math.min(maxTranslate, targetTranslateX + spacing);
+        const nearestIdx = Math.round(targetTranslateX / spacing);
+        targetTranslateX = Math.min(maxTranslate, (nearestIdx + 1) * spacing);
         requestTick();
       }
     });
 
-    // Clicking any card brings it into active spotlight
+    // Clicking any card brings it into center spotlight
     cards.forEach((card, idx) => {
       card.addEventListener('click', (e) => {
         if (e.target.closest('button') || e.target.closest('a')) return;
@@ -225,6 +264,9 @@
           const maxTranslate = getMaxTranslate();
           targetTranslateX = Math.max(0, Math.min(maxTranslate, idx * spacing));
           requestTick();
+        } else {
+          const spacing = getCardSpacing();
+          designsViewport.scrollTo({ left: idx * spacing, behavior: 'smooth' });
         }
       });
     });
@@ -241,7 +283,7 @@
       updateActiveSpotlight();
     }, { passive: true });
 
-    // Initial spotlight activation
+    // Initial spotlight activation: Card 01 starts in center spotlight
     updateActiveSpotlight();
   }
 
