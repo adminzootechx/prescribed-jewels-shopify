@@ -75,7 +75,7 @@
   }
 
   /* --------------------------------------------------------------------------
-   * 3. The 7 Designs — Silky Center Spotlight Wave & Damped Wheel Gliding
+   * 3. The 7 Designs — One-Box-At-A-Time Spotlight Glide
    * -------------------------------------------------------------------------- */
   const designsOuter = document.querySelector('[data-horizontal-designs]');
   const designsViewport = document.getElementById('pj-designs-viewport');
@@ -89,8 +89,8 @@
     let targetTranslateX = 0;
     let currentCardIndex = 0;
     let isAnimating = false;
-    let lastWheelTime = 0;
-    let wheelDeltaAccum = 0;
+    let isStepping = false;
+    let stepCooldownTimer = null;
 
     const getCard0Offset = () => cards[0]?.offsetLeft || 0;
 
@@ -149,8 +149,9 @@
       }
 
       const diff = targetTranslateX - currentTranslateX;
-      if (Math.abs(diff) > 0.4) {
-        currentTranslateX += diff * 0.14; // smooth fluid ease-out
+      if (Math.abs(diff) > 0.3) {
+        // Calm, majestic, cinematic easing speed (0.085 gives a luxurious ~450ms glide)
+        currentTranslateX += diff * 0.085;
         designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(2)}px, 0, 0)`;
         updateActiveSpotlight();
         requestAnimationFrame(renderDesignsScroll);
@@ -169,50 +170,49 @@
       }
     };
 
-    // Scoped Wheel listener: advances 1 card per deliberate notch / gesture
+    // Advances exactly 1 card with a dedicated cooldown to guarantee NO SKIPPING
+    const triggerStep = (direction) => {
+      if (isStepping) return;
+      isStepping = true;
+
+      if (direction > 0 && currentCardIndex < cards.length - 1) {
+        currentCardIndex++;
+      } else if (direction < 0 && currentCardIndex > 0) {
+        currentCardIndex--;
+      }
+
+      const spacing = getCardSpacing();
+      targetTranslateX = currentCardIndex * spacing;
+      requestTick();
+
+      clearTimeout(stepCooldownTimer);
+      stepCooldownTimer = setTimeout(() => {
+        isStepping = false;
+      }, 480); // 480ms cooldown guarantees exactly ONE box at a time
+    };
+
+    // Scoped Wheel listener: advances strictly ONE card per scroll gesture
     designsViewport.addEventListener('wheel', (e) => {
       if (window.innerWidth < 960) return;
 
-      const now = performance.now();
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-
-      // Reset accumulator if user paused
-      if (now - lastWheelTime > 220) {
-        wheelDeltaAccum = 0;
-      }
-      lastWheelTime = now;
-      wheelDeltaAccum += delta;
+      if (Math.abs(delta) < 6) return;
 
       // Scrolling forward (down / right)
-      if (wheelDeltaAccum > 35) {
+      if (delta > 0) {
         if (currentCardIndex < cards.length - 1) {
           e.preventDefault();
-          currentCardIndex++;
-          const spacing = getCardSpacing();
-          targetTranslateX = currentCardIndex * spacing;
-          wheelDeltaAccum = 0;
-          requestTick();
+          triggerStep(1);
         }
-        // If already at last card: do NOT preventDefault, page naturally scrolls down!
+        // At the last card: allow default event so page naturally scrolls down!
       }
       // Scrolling backward (up / left)
-      else if (wheelDeltaAccum < -35) {
+      else if (delta < 0) {
         if (currentCardIndex > 0) {
           e.preventDefault();
-          currentCardIndex--;
-          const spacing = getCardSpacing();
-          targetTranslateX = currentCardIndex * spacing;
-          wheelDeltaAccum = 0;
-          requestTick();
+          triggerStep(-1);
         }
-        // If already at first card: do NOT preventDefault, page naturally scrolls up!
-      }
-      // While between -35 and 35, prevent micro page jitter if not at boundary
-      else if (
-        (delta > 0 && currentCardIndex < cards.length - 1) ||
-        (delta < 0 && currentCardIndex > 0)
-      ) {
-        e.preventDefault();
+        // At the first card: allow default event so page naturally scrolls up!
       }
     }, { passive: false });
 
@@ -229,10 +229,7 @@
         const spacing = getCardSpacing();
         designsViewport.scrollBy({ left: -spacing, behavior: 'smooth' });
       } else {
-        currentCardIndex = Math.max(0, currentCardIndex - 1);
-        const spacing = getCardSpacing();
-        targetTranslateX = currentCardIndex * spacing;
-        requestTick();
+        triggerStep(-1);
       }
     });
 
@@ -241,10 +238,7 @@
         const spacing = getCardSpacing();
         designsViewport.scrollBy({ left: spacing, behavior: 'smooth' });
       } else {
-        currentCardIndex = Math.min(cards.length - 1, currentCardIndex + 1);
-        const spacing = getCardSpacing();
-        targetTranslateX = currentCardIndex * spacing;
-        requestTick();
+        triggerStep(1);
       }
     });
 
