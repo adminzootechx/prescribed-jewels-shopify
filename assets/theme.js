@@ -87,8 +87,10 @@
     const cards = Array.from(designsTrack.querySelectorAll('.pj-design-tile'));
     let currentTranslateX = 0;
     let targetTranslateX = 0;
+    let currentCardIndex = 0;
     let isAnimating = false;
-    let snapTimeout = null;
+    let lastWheelTime = 0;
+    let wheelDeltaAccum = 0;
 
     const getCard0Offset = () => cards[0]?.offsetLeft || 0;
 
@@ -98,11 +100,6 @@
         if (diff > 50) return diff;
       }
       return (cards[0]?.offsetWidth || 320) + 20;
-    };
-
-    const getMaxTranslate = () => {
-      const spacing = getCardSpacing();
-      return Math.max(0, (cards.length - 1) * spacing);
     };
 
     // Smooth continuous proximity wave: pure invariant math, zero DOM reflow thrashing
@@ -122,17 +119,17 @@
         // Smooth cosine curve: perfect symmetric crossover, 0 derivative at endpoints
         const easeT = (1 - Math.cos(Math.PI * rawT)) / 2;
 
-        const scale = (0.94 + 0.13 * easeT).toFixed(3);
-        const opacity = (0.72 + 0.28 * easeT).toFixed(3);
-        const lift = (-10 * easeT).toFixed(1);
+        const scale = (0.93 + 0.14 * easeT).toFixed(3);
+        const opacity = (0.70 + 0.30 * easeT).toFixed(3);
+        const lift = (-12 * easeT).toFixed(1);
 
         card.style.transform = `translate3d(0, ${lift}px, 0) scale(${scale})`;
         card.style.opacity = opacity;
         card.style.zIndex = Math.round(1 + 10 * easeT);
 
-        const shadowY = Math.round(10 + 18 * easeT);
-        const shadowBlur = Math.round(22 + 32 * easeT);
-        const shadowAlpha = (0.18 + 0.28 * easeT).toFixed(2);
+        const shadowY = Math.round(10 + 20 * easeT);
+        const shadowBlur = Math.round(22 + 36 * easeT);
+        const shadowAlpha = (0.18 + 0.30 * easeT).toFixed(2);
         card.style.boxShadow = `0 ${shadowY}px ${shadowBlur}px rgba(0, 0, 0, ${shadowAlpha})`;
 
         if (easeT > 0.5) {
@@ -152,8 +149,8 @@
       }
 
       const diff = targetTranslateX - currentTranslateX;
-      if (Math.abs(diff) > 0.15) {
-        currentTranslateX += diff * 0.12; // buttery damping
+      if (Math.abs(diff) > 0.4) {
+        currentTranslateX += diff * 0.14; // smooth fluid ease-out
         designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(2)}px, 0, 0)`;
         updateActiveSpotlight();
         requestAnimationFrame(renderDesignsScroll);
@@ -172,51 +169,50 @@
       }
     };
 
-    // Soft magnetic settling: snaps the closest card dead-center when wheel pauses
-    const scheduleMagneticSnap = () => {
-      clearTimeout(snapTimeout);
-      snapTimeout = setTimeout(() => {
-        if (window.innerWidth < 960) return;
-        const spacing = getCardSpacing();
-        const maxTranslate = getMaxTranslate();
-        const nearestIdx = Math.round(targetTranslateX / spacing);
-        targetTranslateX = Math.max(0, Math.min(maxTranslate, nearestIdx * spacing));
-        requestTick();
-      }, 180);
-    };
-
-    // Scoped Wheel listener
+    // Scoped Wheel listener: advances 1 card per deliberate notch / gesture
     designsViewport.addEventListener('wheel', (e) => {
       if (window.innerWidth < 960) return;
 
+      const now = performance.now();
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      const maxTranslate = getMaxTranslate();
 
-      // Scrolling down/forward
-      if (delta > 0) {
-        if (targetTranslateX < maxTranslate - 1) {
-          e.preventDefault();
-          targetTranslateX = Math.min(maxTranslate, targetTranslateX + delta * 0.75);
-          requestTick();
-          scheduleMagneticSnap();
-        } else if (Math.abs(currentTranslateX - maxTranslate) > 4) {
-          e.preventDefault();
-          targetTranslateX = maxTranslate;
-          requestTick();
-        }
+      // Reset accumulator if user paused
+      if (now - lastWheelTime > 220) {
+        wheelDeltaAccum = 0;
       }
-      // Scrolling up/backward
-      else if (delta < 0) {
-        if (targetTranslateX > 1) {
+      lastWheelTime = now;
+      wheelDeltaAccum += delta;
+
+      // Scrolling forward (down / right)
+      if (wheelDeltaAccum > 35) {
+        if (currentCardIndex < cards.length - 1) {
           e.preventDefault();
-          targetTranslateX = Math.max(0, targetTranslateX + delta * 0.75);
-          requestTick();
-          scheduleMagneticSnap();
-        } else if (Math.abs(currentTranslateX) > 4) {
-          e.preventDefault();
-          targetTranslateX = 0;
+          currentCardIndex++;
+          const spacing = getCardSpacing();
+          targetTranslateX = currentCardIndex * spacing;
+          wheelDeltaAccum = 0;
           requestTick();
         }
+        // If already at last card: do NOT preventDefault, page naturally scrolls down!
+      }
+      // Scrolling backward (up / left)
+      else if (wheelDeltaAccum < -35) {
+        if (currentCardIndex > 0) {
+          e.preventDefault();
+          currentCardIndex--;
+          const spacing = getCardSpacing();
+          targetTranslateX = currentCardIndex * spacing;
+          wheelDeltaAccum = 0;
+          requestTick();
+        }
+        // If already at first card: do NOT preventDefault, page naturally scrolls up!
+      }
+      // While between -35 and 35, prevent micro page jitter if not at boundary
+      else if (
+        (delta > 0 && currentCardIndex < cards.length - 1) ||
+        (delta < 0 && currentCardIndex > 0)
+      ) {
+        e.preventDefault();
       }
     }, { passive: false });
 
@@ -227,15 +223,15 @@
       }
     }, { passive: true });
 
-    // Arrow navigation
+    // Arrow navigation: cleanly steps 1 card at a time
     prevBtn?.addEventListener('click', () => {
       if (window.innerWidth < 960) {
         const spacing = getCardSpacing();
         designsViewport.scrollBy({ left: -spacing, behavior: 'smooth' });
       } else {
+        currentCardIndex = Math.max(0, currentCardIndex - 1);
         const spacing = getCardSpacing();
-        const nearestIdx = Math.round(targetTranslateX / spacing);
-        targetTranslateX = Math.max(0, (nearestIdx - 1) * spacing);
+        targetTranslateX = currentCardIndex * spacing;
         requestTick();
       }
     });
@@ -245,10 +241,9 @@
         const spacing = getCardSpacing();
         designsViewport.scrollBy({ left: spacing, behavior: 'smooth' });
       } else {
-        const maxTranslate = getMaxTranslate();
+        currentCardIndex = Math.min(cards.length - 1, currentCardIndex + 1);
         const spacing = getCardSpacing();
-        const nearestIdx = Math.round(targetTranslateX / spacing);
-        targetTranslateX = Math.min(maxTranslate, (nearestIdx + 1) * spacing);
+        targetTranslateX = currentCardIndex * spacing;
         requestTick();
       }
     });
@@ -259,8 +254,8 @@
         if (e.target.closest('button') || e.target.closest('a')) return;
         const spacing = getCardSpacing();
         if (window.innerWidth >= 960) {
-          const maxTranslate = getMaxTranslate();
-          targetTranslateX = Math.max(0, Math.min(maxTranslate, idx * spacing));
+          currentCardIndex = idx;
+          targetTranslateX = currentCardIndex * spacing;
           requestTick();
         } else {
           designsViewport.scrollTo({ left: idx * spacing, behavior: 'smooth' });
@@ -272,8 +267,8 @@
       if (window.innerWidth < 960) {
         designsTrack.style.transform = 'none';
       } else {
-        const maxTranslate = getMaxTranslate();
-        targetTranslateX = Math.min(maxTranslate, targetTranslateX);
+        const spacing = getCardSpacing();
+        targetTranslateX = currentCardIndex * spacing;
         currentTranslateX = targetTranslateX;
         designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(2)}px, 0, 0)`;
       }

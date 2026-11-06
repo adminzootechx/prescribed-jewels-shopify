@@ -894,13 +894,9 @@ textarea {
   box-shadow: 0 28px 56px rgba(0, 0, 0, 0.48), 0 0 0 1px var(--pj-accent-gold);
 }
 
-/* Direct Hover Elevation */
+/* Card Hover: subtle gold outline, inner image zoom, no violent transform overriding scroll */
 .pj-design-tile:hover {
-  opacity: 1 !important;
-  z-index: 25 !important;
-  border-color: var(--pj-accent-gold) !important;
-  transform: translateY(-12px) scale(1.08) !important;
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.52), 0 0 0 1px var(--pj-accent-gold) !important;
+  border-color: var(--pj-accent-gold);
 }
 
 .pj-design-tile__media {
