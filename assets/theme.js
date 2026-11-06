@@ -90,11 +90,11 @@
     let isAnimating = false;
     let snapTimeout = null;
 
+    const getCard0Offset = () => cards[0]?.offsetLeft || 0;
+
     const getCardSpacing = () => {
       if (cards.length > 1) {
-        const r0 = cards[0].getBoundingClientRect();
-        const r1 = cards[1].getBoundingClientRect();
-        const diff = Math.abs(r1.left - r0.left);
+        const diff = cards[1].offsetLeft - cards[0].offsetLeft;
         if (diff > 50) return diff;
       }
       return (cards[0]?.offsetWidth || 320) + 20;
@@ -105,40 +105,40 @@
       return Math.max(0, (cards.length - 1) * spacing);
     };
 
-    // Smooth continuous proximity wave: computes real-time scale, lift, and opacity
+    // Smooth continuous proximity wave: pure invariant math, zero DOM reflow thrashing
     const updateActiveSpotlight = () => {
       if (!cards.length) return;
 
-      const viewportRect = designsViewport.getBoundingClientRect();
-      const viewportCenter = viewportRect.left + viewportRect.width / 2;
+      const card0Offset = getCard0Offset();
       const spacing = getCardSpacing();
-      const influenceRadius = spacing * 1.15;
+      const currentPos = (window.innerWidth < 960) ? designsViewport.scrollLeft : currentTranslateX;
 
-      cards.forEach((card) => {
-        const cardRect = card.getBoundingClientRect();
-        const cardCenter = cardRect.left + cardRect.width / 2;
-        const dist = Math.abs(cardCenter - viewportCenter);
+      cards.forEach((card, idx) => {
+        const cardTargetX = card.offsetLeft - card0Offset;
+        const dist = Math.abs(currentPos - cardTargetX);
 
-        // Continuous factor: 1.0 at center, smoothly fading to 0.0 at influenceRadius
-        const rawT = Math.max(0, Math.min(1, 1 - dist / influenceRadius));
-        const easeT = rawT * rawT * (3 - 2 * rawT); // Smoothstep curve
+        // Continuous normalized factor: 1.0 at center, 0.0 at spacing
+        const rawT = Math.max(0, Math.min(1, 1 - dist / spacing));
+        // Smooth cosine curve: perfect symmetric crossover, 0 derivative at endpoints
+        const easeT = (1 - Math.cos(Math.PI * rawT)) / 2;
 
-        const scale = (0.92 + 0.16 * easeT).toFixed(3);
-        const opacity = (0.70 + 0.30 * easeT).toFixed(3);
-        const lift = (14 * easeT).toFixed(1);
-        const isUp = card.classList.contains('pj-design-tile--up');
-        const baseTranslateY = isUp ? '-0.65rem' : '1.15rem';
+        const scale = (0.94 + 0.13 * easeT).toFixed(3);
+        const opacity = (0.72 + 0.28 * easeT).toFixed(3);
+        const lift = (-10 * easeT).toFixed(1);
 
-        card.style.transform = `translateY(calc(${baseTranslateY} - ${lift}px)) scale(${scale})`;
+        card.style.transform = `translate3d(0, ${lift}px, 0) scale(${scale})`;
         card.style.opacity = opacity;
         card.style.zIndex = Math.round(1 + 10 * easeT);
 
-        if (easeT > 0.55) {
+        const shadowY = Math.round(10 + 18 * easeT);
+        const shadowBlur = Math.round(22 + 32 * easeT);
+        const shadowAlpha = (0.18 + 0.28 * easeT).toFixed(2);
+        card.style.boxShadow = `0 ${shadowY}px ${shadowBlur}px rgba(0, 0, 0, ${shadowAlpha})`;
+
+        if (easeT > 0.5) {
           card.classList.add('is-active');
-          card.classList.remove('is-receding');
         } else {
           card.classList.remove('is-active');
-          card.classList.add('is-receding');
         }
       });
     };
@@ -152,14 +152,14 @@
       }
 
       const diff = targetTranslateX - currentTranslateX;
-      if (Math.abs(diff) > 0.2) {
-        currentTranslateX += diff * 0.12; // buttery luxurious damping
-        designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(1)}px, 0, 0)`;
+      if (Math.abs(diff) > 0.15) {
+        currentTranslateX += diff * 0.12; // buttery damping
+        designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(2)}px, 0, 0)`;
         updateActiveSpotlight();
         requestAnimationFrame(renderDesignsScroll);
       } else {
         currentTranslateX = targetTranslateX;
-        designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(1)}px, 0, 0)`;
+        designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(2)}px, 0, 0)`;
         updateActiveSpotlight();
         isAnimating = false;
       }
@@ -172,7 +172,7 @@
       }
     };
 
-    // Soft magnetic settling: when wheel stops, gently snaps the closest card dead-center
+    // Soft magnetic settling: snaps the closest card dead-center when wheel pauses
     const scheduleMagneticSnap = () => {
       clearTimeout(snapTimeout);
       snapTimeout = setTimeout(() => {
@@ -185,7 +185,7 @@
       }, 180);
     };
 
-    // Scoped Wheel event: glides through cards; seamlessly hands off to page scroll at boundaries
+    // Scoped Wheel listener
     designsViewport.addEventListener('wheel', (e) => {
       if (window.innerWidth < 960) return;
 
@@ -196,11 +196,10 @@
       if (delta > 0) {
         if (targetTranslateX < maxTranslate - 1) {
           e.preventDefault();
-          targetTranslateX = Math.min(maxTranslate, targetTranslateX + delta * 0.85);
+          targetTranslateX = Math.min(maxTranslate, targetTranslateX + delta * 0.75);
           requestTick();
           scheduleMagneticSnap();
         } else if (Math.abs(currentTranslateX - maxTranslate) > 4) {
-          // Absorb wheel until the last card finishes settling
           e.preventDefault();
           targetTranslateX = maxTranslate;
           requestTick();
@@ -210,11 +209,10 @@
       else if (delta < 0) {
         if (targetTranslateX > 1) {
           e.preventDefault();
-          targetTranslateX = Math.max(0, targetTranslateX + delta * 0.85);
+          targetTranslateX = Math.max(0, targetTranslateX + delta * 0.75);
           requestTick();
           scheduleMagneticSnap();
         } else if (Math.abs(currentTranslateX) > 4) {
-          // Absorb wheel until the first card finishes settling
           e.preventDefault();
           targetTranslateX = 0;
           requestTick();
@@ -229,7 +227,7 @@
       }
     }, { passive: true });
 
-    // Arrow navigation: snaps 1 card cleanly
+    // Arrow navigation
     prevBtn?.addEventListener('click', () => {
       if (window.innerWidth < 960) {
         const spacing = getCardSpacing();
@@ -259,13 +257,12 @@
     cards.forEach((card, idx) => {
       card.addEventListener('click', (e) => {
         if (e.target.closest('button') || e.target.closest('a')) return;
+        const spacing = getCardSpacing();
         if (window.innerWidth >= 960) {
-          const spacing = getCardSpacing();
           const maxTranslate = getMaxTranslate();
           targetTranslateX = Math.max(0, Math.min(maxTranslate, idx * spacing));
           requestTick();
         } else {
-          const spacing = getCardSpacing();
           designsViewport.scrollTo({ left: idx * spacing, behavior: 'smooth' });
         }
       });
@@ -278,7 +275,7 @@
         const maxTranslate = getMaxTranslate();
         targetTranslateX = Math.min(maxTranslate, targetTranslateX);
         currentTranslateX = targetTranslateX;
-        designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(1)}px, 0, 0)`;
+        designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(2)}px, 0, 0)`;
       }
       updateActiveSpotlight();
     }, { passive: true });

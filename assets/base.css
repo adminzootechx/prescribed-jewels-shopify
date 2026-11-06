@@ -860,7 +860,7 @@ textarea {
 
 .pj-designs__track {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.25rem;
   width: max-content;
   margin-left: 0;
@@ -876,19 +876,16 @@ textarea {
   background: var(--pj-bg-card);
   border: 1px solid rgba(182, 145, 86, 0.28);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
-  transition: box-shadow 0.35s ease, border-color 0.35s ease;
-  will-change: transform, opacity;
+  transition: border-color 0.3s ease;
+  will-change: transform, opacity, box-shadow;
   cursor: pointer;
   scroll-snap-align: center;
 }
 
-/* Staggered UP / DOWN rhythm */
-.pj-design-tile--up {
-  transform: translateY(-0.65rem);
-}
-
+/* Base vertical baseline: clean, centered, and aligned for spotlight */
+.pj-design-tile--up,
 .pj-design-tile--down {
-  transform: translateY(1.15rem);
+  transform: none;
 }
 
 /* Active Spotlight state (rich gold border and ambient glow) */
@@ -902,15 +899,8 @@ textarea {
   opacity: 1 !important;
   z-index: 25 !important;
   border-color: var(--pj-accent-gold) !important;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--pj-accent-gold) !important;
-}
-
-.pj-design-tile--up:hover {
-  transform: translateY(calc(-0.65rem - 14px)) scale(1.09) !important;
-}
-
-.pj-design-tile--down:hover {
-  transform: translateY(calc(1.15rem - 14px)) scale(1.09) !important;
+  transform: translateY(-12px) scale(1.08) !important;
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.52), 0 0 0 1px var(--pj-accent-gold) !important;
 }
 
 .pj-design-tile__media {
