@@ -75,7 +75,7 @@
   }
 
   /* --------------------------------------------------------------------------
-   * 3. The 7 Designs — Sticky Scroll-Driven Horizontal Glide + Arrow Controls
+   * 3. The 7 Designs — Scoped Hover-Wheel Scroll + Spotlight Pop-up
    * -------------------------------------------------------------------------- */
   const designsOuter = document.querySelector('[data-horizontal-designs]');
   const designsViewport = document.getElementById('pj-designs-viewport');
@@ -84,42 +84,124 @@
   const nextBtn = document.getElementById('pj-designs-next');
 
   if (designsOuter && designsViewport && designsTrack) {
-    let manualOffset = 0;
+    const cards = Array.from(designsTrack.querySelectorAll('.pj-design-tile'));
+    let currentTranslateX = 0;
+    let targetTranslateX = 0;
+    let isAnimating = false;
+
+    const getCardSpacing = () => {
+      if (cards.length > 1) {
+        const r0 = cards[0].getBoundingClientRect();
+        const r1 = cards[1].getBoundingClientRect();
+        const diff = Math.abs(r1.left - r0.left);
+        if (diff > 50) return diff;
+      }
+      return (cards[0]?.offsetWidth || 320) + 20;
+    };
 
     const getMaxTranslate = () => {
       const trackWidth = designsTrack.scrollWidth;
       const viewportWidth = designsViewport.clientWidth;
-      return Math.max(0, trackWidth - viewportWidth + 48);
+      return Math.max(0, trackWidth - viewportWidth + 60);
     };
 
-    const updateHorizontalDesigns = () => {
+    const updateActiveSpotlight = () => {
+      if (!cards.length) return;
+
       if (window.innerWidth < 960) {
-        designsTrack.style.transform = 'none';
+        const scrollLeft = designsViewport.scrollLeft;
+        const spacing = getCardSpacing();
+        const activeIdx = Math.max(0, Math.min(cards.length - 1, Math.round(scrollLeft / spacing)));
+        cards.forEach((card, idx) => {
+          if (idx === activeIdx) {
+            card.classList.add('is-active');
+            card.classList.remove('is-receding');
+          } else {
+            card.classList.remove('is-active');
+            card.classList.add('is-receding');
+          }
+        });
         return;
       }
 
-      const rect = designsOuter.getBoundingClientRect();
-      const scrollDistance = designsOuter.offsetHeight - window.innerHeight;
-      if (scrollDistance <= 0) return;
-
-      const rawProgress = -rect.top / scrollDistance;
-      const progress = Math.max(0, Math.min(1, rawProgress));
-      const maxTranslate = getMaxTranslate();
-      const targetX = Math.max(0, Math.min(maxTranslate, progress * maxTranslate + manualOffset));
-
-      designsTrack.style.transform = `translate3d(-${targetX.toFixed(1)}px, 0, 0)`;
+      const spacing = getCardSpacing();
+      const activeIdx = Math.max(0, Math.min(cards.length - 1, Math.round(currentTranslateX / spacing)));
+      cards.forEach((card, idx) => {
+        if (idx === activeIdx) {
+          card.classList.add('is-active');
+          card.classList.remove('is-receding');
+        } else {
+          card.classList.remove('is-active');
+          card.classList.add('is-receding');
+        }
+      });
     };
 
-    window.addEventListener('scroll', updateHorizontalDesigns, { passive: true });
-    window.addEventListener('resize', updateHorizontalDesigns, { passive: true });
-    updateHorizontalDesigns();
+    const renderDesignsScroll = () => {
+      if (window.innerWidth < 960) {
+        designsTrack.style.transform = 'none';
+        isAnimating = false;
+        return;
+      }
 
+      const diff = targetTranslateX - currentTranslateX;
+      if (Math.abs(diff) > 0.4) {
+        currentTranslateX += diff * 0.18;
+        designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(1)}px, 0, 0)`;
+        updateActiveSpotlight();
+        requestAnimationFrame(renderDesignsScroll);
+      } else {
+        currentTranslateX = targetTranslateX;
+        designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(1)}px, 0, 0)`;
+        updateActiveSpotlight();
+        isAnimating = false;
+      }
+    };
+
+    const requestTick = () => {
+      if (!isAnimating) {
+        isAnimating = true;
+        requestAnimationFrame(renderDesignsScroll);
+      }
+    };
+
+    // Scoped Wheel event: only intercepts scroll when hovering inside the cards viewport
+    designsViewport.addEventListener('wheel', (e) => {
+      if (window.innerWidth < 960) return;
+
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      const maxTranslate = getMaxTranslate();
+
+      // Scrolling down/forward while cards remain to be revealed
+      if (delta > 0 && targetTranslateX < maxTranslate - 2) {
+        e.preventDefault();
+        targetTranslateX = Math.min(maxTranslate, targetTranslateX + delta * 1.15);
+        requestTick();
+      }
+      // Scrolling up/backward while cards remain to the left
+      else if (delta < 0 && targetTranslateX > 2) {
+        e.preventDefault();
+        targetTranslateX = Math.max(0, targetTranslateX + delta * 1.15);
+        requestTick();
+      }
+      // Boundary reached: DO NOT preventDefault! Natural page scroll takes over immediately!
+    }, { passive: false });
+
+    // Mobile swipe listener
+    designsViewport.addEventListener('scroll', () => {
+      if (window.innerWidth < 960) {
+        updateActiveSpotlight();
+      }
+    }, { passive: true });
+
+    // Arrow navigation
     prevBtn?.addEventListener('click', () => {
       if (window.innerWidth < 960) {
         designsViewport.scrollBy({ left: -320, behavior: 'smooth' });
       } else {
-        manualOffset = Math.max(-getMaxTranslate(), manualOffset - 340);
-        updateHorizontalDesigns();
+        const spacing = getCardSpacing();
+        targetTranslateX = Math.max(0, targetTranslateX - spacing);
+        requestTick();
       }
     });
 
@@ -127,10 +209,40 @@
       if (window.innerWidth < 960) {
         designsViewport.scrollBy({ left: 320, behavior: 'smooth' });
       } else {
-        manualOffset = Math.min(getMaxTranslate(), manualOffset + 340);
-        updateHorizontalDesigns();
+        const maxTranslate = getMaxTranslate();
+        const spacing = getCardSpacing();
+        targetTranslateX = Math.min(maxTranslate, targetTranslateX + spacing);
+        requestTick();
       }
     });
+
+    // Clicking any card brings it into active spotlight
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('button') || e.target.closest('a')) return;
+        if (window.innerWidth >= 960) {
+          const spacing = getCardSpacing();
+          const maxTranslate = getMaxTranslate();
+          targetTranslateX = Math.max(0, Math.min(maxTranslate, idx * spacing));
+          requestTick();
+        }
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth < 960) {
+        designsTrack.style.transform = 'none';
+      } else {
+        const maxTranslate = getMaxTranslate();
+        targetTranslateX = Math.min(maxTranslate, targetTranslateX);
+        currentTranslateX = targetTranslateX;
+        designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(1)}px, 0, 0)`;
+      }
+      updateActiveSpotlight();
+    }, { passive: true });
+
+    // Initial spotlight activation
+    updateActiveSpotlight();
   }
 
   /* --------------------------------------------------------------------------
