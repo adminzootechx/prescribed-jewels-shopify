@@ -75,7 +75,7 @@
   }
 
   /* --------------------------------------------------------------------------
-   * 3. The 7 Designs — One-Box-At-A-Time Spotlight Glide
+   * 3. The 7 Designs — Center Spotlight Showcase with Symmetrical Ambient Cards
    * -------------------------------------------------------------------------- */
   const designsOuter = document.querySelector('[data-horizontal-designs]');
   const designsViewport = document.getElementById('pj-designs-viewport');
@@ -84,35 +84,66 @@
   const nextBtn = document.getElementById('pj-designs-next');
 
   if (designsOuter && designsViewport && designsTrack) {
-    const cards = Array.from(designsTrack.querySelectorAll('.pj-design-tile'));
+    const originalCards = Array.from(designsTrack.querySelectorAll('.pj-design-tile'));
+    if (!originalCards.length) return;
+
+    // To prevent empty space on the left and right, clone 2 cards to each side
+    // Prepend clones of the last 2 designs so Card 01 starts centered with full cards to its left
+    const cloneLeft1 = originalCards[originalCards.length - 2].cloneNode(true);
+    const cloneLeft2 = originalCards[originalCards.length - 1].cloneNode(true);
+    [cloneLeft1, cloneLeft2].forEach(clone => {
+      clone.setAttribute('aria-hidden', 'true');
+      clone.dataset.clone = 'true';
+    });
+    designsTrack.insertBefore(cloneLeft2, originalCards[0]);
+    designsTrack.insertBefore(cloneLeft1, cloneLeft2);
+
+    // Append clones of the first 2 designs so Card 07 has balanced cards to its right
+    const cloneRight1 = originalCards[0].cloneNode(true);
+    const cloneRight2 = originalCards[1].cloneNode(true);
+    [cloneRight1, cloneRight2].forEach(clone => {
+      clone.setAttribute('aria-hidden', 'true');
+      clone.dataset.clone = 'true';
+    });
+    designsTrack.appendChild(cloneRight1);
+    designsTrack.appendChild(cloneRight2);
+
+    const allCards = Array.from(designsTrack.querySelectorAll('.pj-design-tile'));
+    const PREPEND_COUNT = 2; // Card 01 is at allCards[2]
+
     let currentTranslateX = 0;
     let targetTranslateX = 0;
-    let currentCardIndex = 0;
+    let currentCardIndex = 0; // 0 represents Card 01, up to originalCards.length - 1
     let isAnimating = false;
     let isStepping = false;
     let stepCooldownTimer = null;
 
-    const getCard0Offset = () => cards[0]?.offsetLeft || 0;
-
     const getCardSpacing = () => {
-      if (cards.length > 1) {
-        const diff = cards[1].offsetLeft - cards[0].offsetLeft;
+      if (originalCards.length > 1) {
+        const diff = originalCards[1].offsetLeft - originalCards[0].offsetLeft;
         if (diff > 50) return diff;
       }
-      return (cards[0]?.offsetWidth || 320) + 20;
+      return (originalCards[0]?.offsetWidth || 320) + 20;
+    };
+
+    // Calculates the exact translate needed to place cardIdx dead-center in the viewport
+    const getCenterTranslateForIndex = (cardIdx) => {
+      const targetCard = allCards[PREPEND_COUNT + cardIdx];
+      const viewportWidth = designsViewport.clientWidth;
+      const cardCenter = targetCard.offsetLeft + (targetCard.offsetWidth / 2);
+      return cardCenter - (viewportWidth / 2);
     };
 
     // Smooth continuous proximity wave: pure invariant math, zero DOM reflow thrashing
     const updateActiveSpotlight = () => {
-      if (!cards.length) return;
-
-      const card0Offset = getCard0Offset();
+      const viewportWidth = designsViewport.clientWidth;
+      const viewportCenter = viewportWidth / 2;
       const spacing = getCardSpacing();
       const currentPos = (window.innerWidth < 960) ? designsViewport.scrollLeft : currentTranslateX;
 
-      cards.forEach((card, idx) => {
-        const cardTargetX = card.offsetLeft - card0Offset;
-        const dist = Math.abs(currentPos - cardTargetX);
+      allCards.forEach((card) => {
+        const cardCenterInViewport = (card.offsetLeft + (card.offsetWidth / 2)) - currentPos;
+        const dist = Math.abs(cardCenterInViewport - viewportCenter);
 
         // Continuous normalized factor: 1.0 at center, 0.0 at spacing
         const rawT = Math.max(0, Math.min(1, 1 - dist / spacing));
@@ -150,7 +181,7 @@
 
       const diff = targetTranslateX - currentTranslateX;
       if (Math.abs(diff) > 0.3) {
-        // Calm, majestic, cinematic easing speed (0.085 gives a luxurious ~450ms glide)
+        // Calm, majestic, cinematic easing speed (~450ms glide)
         currentTranslateX += diff * 0.085;
         designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(2)}px, 0, 0)`;
         updateActiveSpotlight();
@@ -175,14 +206,13 @@
       if (isStepping) return;
       isStepping = true;
 
-      if (direction > 0 && currentCardIndex < cards.length - 1) {
+      if (direction > 0 && currentCardIndex < originalCards.length - 1) {
         currentCardIndex++;
       } else if (direction < 0 && currentCardIndex > 0) {
         currentCardIndex--;
       }
 
-      const spacing = getCardSpacing();
-      targetTranslateX = currentCardIndex * spacing;
+      targetTranslateX = getCenterTranslateForIndex(currentCardIndex);
       requestTick();
 
       clearTimeout(stepCooldownTimer);
@@ -200,7 +230,7 @@
 
       // Scrolling forward (down / right)
       if (delta > 0) {
-        if (currentCardIndex < cards.length - 1) {
+        if (currentCardIndex < originalCards.length - 1) {
           e.preventDefault();
           triggerStep(1);
         }
@@ -225,52 +255,48 @@
 
     // Arrow navigation: cleanly steps 1 card at a time
     prevBtn?.addEventListener('click', () => {
-      if (window.innerWidth < 960) {
-        const spacing = getCardSpacing();
-        designsViewport.scrollBy({ left: -spacing, behavior: 'smooth' });
-      } else {
-        triggerStep(-1);
-      }
+      triggerStep(-1);
     });
 
     nextBtn?.addEventListener('click', () => {
-      if (window.innerWidth < 960) {
-        const spacing = getCardSpacing();
-        designsViewport.scrollBy({ left: spacing, behavior: 'smooth' });
-      } else {
-        triggerStep(1);
-      }
+      triggerStep(1);
     });
 
-    // Clicking any card brings it into center spotlight
-    cards.forEach((card, idx) => {
+    // Clicking any card brings it dead-center into the spotlight
+    allCards.forEach((card, idx) => {
       card.addEventListener('click', (e) => {
         if (e.target.closest('button') || e.target.closest('a')) return;
-        const spacing = getCardSpacing();
-        if (window.innerWidth >= 960) {
-          currentCardIndex = idx;
-          targetTranslateX = currentCardIndex * spacing;
-          requestTick();
-        } else {
-          designsViewport.scrollTo({ left: idx * spacing, behavior: 'smooth' });
-        }
+        let targetIdx = idx - PREPEND_COUNT;
+        if (targetIdx < 0) targetIdx = originalCards.length + targetIdx;
+        if (targetIdx >= originalCards.length) targetIdx = targetIdx % originalCards.length;
+        currentCardIndex = targetIdx;
+        targetTranslateX = getCenterTranslateForIndex(currentCardIndex);
+        requestTick();
       });
     });
 
-    window.addEventListener('resize', () => {
+    const alignToCenter = () => {
       if (window.innerWidth < 960) {
         designsTrack.style.transform = 'none';
+        const targetCard = allCards[PREPEND_COUNT + currentCardIndex];
+        if (targetCard) {
+          designsViewport.scrollTo({
+            left: targetCard.offsetLeft - (designsViewport.clientWidth / 2) + (targetCard.offsetWidth / 2),
+            behavior: 'auto'
+          });
+        }
       } else {
-        const spacing = getCardSpacing();
-        targetTranslateX = currentCardIndex * spacing;
+        targetTranslateX = getCenterTranslateForIndex(currentCardIndex);
         currentTranslateX = targetTranslateX;
         designsTrack.style.transform = `translate3d(-${currentTranslateX.toFixed(2)}px, 0, 0)`;
       }
       updateActiveSpotlight();
-    }, { passive: true });
+    };
 
-    // Initial spotlight activation: Card 01 starts in center spotlight
-    updateActiveSpotlight();
+    window.addEventListener('resize', alignToCenter, { passive: true });
+
+    // Initialize layout: Card 01 starts dead-center ("between"), with Card 07 and 06 on its left!
+    setTimeout(alignToCenter, 50);
   }
 
   /* --------------------------------------------------------------------------
