@@ -842,7 +842,7 @@ textarea {
   overflow-x: auto;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
-  padding: 1.5rem calc(50% - 145px) 2rem;
+  padding: 1.25rem clamp(0.85rem, 2vw, 1.75rem) 1.75rem;
   margin: 0;
 }
 
@@ -854,7 +854,7 @@ textarea {
   .pj-designs__viewport {
     overflow: visible;
     scroll-snap-type: none;
-    padding: 2.25rem calc(50% - clamp(145px, 12.25vw, 175px)) 2.75rem;
+    padding: 2rem clamp(0.85rem, 2vw, 1.75rem) 2.5rem;
   }
 }
 
