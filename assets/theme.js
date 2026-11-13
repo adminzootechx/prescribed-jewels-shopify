@@ -1248,10 +1248,8 @@
       wheelSection.style.removeProperty('--pj-d-zoom');
       // Fill whatever height is left under the info block, as wide as the screen allows
       const availH = (window.innerHeight || 700) - 54 - 14;
-      const infoEl = wheelSection.querySelector('.pj-gem-display-layout');
-      const infoH = infoEl ? infoEl.offsetHeight : 330;
       const byWidth = window.innerWidth / 565;
-      const byHeight = (availH - infoH - 28) / 310;
+      const byHeight = (availH * 0.4) / 310;
       const s = Math.max(0.4, Math.min(byWidth, byHeight, 1));
       st.style.setProperty('--pj-m-s', s.toFixed(3));
     };
