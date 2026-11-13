@@ -93,16 +93,15 @@
       </div>
 
       {%- if has_real_product -%}
-        {%- form 'product', product, id: 'pj-pdp-form', class: 'pj-pdp__form', data-pdp-form: '' -%}
+        {%- form 'product', product, id: 'pj-pdp-form', class: 'pj-pdp__form', data-pdp-form: '', data-real-product-form: '' -%}
           <input type="hidden" name="id" value="{{ current_variant.id }}">
-          <input type="hidden" name="return_to" value="/checkout">
 
           {%- unless product.has_only_default_variant -%}
             <div class="pj-pdp__field">
               <label for="pj-pdp-variant" class="pj-pdp__label">{{ product.options | join: ' / ' }}</label>
-              <select id="pj-pdp-variant" name="id" class="pj-pdp__input">
+              <select id="pj-pdp-variant" name="id" class="pj-pdp__input" data-pdp-metal>
                 {%- for variant in product.variants -%}
-                  <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>
+                  <option value="{{ variant.id }}" data-variant-title="{{ variant.title | escape }}" {% if variant == current_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>
                     {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} (Sold out){% endunless %}
                   </option>
                 {%- endfor -%}
@@ -113,7 +112,7 @@
           <fieldset class="pj-pdp__birth">
             <legend class="pj-pdp__legend">
               <span class="pj-pdp__legend-title">Enter Birth Details</span>
-              <span class="pj-pdp__legend-sub">Required before payment. Our astrologer requires your birth date, exact time, city and country of birth.</span>
+              <span class="pj-pdp__legend-sub">Required before adding to bag. Our astrologer requires your birth date, exact time, city and country of birth.</span>
             </legend>
 
             <div class="pj-pdp__birth-grid">
@@ -148,12 +147,12 @@
           </fieldset>
 
           <p class="pj-pdp__error" role="alert" hidden data-pdp-error>
-            Please complete all birth details — date, time, city and country of birth — before proceeding to checkout.
+            Please complete all birth details — date, time, city and country of birth — before adding to cart.
           </p>
 
           <button type="submit" class="pj-pdp__submit" {% unless current_variant.available %}disabled{% endunless %}>
             {%- if current_variant.available -%}
-              <span>Complete Secure Checkout</span>
+              <span>Add to Cart</span>
               <span aria-hidden="true">→</span>
             {%- else -%}
               <span>Sold Out</span>
@@ -162,7 +161,7 @@
 
           <p class="pj-pdp__secure">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-            Secure Shopify checkout · Shipping, payment &amp; order confirmation
+            Your birth details are saved to your item in the cart &amp; checkout
           </p>
         {%- endform -%}
       {%- else -%}
@@ -171,17 +170,17 @@
           <div class="pj-pdp__field">
             <label for="pj-pdp-metal" class="pj-pdp__label">Select Precious Metal</label>
             <select id="pj-pdp-metal" name="metal" class="pj-pdp__input" data-pdp-metal>
-              <option value="18k Yellow Gold" selected>18k Solid Yellow Gold</option>
-              <option value="18k Rose Gold">18k Solid Rose Gold</option>
-              <option value="18k White Gold">18k Solid White Gold</option>
-              <option value="Platinum">Platinum 950</option>
+              <option value="18k Solid Yellow Gold" selected>18k Solid Yellow Gold</option>
+              <option value="18k Solid Rose Gold">18k Solid Rose Gold</option>
+              <option value="18k Solid White Gold">18k Solid White Gold</option>
+              <option value="Platinum 950">Platinum 950</option>
             </select>
           </div>
 
           <fieldset class="pj-pdp__birth">
             <legend class="pj-pdp__legend">
               <span class="pj-pdp__legend-title">Enter Birth Details</span>
-              <span class="pj-pdp__legend-sub">Required before payment. Our astrologer requires your birth date, exact time, city and country of birth.</span>
+              <span class="pj-pdp__legend-sub">Required before adding to bag. Our astrologer requires your birth date, exact time, city and country of birth.</span>
             </legend>
 
             <div class="pj-pdp__birth-grid">
@@ -216,22 +215,17 @@
           </fieldset>
 
           <p class="pj-pdp__error" role="alert" hidden data-pdp-error>
-            Please complete all birth details — date, time, city and country of birth — before proceeding to checkout.
+            Please complete all birth details — date, time, city and country of birth — before adding to cart.
           </p>
 
-          <div class="pj-pdp__success" role="status" hidden data-pdp-success>
-            <strong>Ready for Checkout — Birth Details Recorded</strong>
-            <p data-pdp-summary></p>
-          </div>
-
           <button type="submit" class="pj-pdp__submit">
-            <span>Complete Secure Checkout</span>
+            <span>Add to Cart</span>
             <span aria-hidden="true">→</span>
           </button>
 
           <p class="pj-pdp__secure">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-            Secure Shopify checkout · Shipping, payment &amp; order confirmation
+            Your birth details are saved to your item in the cart &amp; checkout
           </p>
         </form>
       {%- endif -%}
@@ -363,8 +357,6 @@
 
     const form = root.querySelector('[data-pdp-form]');
     const error = root.querySelector('[data-pdp-error]');
-    const success = root.querySelector('[data-pdp-success]');
-    const summary = root.querySelector('[data-pdp-summary]');
 
     if (form) {
       form.addEventListener('submit', (e) => {
@@ -375,35 +367,57 @@
         if (missing.length) {
           e.preventDefault();
           if (error) error.hidden = false;
-          if (success) success.hidden = true;
           missing[0].focus();
           return;
         }
 
         if (error) error.hidden = true;
+        e.preventDefault();
 
-        if (form.hasAttribute('data-placeholder-form')) {
-          e.preventDefault();
-          const bDate = form.querySelector('[name="birth_date"]')?.value || '';
-          const bTime = form.querySelector('[name="birth_time"]')?.value || '';
-          const bCity = form.querySelector('[name="birth_city"]')?.value || '';
-          const bCountry = form.querySelector('[name="birth_country"]')?.value || '';
+        const title = root.querySelector('[data-pdp-title]')?.textContent?.trim() || 'The Classic — Signature Ring';
+        const price = root.querySelector('[data-pdp-price]')?.textContent?.trim() || '$2,400';
+        const imgEl = root.querySelector('.pj-pdp__slide.is-active img') || root.querySelector('[data-pdp-main-img]');
+        const image = imgEl ? imgEl.src : designImages[0];
+        const metalSelect = form.querySelector('[data-pdp-metal]');
+        const metal = metalSelect ? (metalSelect.options[metalSelect.selectedIndex]?.getAttribute('data-variant-title') || metalSelect.value) : '18k Solid Yellow Gold';
 
-          const modal = document.getElementById('pj-prescription-modal');
-          if (modal && typeof modal.showModal === 'function') {
-            const mDate = modal.querySelector('#pj-birth-date');
-            const mTime = modal.querySelector('#pj-birth-time');
-            const mCity = modal.querySelector('#pj-birth-city');
-            const mCountry = modal.querySelector('#pj-birth-country');
-            if (mDate) mDate.value = bDate;
-            if (mTime) mTime.value = bTime;
-            if (mCity) mCity.value = bCity;
-            if (mCountry) mCountry.value = bCountry;
-            modal.showModal();
-          } else if (success && summary) {
-            summary.textContent = `Birth details logged (${bDate} at ${bTime}, ${bCity}, ${bCountry}).`;
-            success.hidden = false;
+        const bDate = (form.querySelector('[name="birth_date"]') || form.querySelector('[name="properties[Birth Date]"]'))?.value || '';
+        const bTime = (form.querySelector('[name="birth_time"]') || form.querySelector('[name="properties[Birth Time]"]'))?.value || '';
+        const bCity = (form.querySelector('[name="birth_city"]') || form.querySelector('[name="properties[Birth City]"]'))?.value || '';
+        const bCountry = (form.querySelector('[name="birth_country"]') || form.querySelector('[name="properties[Birth Country]"]'))?.value || '';
+        const bApprox = (form.querySelector('[name="birth_time_approx"]') || form.querySelector('[name="properties[Birth Time Approximate]"]'))?.checked ? 'Yes' : 'No';
+
+        const addItemToClientCart = (isReal) => {
+          if (window.PJCart && typeof window.PJCart.addItem === 'function') {
+            window.PJCart.addItem({
+              title,
+              price,
+              image,
+              url: window.location.pathname,
+              metal,
+              quantity: 1,
+              isRealShopifyVariant: isReal,
+              properties: {
+                'Birth Date': bDate,
+                'Birth Time': bTime,
+                'Birth City': bCity,
+                'Birth Country': bCountry,
+                'Birth Time Approximate': bApprox
+              }
+            });
           }
+        };
+
+        if (form.hasAttribute('data-real-product-form')) {
+          const formData = new FormData(form);
+          fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+          })
+            .then(() => addItemToClientCart(true))
+            .catch(() => addItemToClientCart(false));
+        } else {
+          addItemToClientCart(false);
         }
       });
 

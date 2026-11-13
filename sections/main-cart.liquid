@@ -1,0 +1,98 @@
+{%- assign s = section.settings -%}
+
+<section
+  class="pj-cart-page"
+  data-full-cart-page
+  style="
+    --pj-cart-bg: {{ s.bg_color | default: '#F3ECE0' }};
+    --pj-cart-text: {{ s.text_color | default: '#1A1815' }};
+    --pj-cart-pt: {{ s.padding_top | default: 56 }}px;
+    --pj-cart-pb: {{ s.padding_bottom | default: 80 }}px;
+  "
+>
+  <div class="pj-container pj-cart-page__container">
+    <div class="pj-cart-page__header">
+      <p class="pj-eyebrow">YOUR SELECTION</p>
+      <h1 class="pj-cart-page__title">
+        Shopping Cart <span class="pj-cart-page__count" data-page-cart-count>({{ cart.item_count }})</span>
+      </h1>
+    </div>
+
+    <div class="pj-cart-page__empty" data-page-cart-empty {% if cart.item_count > 0 %}hidden{% endif %}>
+      <p class="pj-cart-drawer__empty-title">Your shopping cart is currently empty.</p>
+      <p class="pj-cart-drawer__empty-sub">Select one of our seven signature designs and enter your natal birth details to begin your gemstone prescription.</p>
+      <a href="{{ routes.root_url }}#pj-designs" class="pj-btn pj-btn--primary">Explore Designs →</a>
+    </div>
+
+    <div class="pj-cart-page__grid" data-page-cart-content {% if cart.item_count == 0 %}hidden{% endif %}>
+      <div class="pj-cart-page__items" data-page-cart-items>
+        {%- for item in cart.items -%}
+          <article class="pj-cart-item">
+            <a href="{{ item.url }}" class="pj-cart-item__media">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 240 | image_tag: class: 'pj-cart-item__img', alt: item.title }}
+              {%- endif -%}
+            </a>
+            <div class="pj-cart-item__info">
+              <div class="pj-cart-item__top">
+                <div>
+                  <h3 class="pj-cart-item__title"><a href="{{ item.url }}">{{ item.product.title }}</a></h3>
+                  {%- unless item.product.has_only_default_variant -%}
+                    <p class="pj-cart-item__metal">{{ item.variant.title }}</p>
+                  {%- endunless -%}
+                </div>
+                <p class="pj-cart-item__price">{{ item.final_line_price | money }}</p>
+              </div>
+
+              {%- unless item.properties == empty -%}
+                <div class="pj-cart-item__birth-box">
+                  <p class="pj-cart-item__birth-heading">Natal Birth Details</p>
+                  <dl class="pj-cart-item__birth-list">
+                    {%- for p in item.properties -%}
+                      {%- unless p.last == blank -%}
+                        <div>
+                          <dt>{{ p.first }}:</dt>
+                          <dd>{{ p.last }}</dd>
+                        </div>
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  </dl>
+                </div>
+              {%- endunless -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      <aside class="pj-cart-page__summary">
+        <h2 class="pj-cart-page__summary-title">Order Summary</h2>
+        <div class="pj-cart-drawer__summary-row">
+          <span class="pj-cart-drawer__summary-label">Subtotal</span>
+          <span class="pj-cart-drawer__summary-val" data-page-cart-subtotal>{{ cart.total_price | money }}</span>
+        </div>
+        <p class="pj-cart-drawer__note">
+          ✦ Personal gemstone selection by our Vedic astrologer is included with every piece. Shipping &amp; taxes calculated at checkout.
+        </p>
+        <button type="button" class="pj-pdp__submit" data-cart-proceed-checkout>
+          <span>Proceed to Checkout</span>
+          <span aria-hidden="true">→</span>
+        </button>
+        <a href="{{ routes.root_url }}#pj-designs" class="pj-cart-drawer__view-bag">← Continue Shopping</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shopping Cart Page",
+  "tag": "div",
+  "class": "pj-section-cart",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#F3ECE0" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#1A1815" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
+  ]
+}
+{% endschema %}

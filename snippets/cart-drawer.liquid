@@ -1,0 +1,487 @@
+{%- comment -%}
+  Prescribed Jewels — Slide-Over Cart Drawer & Unified Cart Controller
+  Supports both real Shopify cart line items (with line_item.properties)
+  and placeholder design items (stored in localStorage 'pj_cart_v1') so the
+  entire Add-to-Cart -> View Cart with Birth Details -> Checkout flow works out of the box.
+{%- endcomment -%}
+
+<div id="pj-cart-drawer" class="pj-cart-drawer" aria-hidden="true" hidden>
+  <div class="pj-cart-drawer__backdrop" data-cart-close></div>
+
+  <aside class="pj-cart-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="pj-cart-drawer-title">
+    <!-- Header -->
+    <div class="pj-cart-drawer__header">
+      <div>
+        <p class="pj-cart-drawer__eyebrow">YOUR SELECTION</p>
+        <h2 id="pj-cart-drawer-title" class="pj-cart-drawer__title">
+          Shopping Bag <span class="pj-cart-drawer__count" data-cart-drawer-count>(0)</span>
+        </h2>
+      </div>
+      <button type="button" class="pj-cart-drawer__close" data-cart-close aria-label="Close cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body: Cart Items View -->
+    <div class="pj-cart-drawer__view" data-cart-view="items">
+      <div class="pj-cart-drawer__empty" data-cart-empty>
+        <p class="pj-cart-drawer__empty-title">Your shopping bag is empty.</p>
+        <p class="pj-cart-drawer__empty-sub">Explore our seven signature designs and enter your birth details to begin your gemstone prescription.</p>
+        <a href="{{ routes.root_url }}#pj-designs" class="pj-btn pj-btn--primary" data-cart-close>Explore Designs →</a>
+      </div>
+
+      <div class="pj-cart-drawer__items" data-cart-items hidden></div>
+
+      <div class="pj-cart-drawer__footer" data-cart-footer hidden>
+        <div class="pj-cart-drawer__summary-row">
+          <span class="pj-cart-drawer__summary-label">Subtotal</span>
+          <span class="pj-cart-drawer__summary-val" data-cart-subtotal>$0</span>
+        </div>
+        <p class="pj-cart-drawer__note">
+          ✦ Personal gemstone selection by our Vedic astrologer is included with every piece. Shipping &amp; taxes calculated at checkout.
+        </p>
+        <div class="pj-cart-drawer__actions">
+          <button type="button" class="pj-pdp__submit pj-cart-drawer__checkout-btn" data-cart-proceed-checkout>
+            <span>Proceed to Checkout</span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <a href="/cart" class="pj-cart-drawer__view-bag" data-cart-close>View Full Cart Page</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body: Checkout View (for Placeholder Products when no backend variant is attached) -->
+    <div class="pj-cart-drawer__view" data-cart-view="checkout" hidden>
+      <div class="pj-cart-checkout">
+        <button type="button" class="pj-cart-checkout__back" data-cart-back-to-items>
+          ← Back to Cart
+        </button>
+
+        <h3 class="pj-cart-checkout__heading">Checkout &amp; Order Details</h3>
+        <p class="pj-cart-checkout__sub">Your selected designs and natal birth details are attached below.</p>
+
+        <div class="pj-cart-checkout__items-summary" data-checkout-items-summary></div>
+
+        {%- form 'contact', id: 'pj-cart-checkout-form', class: 'pj-cart-checkout__form' -%}
+          <input type="hidden" name="contact[subject]" value="New Prescribed Jewels Order (With Birth Details)">
+          <textarea name="contact[body]" id="pj-checkout-order-payload" hidden></textarea>
+
+          <div class="pj-pdp__field">
+            <label for="pj-co-name" class="pj-pdp__label">Full Name <span class="pj-pdp__req">*</span></label>
+            <input type="text" id="pj-co-name" name="contact[name]" class="pj-pdp__input" placeholder="Your full name" required>
+          </div>
+
+          <div class="pj-pdp__birth-grid">
+            <div class="pj-pdp__field">
+              <label for="pj-co-email" class="pj-pdp__label">Email Address <span class="pj-pdp__req">*</span></label>
+              <input type="email" id="pj-co-email" name="contact[email]" class="pj-pdp__input" placeholder="you@example.com" required>
+            </div>
+            <div class="pj-pdp__field">
+              <label for="pj-co-phone" class="pj-pdp__label">Phone Number <span class="pj-pdp__req">*</span></label>
+              <input type="tel" id="pj-co-phone" name="contact[phone]" class="pj-pdp__input" placeholder="+1 / +91 ..." required>
+            </div>
+          </div>
+
+          <div class="pj-pdp__field">
+            <label for="pj-co-address" class="pj-pdp__label">Shipping Address <span class="pj-pdp__req">*</span></label>
+            <input type="text" id="pj-co-address" class="pj-pdp__input" data-co-address placeholder="Street address, apartment, suite" required>
+          </div>
+
+          <div class="pj-pdp__birth-grid">
+            <div class="pj-pdp__field">
+              <label for="pj-co-city" class="pj-pdp__label">City &amp; Postal Code <span class="pj-pdp__req">*</span></label>
+              <input type="text" id="pj-co-city" class="pj-pdp__input" data-co-city placeholder="City, Postal Code" required>
+            </div>
+            <div class="pj-pdp__field">
+              <label for="pj-co-country" class="pj-pdp__label">Country <span class="pj-pdp__req">*</span></label>
+              <input type="text" id="pj-co-country" class="pj-pdp__input" data-co-country placeholder="Country" required>
+            </div>
+          </div>
+
+          <div class="pj-cart-drawer__summary-row pj-cart-checkout__total">
+            <span class="pj-cart-drawer__summary-label">Order Total</span>
+            <span class="pj-cart-drawer__summary-val" data-checkout-total>$0</span>
+          </div>
+
+          <button type="submit" class="pj-pdp__submit">
+            <span>Complete Order</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        {%- endform -%}
+
+        <div class="pj-cart-checkout__confirmed" data-checkout-confirmed hidden>
+          <span class="pj-cart-form__success-badge">ORDER &amp; BIRTH DETAILS RECEIVED</span>
+          <h4>Thank you for your order.</h4>
+          <p>Your chosen design(s) and natal birth details (date, time, city, and country of birth) have been recorded for our Vedic astrologer. Your gemstone prescription will be revealed within Days 3–7.</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  (() => {
+    const STORAGE_KEY = 'pj_cart_v1';
+
+    const parsePriceNumber = (priceStr) => {
+      if (typeof priceStr === 'number') return priceStr;
+      const cleaned = String(priceStr || '').replace(/[^0-9.]/g, '');
+      const num = parseFloat(cleaned);
+      return Number.isFinite(num) ? num : 0;
+    };
+
+    const formatCurrency = (amount) => {
+      if (!amount || amount <= 0) return 'By Consultation';
+      return '$' + amount.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    };
+
+    const getStoredItems = () => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    };
+
+    const saveStoredItems = (items) => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      } catch (e) {}
+    };
+
+    const escapeHtml = (str) => {
+      const div = document.createElement('div');
+      div.textContent = str == null ? '' : String(str);
+      return div.innerHTML;
+    };
+
+    const renderItemCardHtml = (item, idx) => {
+      const b = item.properties || {};
+      const unitNum = parsePriceNumber(item.price);
+      const lineTotal = unitNum > 0 ? formatCurrency(unitNum * (item.quantity || 1)) : item.price;
+
+      return `
+        <article class="pj-cart-item" data-cart-line="${idx}">
+          <a href="${escapeHtml(item.url || '/products/the-classic')}" class="pj-cart-item__media">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" class="pj-cart-item__img" width="90" height="120">
+          </a>
+          <div class="pj-cart-item__info">
+            <div class="pj-cart-item__top">
+              <div>
+                <h3 class="pj-cart-item__title">
+                  <a href="${escapeHtml(item.url || '/products/the-classic')}">${escapeHtml(item.title)}</a>
+                </h3>
+                ${item.metal ? `<p class="pj-cart-item__metal">${escapeHtml(item.metal)}</p>` : ''}
+              </div>
+              <p class="pj-cart-item__price">${escapeHtml(lineTotal)}</p>
+            </div>
+
+            <div class="pj-cart-item__birth-box">
+              <p class="pj-cart-item__birth-heading">Natal Birth Details</p>
+              <dl class="pj-cart-item__birth-list">
+                <div>
+                  <dt>Date of Birth:</dt>
+                  <dd>${escapeHtml(b['Birth Date'] || b.date || '—')}</dd>
+                </div>
+                <div>
+                  <dt>Time of Birth:</dt>
+                  <dd>${escapeHtml(b['Birth Time'] || b.time || '—')}${b['Birth Time Approximate'] === 'Yes' ? ' <em>(Approx.)</em>' : ''}</dd>
+                </div>
+                <div>
+                  <dt>City of Birth:</dt>
+                  <dd>${escapeHtml(b['Birth City'] || b.city || '—')}</dd>
+                </div>
+                <div>
+                  <dt>Country of Birth:</dt>
+                  <dd>${escapeHtml(b['Birth Country'] || b.country || '—')}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="pj-cart-item__bottom">
+              <div class="pj-cart-item__qty" aria-label="Quantity">
+                <button type="button" class="pj-cart-item__qty-btn" data-cart-qty-minus="${idx}" aria-label="Decrease quantity">−</button>
+                <span class="pj-cart-item__qty-val">${item.quantity || 1}</span>
+                <button type="button" class="pj-cart-item__qty-btn" data-cart-qty-plus="${idx}" aria-label="Increase quantity">+</button>
+              </div>
+              <button type="button" class="pj-cart-item__remove" data-cart-remove="${idx}">Remove</button>
+            </div>
+          </div>
+        </article>
+      `;
+    };
+
+    const updateAllCartUI = () => {
+      const items = getStoredItems();
+      const totalCount = items.reduce((acc, it) => acc + (parseInt(it.quantity, 10) || 1), 0);
+      const subtotalNum = items.reduce((acc, it) => acc + parsePriceNumber(it.price) * (parseInt(it.quantity, 10) || 1), 0);
+      const formattedSubtotal = subtotalNum > 0 ? formatCurrency(subtotalNum) : 'By Consultation';
+
+      // 1. Update Header Cart Counts
+      document.querySelectorAll('.pj-header__cart-count').forEach((el) => {
+        el.textContent = `(${totalCount})`;
+      });
+      document.querySelectorAll('.pj-mobile-nav__cart').forEach((el) => {
+        el.textContent = `Cart (${totalCount})`;
+      });
+      document.querySelectorAll('[data-cart-drawer-count]').forEach((el) => {
+        el.textContent = `(${totalCount})`;
+      });
+
+      // 2. Update Cart Drawer
+      const drawer = document.getElementById('pj-cart-drawer');
+      if (drawer) {
+        const emptyEl = drawer.querySelector('[data-cart-empty]');
+        const itemsEl = drawer.querySelector('[data-cart-items]');
+        const footerEl = drawer.querySelector('[data-cart-footer]');
+        const subtotalEl = drawer.querySelector('[data-cart-subtotal]');
+        const checkoutTotalEl = drawer.querySelector('[data-checkout-total]');
+
+        if (totalCount === 0) {
+          if (emptyEl) emptyEl.hidden = false;
+          if (itemsEl) { itemsEl.hidden = true; itemsEl.innerHTML = ''; }
+          if (footerEl) footerEl.hidden = true;
+        } else {
+          if (emptyEl) emptyEl.hidden = true;
+          if (itemsEl) {
+            itemsEl.hidden = false;
+            itemsEl.innerHTML = items.map((it, idx) => renderItemCardHtml(it, idx)).join('');
+          }
+          if (footerEl) footerEl.hidden = false;
+          if (subtotalEl) subtotalEl.textContent = formattedSubtotal;
+          if (checkoutTotalEl) checkoutTotalEl.textContent = formattedSubtotal;
+        }
+      }
+
+      // 3. Update Full /cart Page if open
+      const pageRoot = document.querySelector('[data-full-cart-page]');
+      if (pageRoot) {
+        const pEmpty = pageRoot.querySelector('[data-page-cart-empty]');
+        const pContent = pageRoot.querySelector('[data-page-cart-content]');
+        const pItems = pageRoot.querySelector('[data-page-cart-items]');
+        const pSubtotal = pageRoot.querySelector('[data-page-cart-subtotal]');
+        const pCount = pageRoot.querySelector('[data-page-cart-count]');
+
+        if (pCount) pCount.textContent = `(${totalCount})`;
+
+        if (totalCount === 0) {
+          if (pEmpty) pEmpty.hidden = false;
+          if (pContent) pContent.hidden = true;
+        } else {
+          if (pEmpty) pEmpty.hidden = true;
+          if (pContent) pContent.hidden = false;
+          if (pItems) {
+            pItems.innerHTML = items.map((it, idx) => renderItemCardHtml(it, idx)).join('');
+          }
+          if (pSubtotal) pSubtotal.textContent = formattedSubtotal;
+        }
+      }
+    };
+
+    const openCartDrawer = (initialView = 'items') => {
+      const drawer = document.getElementById('pj-cart-drawer');
+      if (!drawer) return;
+      updateAllCartUI();
+      const itemsView = drawer.querySelector('[data-cart-view="items"]');
+      const checkoutView = drawer.querySelector('[data-cart-view="checkout"]');
+      if (itemsView && checkoutView) {
+        itemsView.hidden = initialView !== 'items';
+        checkoutView.hidden = initialView !== 'checkout';
+      }
+      drawer.hidden = false;
+      requestAnimationFrame(() => {
+        drawer.setAttribute('aria-hidden', 'false');
+        drawer.classList.add('is-open');
+      });
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeCartDrawer = () => {
+      const drawer = document.getElementById('pj-cart-drawer');
+      if (!drawer) return;
+      drawer.setAttribute('aria-hidden', 'true');
+      drawer.classList.remove('is-open');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        if (!drawer.classList.contains('is-open')) drawer.hidden = true;
+      }, 320);
+    };
+
+    const openCheckoutStep = () => {
+      const items = getStoredItems();
+      if (!items.length) return;
+
+      // If any item is a real Shopify variant, try navigating to /checkout
+      const hasRealVariant = items.some((it) => it.isRealShopifyVariant);
+      if (hasRealVariant) {
+        window.location.href = '/checkout';
+        return;
+      }
+
+      const drawer = document.getElementById('pj-cart-drawer');
+      if (!drawer) return;
+
+      const summaryContainer = drawer.querySelector('[data-checkout-items-summary]');
+      if (summaryContainer) {
+        summaryContainer.innerHTML = items.map((it) => {
+          const b = it.properties || {};
+          return `
+            <div class="pj-cart-checkout__mini-item">
+              <div class="pj-cart-checkout__mini-top">
+                <strong>${escapeHtml(it.title)} × ${it.quantity || 1}</strong>
+                <span>${escapeHtml(it.price)}</span>
+              </div>
+              <div class="pj-cart-checkout__mini-meta">
+                ${it.metal ? `${escapeHtml(it.metal)} · ` : ''}
+                DOB: ${escapeHtml(b['Birth Date'] || '')} at ${escapeHtml(b['Birth Time'] || '')} ·
+                ${escapeHtml(b['Birth City'] || '')}, ${escapeHtml(b['Birth Country'] || '')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      openCartDrawer('checkout');
+    };
+
+    // Expose global PJCart controller
+    window.PJCart = {
+      getItems: getStoredItems,
+      addItem: (newItem) => {
+        const items = getStoredItems();
+        items.push({
+          id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+          title: newItem.title || 'The Classic — Signature Ring',
+          price: newItem.price || '$2,400',
+          image: newItem.image || '',
+          url: newItem.url || window.location.pathname,
+          metal: newItem.metal || '18k Solid Yellow Gold',
+          quantity: parseInt(newItem.quantity, 10) || 1,
+          isRealShopifyVariant: Boolean(newItem.isRealShopifyVariant),
+          properties: newItem.properties || {}
+        });
+        saveStoredItems(items);
+        updateAllCartUI();
+        openCartDrawer('items');
+      },
+      removeItem: (idx) => {
+        const items = getStoredItems();
+        items.splice(idx, 1);
+        saveStoredItems(items);
+        updateAllCartUI();
+      },
+      updateQty: (idx, delta) => {
+        const items = getStoredItems();
+        if (!items[idx]) return;
+        const nextQty = (parseInt(items[idx].quantity, 10) || 1) + delta;
+        if (nextQty <= 0) {
+          items.splice(idx, 1);
+        } else {
+          items[idx].quantity = nextQty;
+        }
+        saveStoredItems(items);
+        updateAllCartUI();
+      },
+      clear: () => {
+        saveStoredItems([]);
+        updateAllCartUI();
+      },
+      open: openCartDrawer,
+      close: closeCartDrawer,
+      openCheckout: openCheckoutStep,
+      refresh: updateAllCartUI
+    };
+
+    // Event delegation for Cart Drawer, Header Cart Link, Quantity & Remove buttons
+    document.addEventListener('click', (e) => {
+      const cartTrigger = e.target.closest('.pj-header__cart-link, [data-open-cart]');
+      if (cartTrigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        openCartDrawer('items');
+        return;
+      }
+
+      if (e.target.closest('[data-cart-close]')) {
+        closeCartDrawer();
+        return;
+      }
+
+      const removeBtn = e.target.closest('[data-cart-remove]');
+      if (removeBtn) {
+        const idx = parseInt(removeBtn.getAttribute('data-cart-remove'), 10);
+        window.PJCart.removeItem(idx);
+        return;
+      }
+
+      const minusBtn = e.target.closest('[data-cart-qty-minus]');
+      if (minusBtn) {
+        const idx = parseInt(minusBtn.getAttribute('data-cart-qty-minus'), 10);
+        window.PJCart.updateQty(idx, -1);
+        return;
+      }
+
+      const plusBtn = e.target.closest('[data-cart-qty-plus]');
+      if (plusBtn) {
+        const idx = parseInt(plusBtn.getAttribute('data-cart-qty-plus'), 10);
+        window.PJCart.updateQty(idx, 1);
+        return;
+      }
+
+      if (e.target.closest('[data-cart-proceed-checkout]')) {
+        e.preventDefault();
+        openCheckoutStep();
+        return;
+      }
+
+      if (e.target.closest('[data-cart-back-to-items]')) {
+        e.preventDefault();
+        openCartDrawer('items');
+        return;
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCartDrawer();
+    });
+
+    // Handle Checkout Form Submission inside Drawer
+    const coForm = document.getElementById('pj-cart-checkout-form');
+    if (coForm) {
+      coForm.addEventListener('submit', (e) => {
+        const items = getStoredItems();
+        const addr = coForm.querySelector('[data-co-address]')?.value || '';
+        const city = coForm.querySelector('[data-co-city]')?.value || '';
+        const country = coForm.querySelector('[data-co-country]')?.value || '';
+        const payloadEl = document.getElementById('pj-checkout-order-payload');
+
+        const linesText = items.map((it, i) => {
+          const b = it.properties || {};
+          return `Item ${i + 1}: ${it.title} (${it.metal || '18k Gold'}) x${it.quantity || 1} - ${it.price}\n` +
+                 `  Birth Date: ${b['Birth Date'] || ''}\n` +
+                 `  Birth Time: ${b['Birth Time'] || ''} (Approx: ${b['Birth Time Approximate'] || 'No'})\n` +
+                 `  Birth City: ${b['Birth City'] || ''}\n` +
+                 `  Birth Country: ${b['Birth Country'] || ''}`;
+        }).join('\n\n');
+
+        if (payloadEl) {
+          payloadEl.value = `SHIPPING ADDRESS:\n${addr}, ${city}, ${country}\n\nORDER ITEMS & NATAL BIRTH DETAILS:\n${linesText}`;
+        }
+
+        // Clear cart and show confirmation if user submits
+        saveStoredItems([]);
+      });
+    }
+
+    // Initialize UI on page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', updateAllCartUI);
+    } else {
+      updateAllCartUI();
+    }
+  })();
+</script>

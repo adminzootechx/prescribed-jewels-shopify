@@ -154,7 +154,7 @@
         href="{{ routes.cart_url }}"
         class="pj-header__cart-link pj-header__cart-link--{{ cart_font_cls }}"
         style="{{ cart_font_css }}"
-        {% if hs.cart_action == 'drawer' %}data-open-prescription data-design="01 — The Classic (Signature Ring)"{% endif %}
+        data-open-cart
         aria-label="Shopping Cart with {{ cart.item_count }} items"
       >
         <span class="pj-header__cart-label">{{ hs.cart_label | default: 'Cart' }}</span>
@@ -193,7 +193,7 @@
         <a href="{% unless template.name == 'index' %}{{ routes.root_url }}{% endunless %}#pj-gemstones" class="pj-mobile-nav__link">Gemstones</a>
         <a href="/pages/contact" class="pj-mobile-nav__link">Contact Us</a>
       {%- endif -%}
-      <a href="{{ routes.cart_url }}" class="pj-mobile-nav__link pj-mobile-nav__cart">{{ hs.cart_label | default: 'Cart' }}{% if hs.show_cart_count %} ({{ cart.item_count }}){% endif %}</a>
+      <a href="{{ routes.cart_url }}" class="pj-mobile-nav__link pj-mobile-nav__cart" data-open-cart>{{ hs.cart_label | default: 'Cart' }}{% if hs.show_cart_count %} ({{ cart.item_count }}){% endif %}</a>
     </nav>
   </div>
 </header>
