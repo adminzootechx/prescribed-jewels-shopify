@@ -1232,6 +1232,21 @@
       }, { passive: true });
     }
 
+    // Phones: size the bottom arch so it always fits the screen (width and height)
+    const fitPhoneWheel = () => {
+      const st = wheelSection ? wheelSection.querySelector('.pj-gemstones-wheel__stage') : null;
+      if (!st) return;
+      if (window.innerWidth >= 960) { st.style.removeProperty('--pj-m-s'); return; }
+      const availH = (window.innerHeight || 700) - 54;
+      const byWidth = window.innerWidth / 590;
+      const byHeight = (availH * 0.36) / 310;
+      const s = Math.max(0.4, Math.min(byWidth, byHeight, 1));
+      st.style.setProperty('--pj-m-s', s.toFixed(3));
+    };
+    fitPhoneWheel();
+    window.addEventListener('resize', fitPhoneWheel, { passive: true });
+    window.addEventListener('orientationchange', fitPhoneWheel, { passive: true });
+
     window.addEventListener('resize', () => placeArrow(false), { passive: true });
 
     if ('IntersectionObserver' in window && wheelSection) {
