@@ -1,7 +1,6 @@
 {%- liquid
   assign fallbacks = 'design-01-classic.jpg,design-02-solace.jpg,design-03-balance.jpg,design-04-aura.jpg,design-05-signet.jpg,design-06-celestial.jpg,design-07-bespoke.jpg' | split: ','
 
-  assign path_downcase = request.path | downcase
   assign default_idx = placeholder_design | default: 1 | minus: 1
   assign design_title = placeholder_title | default: 'The Classic — Signature Ring'
   assign design_price = placeholder_price | default: '$2,400'
@@ -24,25 +23,14 @@
   <nav class="pj-pdp__crumbs" aria-label="Breadcrumb">
     <a href="{{ routes.root_url }}">Home</a>
     <span aria-hidden="true">/</span>
-    <a href="{{ routes.root_url }}#pj-designs">The Seven Designs</a>
+    <a href="{{ routes.root_url }}#pj-designs">The Collection</a>
     <span aria-hidden="true">/</span>
     <span aria-current="page" data-pdp-crumb-title>{{ design_title }}</span>
   </nav>
 
-  <!-- Quick Design Selector Pills (Placeholder Preview Switcher) -->
-  <div class="pj-pdp__design-pills" role="navigation" aria-label="Switch design">
-    <a href="/products/the-classic" data-design-slug="the-classic" class="pj-pdp__design-pill{% if default_idx == 0 %} is-active{% endif %}">01 · The Classic</a>
-    <a href="/products/the-solace" data-design-slug="the-solace" class="pj-pdp__design-pill{% if default_idx == 1 %} is-active{% endif %}">02 · The Solace</a>
-    <a href="/products/the-balance" data-design-slug="the-balance" class="pj-pdp__design-pill{% if default_idx == 2 %} is-active{% endif %}">03 · The Balance</a>
-    <a href="/products/the-aura" data-design-slug="the-aura" class="pj-pdp__design-pill{% if default_idx == 3 %} is-active{% endif %}">04 · The Aura</a>
-    <a href="/products/the-signet" data-design-slug="the-signet" class="pj-pdp__design-pill{% if default_idx == 4 %} is-active{% endif %}">05 · The Signet</a>
-    <a href="/products/the-celestial" data-design-slug="the-celestial" class="pj-pdp__design-pill{% if default_idx == 5 %} is-active{% endif %}">06 · The Celestial</a>
-    <a href="/products/custom-bespoke" data-design-slug="custom-bespoke" class="pj-pdp__design-pill{% if default_idx == 6 %} is-active{% endif %}">07 · Custom</a>
-  </div>
-
   <div class="pj-pdp__grid">
-    <!-- GALLERY -->
-    <div class="pj-pdp__gallery" data-pdp-gallery>
+    <!-- GALLERY (Shows ONLY this product's photo(s)) -->
+    <div class="pj-pdp__gallery{% unless has_media and product.media.size > 1 %} pj-pdp__gallery--single{% endunless %}" data-pdp-gallery>
       <div class="pj-pdp__stage">
         {%- if has_media -%}
           {%- for media in product.media limit: 6 -%}
@@ -51,32 +39,30 @@
             </div>
           {%- endfor -%}
         {%- else -%}
-          {%- for i in (0..3) -%}
-            {%- assign idx = default_idx | plus: i | modulo: 7 -%}
-            <div class="pj-pdp__slide{% if forloop.first %} is-active{% endif %}" data-pdp-slide="{{ forloop.index0 }}">
-              <img src="{{ fallbacks[idx] | asset_url }}" alt="{{ design_title | escape }} — view {{ forloop.index }}" class="pj-pdp__img" data-pdp-slide-img="{{ forloop.index0 }}" width="900" height="1200" loading="eager">
-            </div>
-          {%- endfor -%}
+          <div class="pj-pdp__slide is-active" data-pdp-slide="0">
+            <img
+              src="{{ fallbacks[default_idx] | asset_url }}"
+              alt="{{ design_title | escape }}"
+              class="pj-pdp__img"
+              data-pdp-main-img
+              width="900"
+              height="1200"
+              loading="eager"
+            >
+          </div>
         {%- endif -%}
         <span class="pj-pdp__badge">Personal gemstone selection included</span>
       </div>
 
-      <div class="pj-pdp__thumbs" role="tablist" aria-label="Product images">
-        {%- if has_media -%}
+      {%- if has_media and product.media.size > 1 -%}
+        <div class="pj-pdp__thumbs" role="tablist" aria-label="Product images">
           {%- for media in product.media limit: 6 -%}
             <button type="button" class="pj-pdp__thumb{% if forloop.first %} is-active{% endif %}" data-pdp-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}">
               {{ media.preview_image | image_url: width: 200 | image_tag: alt: '', loading: 'lazy' }}
             </button>
           {%- endfor -%}
-        {%- else -%}
-          {%- for i in (0..3) -%}
-            {%- assign idx = default_idx | plus: i | modulo: 7 -%}
-            <button type="button" class="pj-pdp__thumb{% if forloop.first %} is-active{% endif %}" data-pdp-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}">
-              <img src="{{ fallbacks[idx] | asset_url }}" alt="" data-pdp-thumb-img="{{ forloop.index0 }}" width="120" height="160" loading="lazy">
-            </button>
-          {%- endfor -%}
-        {%- endif -%}
-      </div>
+        </div>
+      {%- endif -%}
     </div>
 
     <!-- DETAILS + NATAL BIRTH DETAILS FORM -->
@@ -106,14 +92,6 @@
         {%- endif -%}
       </div>
 
-      <ol class="pj-pdp__steps" aria-label="Your order journey">
-        <li class="is-done"><span>01 · DISCOVER</span> Seven Designs</li>
-        <li class="is-done"><span>02 · SELECT</span> Design &amp; Price</li>
-        <li class="is-current"><span>03 · PERSONALIZE</span> Birth Details</li>
-        <li><span>04 · PURCHASE</span> Checkout</li>
-        <li><span>05 · CREATE</span> Prescribe &amp; Craft</li>
-      </ol>
-
       {%- if has_real_product -%}
         {%- form 'product', product, id: 'pj-pdp-form', class: 'pj-pdp__form', data-pdp-form: '' -%}
           <input type="hidden" name="id" value="{{ current_variant.id }}">
@@ -134,7 +112,7 @@
 
           <fieldset class="pj-pdp__birth">
             <legend class="pj-pdp__legend">
-              <span class="pj-pdp__legend-title">03 · Personalize — Enter Birth Details</span>
+              <span class="pj-pdp__legend-title">Enter Birth Details</span>
               <span class="pj-pdp__legend-sub">Required before payment. Our astrologer requires your birth date, exact time, city and country of birth.</span>
             </legend>
 
@@ -175,7 +153,7 @@
 
           <button type="submit" class="pj-pdp__submit" {% unless current_variant.available %}disabled{% endunless %}>
             {%- if current_variant.available -%}
-              <span>04 · Complete Secure Shopify Checkout</span>
+              <span>Complete Secure Checkout</span>
               <span aria-hidden="true">→</span>
             {%- else -%}
               <span>Sold Out</span>
@@ -188,7 +166,7 @@
           </p>
         {%- endform -%}
       {%- else -%}
-        <!-- Placeholder Product Form (Works without requiring a backend Shopify product) -->
+        <!-- Placeholder Product Form -->
         <form id="pj-pdp-form" class="pj-pdp__form" data-pdp-form data-placeholder-form novalidate>
           <div class="pj-pdp__field">
             <label for="pj-pdp-metal" class="pj-pdp__label">Select Precious Metal</label>
@@ -202,7 +180,7 @@
 
           <fieldset class="pj-pdp__birth">
             <legend class="pj-pdp__legend">
-              <span class="pj-pdp__legend-title">03 · Personalize — Enter Birth Details</span>
+              <span class="pj-pdp__legend-title">Enter Birth Details</span>
               <span class="pj-pdp__legend-sub">Required before payment. Our astrologer requires your birth date, exact time, city and country of birth.</span>
             </legend>
 
@@ -242,12 +220,12 @@
           </p>
 
           <div class="pj-pdp__success" role="status" hidden data-pdp-success>
-            <strong>04 · Ready for Checkout — Birth Details Recorded</strong>
+            <strong>Ready for Checkout — Birth Details Recorded</strong>
             <p data-pdp-summary></p>
           </div>
 
           <button type="submit" class="pj-pdp__submit">
-            <span>04 · Complete Secure Shopify Checkout</span>
+            <span>Complete Secure Checkout</span>
             <span aria-hidden="true">→</span>
           </button>
 
@@ -272,45 +250,6 @@
           <div class="pj-pdp__acc-body">{{ shipping_text | default: 'Insured worldwide shipping with tracking. Store your piece in its signature box, avoid perfumes and harsh chemicals, and wipe gently with a soft lint-free cloth after wear.' }}</div>
         </details>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- 5-Step Ordering Journey (Matching Reference Image) -->
-<div class="pj-journey pj-pdp__journey-wrap">
-  <div class="pj-journey__inner">
-    <div class="pj-journey__card">
-      <ol class="pj-journey__list">
-        <li class="pj-journey__step">
-          <p class="pj-journey__label">01 · DISCOVER</p>
-          <h3 class="pj-journey__step-title">Explore the seven designs</h3>
-          <p class="pj-journey__step-text">Understand the jewelry and the prescription concept</p>
-        </li>
-        <li class="pj-journey__arrow" aria-hidden="true">↓</li>
-        <li class="pj-journey__step">
-          <p class="pj-journey__label">02 · SELECT</p>
-          <h3 class="pj-journey__step-title">Choose a design and see its price</h3>
-          <p class="pj-journey__step-text">The personal gemstone selection is included</p>
-        </li>
-        <li class="pj-journey__arrow" aria-hidden="true">↓</li>
-        <li class="pj-journey__step">
-          <p class="pj-journey__label">03 · PERSONALIZE</p>
-          <h3 class="pj-journey__step-title">Enter birth details</h3>
-          <p class="pj-journey__step-text">Date, time, city and country of birth — required before payment</p>
-        </li>
-        <li class="pj-journey__arrow" aria-hidden="true">↓</li>
-        <li class="pj-journey__step">
-          <p class="pj-journey__label">04 · PURCHASE</p>
-          <h3 class="pj-journey__step-title">Complete secure Shopify checkout</h3>
-          <p class="pj-journey__step-text">Shipping, payment and order confirmation</p>
-        </li>
-        <li class="pj-journey__arrow" aria-hidden="true">↓</li>
-        <li class="pj-journey__step">
-          <p class="pj-journey__label">05 · CREATE</p>
-          <h3 class="pj-journey__step-title">We prescribe, craft and deliver</h3>
-          <p class="pj-journey__step-text">The jewelry arrives with its personal prescription</p>
-        </li>
-      </ol>
     </div>
   </div>
 </div>
@@ -387,22 +326,15 @@
       const crumbEl = root.querySelector('[data-pdp-crumb-title]');
       const priceEl = root.querySelector('[data-pdp-price]');
       const descEl = root.querySelector('[data-pdp-desc]');
+      const mainImg = root.querySelector('[data-pdp-main-img]');
 
       if (titleEl) titleEl.textContent = item.title;
       if (crumbEl) crumbEl.textContent = item.title;
       if (priceEl) priceEl.textContent = item.price;
       if (descEl) descEl.innerHTML = item.desc;
-
-      root.querySelectorAll('[data-design-slug]').forEach((pill) => {
-        pill.classList.toggle('is-active', pill.getAttribute('data-design-slug') === slug);
-      });
-
-      for (let i = 0; i < 4; i++) {
-        const imgSrc = designImages[(item.idx + i) % designImages.length];
-        const slideImg = root.querySelector(`[data-pdp-slide-img="${i}"]`);
-        const thumbImg = root.querySelector(`[data-pdp-thumb-img="${i}"]`);
-        if (slideImg) slideImg.src = imgSrc;
-        if (thumbImg) thumbImg.src = imgSrc;
+      if (mainImg) {
+        mainImg.src = designImages[item.idx];
+        mainImg.alt = item.title;
       }
     };
 
@@ -418,18 +350,6 @@
     if (initialSlug) {
       applyDesignBySlug(initialSlug);
     }
-
-    root.querySelectorAll('[data-design-slug]').forEach((pill) => {
-      pill.addEventListener('click', (e) => {
-        if (hasRealProduct) return;
-        e.preventDefault();
-        const slug = pill.getAttribute('data-design-slug');
-        if (window.history && window.history.pushState) {
-          window.history.pushState({}, '', `/products/${slug}`);
-        }
-        applyDesignBySlug(slug);
-      });
-    });
 
     const slides = root.querySelectorAll('[data-pdp-slide]');
     const thumbs = root.querySelectorAll('[data-pdp-thumb]');
