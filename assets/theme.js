@@ -1246,15 +1246,20 @@
         return;
       }
       wheelSection.style.removeProperty('--pj-d-zoom');
-      const availH = (window.innerHeight || 700) - 54;
-      const byWidth = window.innerWidth / 590;
-      const byHeight = (availH * 0.34) / 310;
+      // Fill whatever height is left under the info block, as wide as the screen allows
+      const availH = (window.innerHeight || 700) - 54 - 14;
+      const infoEl = wheelSection.querySelector('.pj-gem-display-layout');
+      const infoH = infoEl ? infoEl.offsetHeight : 330;
+      const byWidth = window.innerWidth / 565;
+      const byHeight = (availH - infoH - 28) / 310;
       const s = Math.max(0.4, Math.min(byWidth, byHeight, 1));
       st.style.setProperty('--pj-m-s', s.toFixed(3));
     };
     fitPhoneWheel();
     window.addEventListener('resize', fitPhoneWheel, { passive: true });
     window.addEventListener('orientationchange', fitPhoneWheel, { passive: true });
+    window.addEventListener('load', fitPhoneWheel, { once: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPhoneWheel);
 
     window.addEventListener('resize', () => placeArrow(false), { passive: true });
 
