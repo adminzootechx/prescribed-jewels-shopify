@@ -1,0 +1,72 @@
+{%- assign s = section.settings -%}
+
+<section
+  class="pj-journey"
+  aria-labelledby="pj-journey-title-{{ section.id }}"
+  style="
+    --pj-jr-pt: {{ s.padding_top | default: 64 }}px;
+    --pj-jr-pb: {{ s.padding_bottom | default: 72 }}px;
+    {% if s.bg_color != blank %}--pj-jr-bg: {{ s.bg_color }};{% endif %}
+    {% if s.text_color != blank %}--pj-jr-text: {{ s.text_color }};{% endif %}
+    {% if s.accent_color != blank %}--pj-jr-accent: {{ s.accent_color }};{% endif %}
+  "
+>
+  <div class="pj-journey__inner">
+    {%- if s.eyebrow != blank -%}<p class="pj-journey__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    <h2 id="pj-journey-title-{{ section.id }}" class="pj-journey__title">{{ s.heading }}</h2>
+
+    <ol class="pj-journey__list">
+      {%- for block in section.blocks -%}
+        <li class="pj-journey__step" {{ block.shopify_attributes }}>
+          <p class="pj-journey__label">{{ forloop.index | prepend: '0' | slice: -2, 2 }} · {{ block.settings.label }}</p>
+          <h3 class="pj-journey__step-title">{{ block.settings.title }}</h3>
+          <p class="pj-journey__step-text">{{ block.settings.text }}</p>
+        </li>
+        {%- unless forloop.last -%}
+          <li class="pj-journey__arrow" aria-hidden="true">↓</li>
+        {%- endunless -%}
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "How Ordering Works",
+  "tag": "div",
+  "class": "pj-section-journey",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "HOW IT WORKS" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "From design to your prescribed jewel" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#EFE5D5" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1A1815" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#9A7440" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "DISCOVER" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Explore the seven designs" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Understand the jewelry and the prescription concept" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "How Ordering Works",
+      "blocks": [
+        { "type": "step", "settings": { "label": "DISCOVER", "title": "Explore the seven designs", "text": "Understand the jewelry and the prescription concept" } },
+        { "type": "step", "settings": { "label": "SELECT", "title": "Choose a design and see its price", "text": "The personal gemstone selection is included" } },
+        { "type": "step", "settings": { "label": "PERSONALIZE", "title": "Enter birth details", "text": "Date, time, city and country of birth — required before payment" } },
+        { "type": "step", "settings": { "label": "PURCHASE", "title": "Complete secure Shopify checkout", "text": "Shipping, payment and order confirmation" } },
+        { "type": "step", "settings": { "label": "CREATE", "title": "We prescribe, craft and deliver", "text": "The jewelry arrives with its personal prescription" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

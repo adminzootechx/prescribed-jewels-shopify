@@ -13,13 +13,21 @@
       "type": "main-product",
       "settings": {}
     },
-    "prescription_process": {
-      "type": "prescription-process",
+    "journey": {
+      "type": "product-journey",
+      "blocks": {
+        "step_1": { "type": "step", "settings": { "label": "DISCOVER", "title": "Explore the seven designs", "text": "Understand the jewelry and the prescription concept" } },
+        "step_2": { "type": "step", "settings": { "label": "SELECT", "title": "Choose a design and see its price", "text": "The personal gemstone selection is included" } },
+        "step_3": { "type": "step", "settings": { "label": "PERSONALIZE", "title": "Enter birth details", "text": "Date, time, city and country of birth — required before payment" } },
+        "step_4": { "type": "step", "settings": { "label": "PURCHASE", "title": "Complete secure Shopify checkout", "text": "Shipping, payment and order confirmation" } },
+        "step_5": { "type": "step", "settings": { "label": "CREATE", "title": "We prescribe, craft and deliver", "text": "The jewelry arrives with its personal prescription" } }
+      },
+      "block_order": ["step_1", "step_2", "step_3", "step_4", "step_5"],
       "settings": {}
     }
   },
   "order": [
     "main",
-    "prescription_process"
+    "journey"
   ]
 }

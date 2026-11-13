@@ -1,226 +1,284 @@
-{%- assign s = section.settings -%}
+{%- liquid
+  assign s = section.settings
+  assign current_variant = product.selected_or_first_available_variant
+  assign fallbacks = 'design-01-classic.jpg,design-02-solace.jpg,design-03-balance.jpg,design-04-aura.jpg,design-05-signet.jpg,design-06-celestial.jpg,design-07-bespoke.jpg' | split: ','
+  assign start_idx = s.placeholder_design | default: 1 | minus: 1
+  assign has_media = false
+  if product.media.size > 0
+    assign has_media = true
+  endif
+  assign product_title = product.title | default: s.placeholder_title
+-%}
+
 <section
-  class="pj-product"
-  aria-labelledby="pj-product-title"
+  class="pj-pdp"
+  aria-labelledby="pj-pdp-title"
   style="
-    --pj-prod-pt: {{ s.padding_top | default: 64 }}px;
-    --pj-prod-pb: {{ s.padding_bottom | default: 64 }}px;
-    --pj-prod-h: {{ s.section_height | default: 0 }};
-    --pj-prod-max-w: {{ s.max_width | default: 1200 }}px;
-    --pj-prod-ratio: {{ s.image_aspect_ratio | default: '1 / 1' }};
-    {% if s.bg_color != blank %} --pj-prod-bg: {{ s.bg_color }};{% endif %}
-    {% if s.text_color != blank %} --pj-prod-text: {{ s.text_color }};{% endif %}
+    --pj-pdp-pt: {{ s.padding_top | default: 48 }}px;
+    --pj-pdp-pb: {{ s.padding_bottom | default: 72 }}px;
+    --pj-pdp-max-w: {{ s.max_width | default: 1280 }}px;
+    --pj-pdp-ratio: {{ s.image_aspect_ratio | default: '4 / 5' }};
+    {% if s.bg_color != blank %}--pj-pdp-bg: {{ s.bg_color }};{% endif %}
+    {% if s.text_color != blank %}--pj-pdp-text: {{ s.text_color }};{% endif %}
+    {% if s.accent_color != blank %}--pj-pdp-accent: {{ s.accent_color }};{% endif %}
   "
 >
-  <div class="pj-container pj-product__grid">
-    <div class="pj-product__media">
-      {% if product.featured_image %}
-        {{
-          product.featured_image
-          | image_url: width: 1000
-          | image_tag:
-            class: 'pj-product__img',
-            widths: '500, 750, 1000',
-            alt: product.title
-        }}
-      {% else %}
-        <div class="pj-product__placeholder">
-          {% render 'pj-monogram', variant: 'both' %}
-        </div>
-      {% endif %}
-    </div>
+  <div class="pj-pdp__container">
+    <nav class="pj-pdp__crumbs" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="{{ routes.root_url }}#pj-designs">The Seven Designs</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{ product_title }}</span>
+    </nav>
 
-    <div class="pj-product__details">
-      <p class="pj-eyebrow">PRESCRIBED JEWELS · SIGNATURE &amp; BESPOKE</p>
-      <h1 id="pj-product-title" class="pj-product__title">{{ product.title }}</h1>
-      <p class="pj-product__price">{{ product.selected_or_first_available_variant.price | money }}</p>
-
-      {% if product.description != blank %}
-        <div class="pj-product__description rte">
-          {{ product.description }}
-        </div>
-      {% endif %}
-
-      {% form 'product', product, class: 'pj-form pj-product__form', novalidate: 'novalidate' %}
-        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-
-        {% unless product.has_only_default_variant %}
-          <div class="pj-form__field pj-form__field--full">
-            <label for="pj-variant-select" class="pj-form__label">Select Option</label>
-            <select id="pj-variant-select" name="id" class="pj-form__select">
-              {% for variant in product.variants %}
-                <option
-                  value="{{ variant.id }}"
-                  {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
-                  {% unless variant.available %}disabled="disabled"{% endunless %}
-                >
-                  {{ variant.title }} — {{ variant.price | money }}
-                </option>
-              {% endfor %}
-            </select>
-          </div>
-        {% endunless %}
-
-        <div class="pj-form__divider pj-form__field--full">
-          <span>Natal Birth Details (For Days 1–5 Astrologer Prescription)</span>
+    <div class="pj-pdp__grid">
+      {%- comment -%} ---------- GALLERY ---------- {%- endcomment -%}
+      <div class="pj-pdp__gallery" data-pdp-gallery>
+        <div class="pj-pdp__stage">
+          {%- if has_media -%}
+            {%- for media in product.media limit: 6 -%}
+              <div class="pj-pdp__slide{% if forloop.first %} is-active{% endif %}" data-pdp-slide="{{ forloop.index0 }}">
+                {{ media.preview_image | image_url: width: 1400 | image_tag: class: 'pj-pdp__img', widths: '600, 900, 1200, 1400', sizes: '(min-width: 960px) 55vw, 100vw', alt: media.alt | default: product_title, loading: 'eager' }}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (0..3) -%}
+              {%- assign idx = start_idx | plus: i | modulo: 7 -%}
+              <div class="pj-pdp__slide{% if forloop.first %} is-active{% endif %}" data-pdp-slide="{{ forloop.index0 }}">
+                <img src="{{ fallbacks[idx] | asset_url }}" alt="{{ product_title | escape }} — placeholder image {{ forloop.index }}" class="pj-pdp__img" width="900" height="1200" loading="eager">
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+          <span class="pj-pdp__badge">Personal gemstone included</span>
         </div>
 
-        <div class="pj-form__grid">
-          <div class="pj-form__field">
-            <label for="pj-prod-birth-date" class="pj-form__label">Date of Birth <span class="pj-req">*</span></label>
-            <input
-              type="date"
-              id="pj-prod-birth-date"
-              name="properties[Birth Date]"
-              class="pj-form__input"
-              required
-              aria-errormessage="pj-prod-date-err"
-            >
-            <div id="pj-prod-date-err" class="pj-form__error">
-              <span aria-hidden="true">!</span> Birth date is required.
+        <div class="pj-pdp__thumbs" role="tablist" aria-label="Product images">
+          {%- if has_media -%}
+            {%- for media in product.media limit: 6 -%}
+              <button type="button" class="pj-pdp__thumb{% if forloop.first %} is-active{% endif %}" data-pdp-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}">
+                {{ media.preview_image | image_url: width: 200 | image_tag: alt: '', loading: 'lazy' }}
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (0..3) -%}
+              {%- assign idx = start_idx | plus: i | modulo: 7 -%}
+              <button type="button" class="pj-pdp__thumb{% if forloop.first %} is-active{% endif %}" data-pdp-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}">
+                <img src="{{ fallbacks[idx] | asset_url }}" alt="" width="120" height="160" loading="lazy">
+              </button>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} ---------- DETAILS + ORDER FORM ---------- {%- endcomment -%}
+      <div class="pj-pdp__details">
+        <p class="pj-pdp__eyebrow">{{ s.eyebrow }}</p>
+        <h1 id="pj-pdp-title" class="pj-pdp__title">{{ product_title }}</h1>
+
+        <div class="pj-pdp__price-row">
+          <p class="pj-pdp__price">
+            {%- if current_variant.price > 0 -%}
+              {{ current_variant.price | money }}
+            {%- else -%}
+              {{ s.placeholder_price }}
+            {%- endif -%}
+          </p>
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            <s class="pj-pdp__compare">{{ current_variant.compare_at_price | money }}</s>
+          {%- endif -%}
+        </div>
+        <p class="pj-pdp__price-note">{{ s.price_note }}</p>
+
+        <div class="pj-pdp__desc">
+          {%- if product.description != blank -%}
+            {{ product.description }}
+          {%- else -%}
+            {{ s.placeholder_description }}
+          {%- endif -%}
+        </div>
+
+        <ol class="pj-pdp__steps" aria-label="Your order journey">
+          <li class="is-done"><span>02</span> Select</li>
+          <li class="is-current"><span>03</span> Personalize</li>
+          <li><span>04</span> Purchase</li>
+          <li><span>05</span> Create</li>
+        </ol>
+
+        {%- form 'product', product, id: 'pj-pdp-form', class: 'pj-pdp__form', data-pdp-form: '' -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+          <input type="hidden" name="return_to" value="/checkout">
+
+          {%- unless product.has_only_default_variant -%}
+            <div class="pj-pdp__field">
+              <label for="pj-pdp-variant" class="pj-pdp__label">{{ product.options | join: ' / ' }}</label>
+              <select id="pj-pdp-variant" name="id" class="pj-pdp__input">
+                {%- for variant in product.variants -%}
+                  <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>
+                    {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} (Sold out){% endunless %}
+                  </option>
+                {%- endfor -%}
+              </select>
             </div>
-          </div>
+          {%- endunless -%}
 
-          <div class="pj-form__field">
-            <label for="pj-prod-birth-time" class="pj-form__label">Exact Time of Birth <span class="pj-req">*</span></label>
-            <input
-              type="time"
-              id="pj-prod-birth-time"
-              name="properties[Birth Time]"
-              class="pj-form__input"
-              required
-              aria-errormessage="pj-prod-time-err"
-            >
-            <div id="pj-prod-time-err" class="pj-form__error">
-              <span aria-hidden="true">!</span> Exact time of birth is required.
-            </div>
-          </div>
+          <fieldset class="pj-pdp__birth">
+            <legend class="pj-pdp__legend">
+              <span class="pj-pdp__legend-title">Birth Details</span>
+              <span class="pj-pdp__legend-sub">Required before payment — our astrologer uses these to prescribe your gemstone.</span>
+            </legend>
 
-          <div class="pj-form__field">
-            <label for="pj-prod-birth-city" class="pj-form__label">City / Place of Birth <span class="pj-req">*</span></label>
-            <input
-              type="text"
-              id="pj-prod-birth-city"
-              name="properties[Birth City]"
-              class="pj-form__input"
-              placeholder="e.g. Mumbai"
-              required
-              aria-errormessage="pj-prod-city-err"
-            >
-            <div id="pj-prod-city-err" class="pj-form__error">
-              <span aria-hidden="true">!</span> Birth city is required.
-            </div>
-          </div>
+            <div class="pj-pdp__birth-grid">
+              <div class="pj-pdp__field">
+                <label for="pj-pdp-date" class="pj-pdp__label">Date of Birth <span class="pj-pdp__req">*</span></label>
+                <input type="date" id="pj-pdp-date" name="properties[Birth Date]" class="pj-pdp__input" required>
+              </div>
 
-          <div class="pj-form__field">
-            <label for="pj-prod-birth-country" class="pj-form__label">Country of Birth <span class="pj-req">*</span></label>
-            <input
-              type="text"
-              id="pj-prod-birth-country"
-              name="properties[Birth Country]"
-              class="pj-form__input"
-              placeholder="e.g. India"
-              required
-              aria-errormessage="pj-prod-country-err"
-            >
-            <div id="pj-prod-country-err" class="pj-form__error">
-              <span aria-hidden="true">!</span> Country of birth is required.
+              <div class="pj-pdp__field">
+                <label for="pj-pdp-time" class="pj-pdp__label">Time of Birth <span class="pj-pdp__req">*</span></label>
+                <input type="time" id="pj-pdp-time" name="properties[Birth Time]" class="pj-pdp__input" required>
+              </div>
+
+              <div class="pj-pdp__field">
+                <label for="pj-pdp-city" class="pj-pdp__label">City of Birth <span class="pj-pdp__req">*</span></label>
+                <input type="text" id="pj-pdp-city" name="properties[Birth City]" class="pj-pdp__input" placeholder="e.g. Jaipur" autocomplete="off" required>
+              </div>
+
+              <div class="pj-pdp__field">
+                <label for="pj-pdp-country" class="pj-pdp__label">Country of Birth <span class="pj-pdp__req">*</span></label>
+                <select id="pj-pdp-country" name="properties[Birth Country]" class="pj-pdp__input" required>
+                  <option value="" selected disabled>Select country</option>
+                  {{ all_country_option_tags }}
+                </select>
+              </div>
             </div>
-          </div>
+
+            <label class="pj-pdp__check">
+              <input type="checkbox" name="properties[Birth Time Approximate]" value="Yes">
+              <span>My birth time is approximate</span>
+            </label>
+          </fieldset>
+
+          <p class="pj-pdp__error" role="alert" hidden data-pdp-error>
+            Please complete all birth details — date, time, city and country — before checkout.
+          </p>
+
+          <button type="submit" class="pj-pdp__submit" {% unless current_variant.available %}disabled{% endunless %}>
+            {%- if current_variant.available -%}
+              <span>Continue to Secure Checkout</span>
+              <span aria-hidden="true">→</span>
+            {%- else -%}
+              <span>Sold Out</span>
+            {%- endif -%}
+          </button>
+
+          <p class="pj-pdp__secure">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            Secure Shopify checkout · Shipping, payment &amp; order confirmation
+          </p>
+        {%- endform -%}
+
+        <div class="pj-pdp__accordions">
+          <details class="pj-pdp__acc" open>
+            <summary>What's Included</summary>
+            <div class="pj-pdp__acc-body">{{ s.included_text }}</div>
+          </details>
+          <details class="pj-pdp__acc">
+            <summary>The Prescription &amp; Timeline</summary>
+            <div class="pj-pdp__acc-body">{{ s.timeline_text }}</div>
+          </details>
+          <details class="pj-pdp__acc">
+            <summary>Shipping &amp; Care</summary>
+            <div class="pj-pdp__acc-body">{{ s.shipping_text }}</div>
+          </details>
         </div>
-
-        <div class="pj-form__policy-note">
-          <div class="pj-form__policy-icon" aria-hidden="true">✦</div>
-          <div>
-            “Your order is confirmed. Your personal gemstone selection is now underway. Your finished jewel is expected to ship in approximately 5–7 weeks.”
-          </div>
-        </div>
-
-        <button type="submit" class="pj-btn pj-btn--primary pj-btn--full">
-          <span>Place Order &amp; Begin Prescription</span>
-          <span aria-hidden="true">→</span>
-        </button>
-      {% endform %}
+      </div>
     </div>
   </div>
 </section>
 
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    if (!root) return;
+
+    // Gallery thumbnails
+    const slides = root.querySelectorAll('[data-pdp-slide]');
+    const thumbs = root.querySelectorAll('[data-pdp-thumb]');
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        const i = thumb.dataset.pdpThumb;
+        slides.forEach((sl) => sl.classList.toggle('is-active', sl.dataset.pdpSlide === i));
+        thumbs.forEach((t) => t.classList.toggle('is-active', t === thumb));
+      });
+    });
+
+    // Birth details must be complete before checkout
+    const form = root.querySelector('[data-pdp-form]');
+    const error = root.querySelector('[data-pdp-error]');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        const required = Array.from(form.querySelectorAll('[required]'));
+        const missing = required.filter((f) => !String(f.value || '').trim());
+        required.forEach((f) => f.classList.toggle('is-invalid', missing.includes(f)));
+        if (missing.length) {
+          e.preventDefault();
+          if (error) error.hidden = false;
+          missing[0].focus();
+        } else if (error) {
+          error.hidden = true;
+        }
+      });
+      form.addEventListener('input', (e) => {
+        if (e.target.classList.contains('is-invalid') && String(e.target.value).trim()) {
+          e.target.classList.remove('is-invalid');
+        }
+      });
+    }
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Product — Natal Order",
-  "tag": "section",
+  "tag": "div",
   "class": "pj-section-product",
   "settings": [
-    {
-      "type": "header",
-      "content": "Layout, Spacing & Screen Fit"
-    },
-    {
-      "type": "range",
-      "id": "section_height",
-      "label": "Section Min Height (Screen Fit)",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "vh",
-      "default": 0,
-      "info": "0 = Auto fit content. 100 = 100vh full screen fit."
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Padding Top",
-      "min": 0,
-      "max": 180,
-      "step": 4,
-      "unit": "px",
-      "default": 64
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Padding Bottom",
-      "min": 0,
-      "max": 180,
-      "step": 4,
-      "unit": "px",
-      "default": 64
-    },
-    {
-      "type": "range",
-      "id": "max_width",
-      "label": "Container Max Width",
-      "min": 900,
-      "max": 1400,
-      "step": 20,
-      "unit": "px",
-      "default": 1200
-    },
-    {
-      "type": "select",
-      "id": "image_aspect_ratio",
-      "label": "Product Photo Ratio",
-      "default": "1 / 1",
-      "options": [
-        { "value": "1 / 1", "label": "Square (1:1)" },
-        { "value": "4 / 5", "label": "Portrait (4:5)" },
-        { "value": "3 / 4", "label": "Classic (3:4)" }
-      ]
-    },
-    {
-      "type": "header",
-      "content": "Colours"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color"
-    }
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "SIGNATURE DESIGN · PRESCRIBED JEWELS" },
+    { "type": "text", "id": "price_note", "label": "Note under price", "default": "Your personal gemstone selection is included." },
+    { "type": "textarea", "id": "included_text", "label": "What's Included", "default": "Your chosen fine jewelry design, a natural gemstone prescribed from your birth details by our astrologer, a personal prescription card explaining your stone and its meaning, and signature Prescribed Jewels packaging." },
+    { "type": "textarea", "id": "timeline_text", "label": "Prescription & Timeline", "default": "Day 0 — Order placed with your birth details. Days 1–5 — Our astrologer prescribes your gemstone. Days 3–7 — Your gemstone and its meaning are revealed by email. Weeks 5–7 — Your jewel is crafted, quality-checked and shipped." },
+    { "type": "textarea", "id": "shipping_text", "label": "Shipping & Care", "default": "Insured shipping with tracking. Store your piece in its pouch, avoid perfumes and harsh chemicals, and wipe gently with a soft cloth after wear." },
+
+    { "type": "header", "content": "Placeholder (when product has no content)" },
+    { "type": "select", "id": "placeholder_design", "label": "Placeholder images", "default": "1", "options": [
+      { "value": "1", "label": "The Classic" },
+      { "value": "2", "label": "The Solace" },
+      { "value": "3", "label": "The Balance" },
+      { "value": "4", "label": "The Aura" },
+      { "value": "5", "label": "The Signet" },
+      { "value": "6", "label": "The Celestial" },
+      { "value": "7", "label": "Custom / Bespoke" }
+    ] },
+    { "type": "text", "id": "placeholder_title", "label": "Placeholder title", "default": "The Classic — Signature Ring" },
+    { "type": "text", "id": "placeholder_price", "label": "Placeholder price text", "default": "Price on request" },
+    { "type": "richtext", "id": "placeholder_description", "label": "Placeholder description", "default": "<p>A timeless solitaire silhouette in solid gold, designed to be worn every day. The centre stone is not chosen from a menu — it is prescribed for you from your date, time, city and country of birth.</p>" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "image_aspect_ratio", "label": "Image ratio", "default": "4 / 5", "options": [
+      { "value": "1 / 1", "label": "Square (1:1)" },
+      { "value": "4 / 5", "label": "Portrait (4:5)" },
+      { "value": "3 / 4", "label": "Classic (3:4)" }
+    ] },
+    { "type": "range", "id": "max_width", "label": "Container max width", "min": 960, "max": 1600, "step": 20, "unit": "px", "default": 1280 },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#F3ECE0" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1A1815" },
+    { "type": "color", "id": "accent_color", "label": "Accent (gold)", "default": "#9A7440" }
   ]
 }
 {% endschema %}
