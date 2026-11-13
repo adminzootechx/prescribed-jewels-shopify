@@ -42,8 +42,8 @@
           "type": "support_link",
           "settings": {
             "label": "Bespoke",
-            "link": "#pj-designs",
-            "open_modal": true
+            "link": "/products/custom-bespoke",
+            "open_modal": false
           }
         },
         "support_5": {
@@ -58,7 +58,7 @@
           "type": "product_link",
           "settings": {
             "label": "The Classic — Rings",
-            "link": "#pj-designs",
+            "link": "/products/the-classic",
             "open_modal": false,
             "modal_design": "01 — The Classic (Signature Ring)"
           }
@@ -67,7 +67,7 @@
           "type": "product_link",
           "settings": {
             "label": "The Solace — Pendants",
-            "link": "#pj-designs",
+            "link": "/products/the-solace",
             "open_modal": false,
             "modal_design": "02 — The Solace (Signature Pendant)"
           }
@@ -76,7 +76,7 @@
           "type": "product_link",
           "settings": {
             "label": "The Balance — Bracelets",
-            "link": "#pj-designs",
+            "link": "/products/the-balance",
             "open_modal": false,
             "modal_design": "03 — The Balance (Signature Bracelet)"
           }
@@ -85,7 +85,7 @@
           "type": "product_link",
           "settings": {
             "label": "The Aura — Earrings",
-            "link": "#pj-designs",
+            "link": "/products/the-aura",
             "open_modal": false,
             "modal_design": "04 — The Aura (Signature Drop Earrings)"
           }
@@ -94,7 +94,7 @@
           "type": "product_link",
           "settings": {
             "label": "The Signet — Crest Rings",
-            "link": "#pj-designs",
+            "link": "/products/the-signet",
             "open_modal": false,
             "modal_design": "05 — The Signet (Signature Crest Ring)"
           }
@@ -103,7 +103,7 @@
           "type": "product_link",
           "settings": {
             "label": "The Celestial — Medallions",
-            "link": "#pj-designs",
+            "link": "/products/the-celestial",
             "open_modal": false,
             "modal_design": "06 — The Celestial (Signature Medallion)"
           }

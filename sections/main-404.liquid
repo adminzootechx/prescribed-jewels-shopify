@@ -1,4 +1,5 @@
-{%- if request.path contains 'contact' -%}
+{%- assign path_dc = request.path | downcase -%}
+{%- if path_dc contains 'contact' -%}
   <section
     id="pj-contact"
     class="pj-contact-section"
@@ -13,6 +14,22 @@
   >
     {% render 'pj-contact-content' %}
   </section>
+{%- elsif path_dc contains '/products/' or path_dc contains 'product' or path_dc contains 'design' -%}
+  <section
+    class="pj-pdp"
+    aria-labelledby="pj-pdp-title"
+    style="
+      --pj-pdp-pt: 48px;
+      --pj-pdp-pb: 72px;
+      --pj-pdp-max-w: 1280px;
+      --pj-pdp-ratio: 4 / 5;
+      --pj-pdp-bg: #F3ECE0;
+      --pj-pdp-text: #1A1815;
+      --pj-pdp-accent: #9A7440;
+    "
+  >
+    {% render 'pj-product-content' %}
+  </section>
 {%- else -%}
   <section class="pj-contact-section" style="--pj-contact-bg: #F3ECE0; --pj-contact-pt: 80px; --pj-contact-pb: 96px; text-align: center;">
     <div class="pj-container" style="max-width: 640px; margin: 0 auto;">
@@ -26,7 +43,7 @@
 
 {% schema %}
 {
-  "name": "404 / Contact Fallback",
+  "name": "404 / Page Fallback",
   "tag": "div",
   "class": "pj-section-404",
   "settings": []

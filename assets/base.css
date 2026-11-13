@@ -4613,21 +4613,69 @@ body:not(.template-index) .pj-header {
   margin: 1.4rem 0 1.25rem;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.4rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
 }
 .pj-pdp__steps li {
   padding-top: 0.55rem;
   border-top: 2px solid rgba(26, 24, 21, 0.14);
   font-family: var(--pj-font-sans);
-  font-size: 0.64rem;
-  letter-spacing: 0.14em;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(26, 24, 21, 0.5);
 }
-.pj-pdp__steps li span { display: block; font-size: 0.6rem; margin-bottom: 0.15rem; }
+.pj-pdp__steps li span { display: block; font-size: 0.56rem; margin-bottom: 0.15rem; }
 .pj-pdp__steps li.is-done { border-top-color: rgba(154, 116, 64, 0.5); color: rgba(26, 24, 21, 0.7); }
 .pj-pdp__steps li.is-current { border-top-color: var(--pj-pdp-accent, #9A7440); color: var(--pj-pdp-text, #1A1815); font-weight: 500; }
+
+/* Design Switcher Pills */
+.pj-pdp__design-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.pj-pdp__design-pill {
+  padding: 0.42rem 0.85rem;
+  border: 1px solid rgba(26, 24, 21, 0.18);
+  background: rgba(255, 255, 255, 0.55);
+  font-family: var(--pj-font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pj-pdp-text, #1A1815);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pj-pdp__design-pill:hover {
+  border-color: var(--pj-pdp-accent, #9A7440);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.pj-pdp__design-pill.is-active {
+  background: #1A1815;
+  border-color: #1A1815;
+  color: #F7F1E6;
+}
+
+.pj-pdp__success {
+  padding: 0.85rem 1rem;
+  background: rgba(18, 38, 30, 0.08);
+  border-left: 3px solid #12261E;
+  font-family: var(--pj-font-sans);
+  font-size: 0.84rem;
+  color: #1A1815;
+}
+.pj-pdp__success p { margin: 0.25rem 0 0; }
+
+.pj-design-tile__media-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
 
 /* Form */
 .pj-pdp__form { display: flex; flex-direction: column; gap: 1.1rem; }
@@ -4798,16 +4846,28 @@ body:not(.template-index) .pj-header {
    ========================================================================== */
 
 .pj-journey {
-  background-color: var(--pj-jr-bg, #EFE5D5);
+  background-color: var(--pj-jr-bg, #F3ECE0);
   color: var(--pj-jr-text, #1A1815);
-  padding-top: var(--pj-jr-pt, 64px);
-  padding-bottom: var(--pj-jr-pb, 72px);
+  padding-top: var(--pj-jr-pt, 56px);
+  padding-bottom: var(--pj-jr-pb, 32px);
+}
+.pj-pdp__journey-wrap {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(26, 24, 21, 0.1);
 }
 .pj-journey__inner {
-  max-width: 720px;
+  max-width: 680px;
   margin: 0 auto;
   padding: 0 1.25rem;
   text-align: center;
+}
+.pj-journey__card {
+  background: #FAF8F4;
+  border: 1px solid rgba(26, 24, 21, 0.12);
+  border-radius: 18px;
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4vw, 2.75rem);
+  box-shadow: 0 10px 30px rgba(26, 24, 21, 0.04);
 }
 .pj-journey__eyebrow {
   margin: 0 0 0.6rem;
@@ -4825,31 +4885,33 @@ body:not(.template-index) .pj-header {
   line-height: 1.15;
 }
 .pj-journey__list { list-style: none; margin: 0; padding: 0; }
-.pj-journey__step { padding: 0.25rem 0; }
+.pj-journey__step { padding: 0.15rem 0; }
 .pj-journey__label {
   margin: 0 0 0.35rem;
   font-family: var(--pj-font-sans);
-  font-size: 0.74rem;
-  letter-spacing: 0.16em;
+  font-size: 0.76rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--pj-jr-accent, #9A7440);
+  color: #6B655E;
 }
 .pj-journey__step-title {
   margin: 0 0 0.35rem;
-  font-family: var(--pj-font-serif);
-  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
-  font-weight: 500;
-  line-height: 1.2;
+  font-family: var(--pj-font-sans);
+  font-size: clamp(1.15rem, 1.8vw, 1.38rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: #141414;
 }
 .pj-journey__step-text {
   margin: 0;
   font-family: var(--pj-font-sans);
   font-size: 0.92rem;
   line-height: 1.5;
-  color: #5A5045;
+  color: #6B655E;
 }
 .pj-journey__arrow {
-  padding: 0.85rem 0;
-  font-size: 1rem;
-  color: rgba(26, 24, 21, 0.4);
+  padding: 0.75rem 0;
+  font-size: 1.05rem;
+  color: #7A736B;
 }
