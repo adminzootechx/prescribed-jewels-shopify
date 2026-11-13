@@ -1236,10 +1236,19 @@
     const fitPhoneWheel = () => {
       const st = wheelSection ? wheelSection.querySelector('.pj-gemstones-wheel__stage') : null;
       if (!st) return;
-      if (window.innerWidth >= 960) { st.style.removeProperty('--pj-m-s'); return; }
+      if (window.innerWidth >= 960) {
+        st.style.removeProperty('--pj-m-s');
+        // Laptops: shrink the whole layout on smaller windows, never enlarge past the designed size
+        const dH = ((window.innerHeight || 800) - 54) / 760;
+        const dW = window.innerWidth / 1440;
+        const z = Math.max(0.55, Math.min(1, dH, dW));
+        wheelSection.style.setProperty('--pj-d-zoom', z.toFixed(3));
+        return;
+      }
+      wheelSection.style.removeProperty('--pj-d-zoom');
       const availH = (window.innerHeight || 700) - 54;
       const byWidth = window.innerWidth / 590;
-      const byHeight = (availH * 0.36) / 310;
+      const byHeight = (availH * 0.34) / 310;
       const s = Math.max(0.4, Math.min(byWidth, byHeight, 1));
       st.style.setProperty('--pj-m-s', s.toFixed(3));
     };

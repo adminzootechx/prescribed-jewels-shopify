@@ -1726,7 +1726,7 @@ textarea {
   .pj-gemstones-wheel-section {
     min-height: calc(100vh - 54px);
     min-height: calc(100dvh - 54px);
-    padding: 1.1rem 0 0;
+    padding: 0.4rem 0 0;
     overflow: hidden;
     box-sizing: border-box;
     align-items: stretch;
@@ -1738,11 +1738,11 @@ textarea {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    gap: 0.5rem;
+    gap: 0.25rem;
     position: relative;
     padding: 0;
-    min-height: calc(100vh - 54px - 1.1rem);
-    min-height: calc(100dvh - 54px - 1.1rem);
+    min-height: calc(100vh - 54px - 0.4rem);
+    min-height: calc(100dvh - 54px - 0.4rem);
   }
 
   .pj-gemstones-wheel__info {
@@ -1752,7 +1752,7 @@ textarea {
     display: flex;
     justify-content: center;
     flex: 1 1 auto;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .pj-gem-display-layout {
@@ -1760,12 +1760,12 @@ textarea {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.2rem;
     width: 100%;
     max-width: 360px;
     margin: 0 auto;
     text-align: center;
-    --pj-m-orb: clamp(112px, 20vh, 200px);
+    --pj-m-orb: clamp(100px, 17vh, 170px);
   }
 
   .pj-gem-display-stone {
@@ -1790,9 +1790,9 @@ textarea {
   }
 
   .pj-gem-display-name {
-    margin: 0.2rem 0 0;
+    margin: 0;
     transform: none !important;
-    font-size: clamp(1.25rem, 5.4vw, 1.7rem);
+    font-size: clamp(1.15rem, 5vw, 1.5rem);
     letter-spacing: 0.2em;
     text-indent: 0.2em;
     text-align: center;
@@ -1804,7 +1804,7 @@ textarea {
     max-width: 340px;
     flex: 0 0 auto;
     padding-top: 0;
-    gap: 0.6rem;
+    gap: 0.45rem;
     text-align: left;
   }
 
@@ -3978,4 +3978,11 @@ textarea {
   .pj-process-step__name { font-size: 0.66rem; letter-spacing: 0.1em; }
   .pj-process-step__media { margin-bottom: 0.4rem; }
   .pj-process-step__desc { font-size: 0.74rem; line-height: 1.4; }
+}
+
+/* Laptops: the stone, info and wheel scale together to fit any window */
+@media (min-width: 960px) {
+  .pj-gemstones-wheel-section .pj-gemstones-wheel__layout {
+    zoom: var(--pj-d-zoom, 1);
+  }
 }
