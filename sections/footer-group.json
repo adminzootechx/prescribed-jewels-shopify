@@ -14,59 +14,141 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "link1": {
-          "type": "link",
-          "settings": {
-            "label": "Jewels",
-            "link": "#pj-designs"
-          }
-        },
-        "link2": {
-          "type": "link",
+        "support_1": {
+          "type": "support_link",
           "settings": {
             "label": "Our Story",
-            "link": "#pj-story"
+            "link": "#pj-story",
+            "open_modal": false
           }
         },
-        "link3": {
-          "type": "link",
+        "support_2": {
+          "type": "support_link",
           "settings": {
             "label": "The Prescription",
-            "link": "#pj-process"
+            "link": "#pj-process",
+            "open_modal": false
           }
         },
-        "link4": {
-          "type": "link",
+        "support_3": {
+          "type": "support_link",
           "settings": {
-            "label": "Gemstones",
-            "link": "#pj-gemstones"
+            "label": "About Navaratna Gemstones",
+            "link": "#pj-gemstones",
+            "open_modal": false
+          }
+        },
+        "support_4": {
+          "type": "support_link",
+          "settings": {
+            "label": "Bespoke",
+            "link": "#pj-designs",
+            "open_modal": true
+          }
+        },
+        "support_5": {
+          "type": "support_link",
+          "settings": {
+            "label": "Contact Us",
+            "link": "/pages/contact",
+            "open_modal": false
+          }
+        },
+        "product_1": {
+          "type": "product_link",
+          "settings": {
+            "label": "The Classic — Rings",
+            "link": "#pj-designs",
+            "open_modal": false,
+            "modal_design": "01 — The Classic (Signature Ring)"
+          }
+        },
+        "product_2": {
+          "type": "product_link",
+          "settings": {
+            "label": "The Solace — Pendants",
+            "link": "#pj-designs",
+            "open_modal": false,
+            "modal_design": "02 — The Solace (Signature Pendant)"
+          }
+        },
+        "product_3": {
+          "type": "product_link",
+          "settings": {
+            "label": "The Balance — Bracelets",
+            "link": "#pj-designs",
+            "open_modal": false,
+            "modal_design": "03 — The Balance (Signature Bracelet)"
+          }
+        },
+        "product_4": {
+          "type": "product_link",
+          "settings": {
+            "label": "The Aura — Earrings",
+            "link": "#pj-designs",
+            "open_modal": false,
+            "modal_design": "04 — The Aura (Signature Drop Earrings)"
+          }
+        },
+        "product_5": {
+          "type": "product_link",
+          "settings": {
+            "label": "The Signet — Crest Rings",
+            "link": "#pj-designs",
+            "open_modal": false,
+            "modal_design": "05 — The Signet (Signature Crest Ring)"
+          }
+        },
+        "product_6": {
+          "type": "product_link",
+          "settings": {
+            "label": "The Celestial — Medallions",
+            "link": "#pj-designs",
+            "open_modal": false,
+            "modal_design": "06 — The Celestial (Signature Medallion)"
           }
         }
       },
       "block_order": [
-        "link1",
-        "link2",
-        "link3",
-        "link4"
+        "support_1",
+        "support_2",
+        "support_3",
+        "support_4",
+        "support_5",
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4",
+        "product_5",
+        "product_6"
       ],
       "settings": {
+        "show_wordmark": true,
+        "about_heading": "About Prescribed Jewels",
+        "about_tagline": "Ancient wisdom, modern fine jewelry — prescribed for you.",
+        "instagram_url": "https://www.instagram.com/prescribed.jewels?exln=dGVsc2ZjdTloM2g=",
+        "email_address": "hello@prescribedjewels.com",
+        "col2_heading": "Learn and Support",
+        "col3_heading": "Our Products",
+        "newsletter_heading": "Join Our Mailing List",
+        "newsletter_text": "Sign up to receive email updates on new designs, gemstone insights, private consultations, and bespoke creations.",
         "inquire_label": "Inquire",
         "bg_color": "#301D0A",
         "bg_opacity": 100,
         "show_border_top": true,
         "border_color": "#ffffff1a",
-        "logo_color": "#e9d2af",
-        "link_color": "#a6998a",
-        "link_hover_color": "#e9d2af",
-        "social_color": "#a6998a",
-        "social_hover_color": "#e9d2af",
-        "max_width": 1400,
+        "logo_color": "#f4ebe1",
+        "link_color": "#e2d5c4",
+        "link_hover_color": "#ffffff",
+        "social_color": "#e2d5c4",
+        "social_hover_color": "#ffffff",
+        "max_width": 1360,
         "logo_scale": 100,
         "link_size": 100,
         "link_gap": 28,
         "social_size": 18,
-        "padding_top": 28,
-        "padding_bottom": 28
+        "padding_top": 64,
+        "padding_bottom": 40
       }
     }
   },
