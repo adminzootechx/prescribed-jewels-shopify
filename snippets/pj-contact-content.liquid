@@ -1,150 +1,140 @@
 {%- liquid
-  assign eyebrow = eyebrow | default: 'PRIVATE CONCIERGE & ATELIER'
-  assign heading = heading | default: 'Contact Us'
-  assign subtext = subtext | default: 'Whether you are inquiring about your Vedic gemstone prescription, one of our seven signature designs, or a custom bespoke commission, our concierge and gemologists are here to assist you.'
-  assign email = email | default: 'concierge@prescribedjewels.com'
-  assign phone = phone | default: '+91 98290 00000'
-  assign hours = hours | default: 'Monday – Saturday · 10:00 AM – 7:00 PM IST'
-  assign location = location | default: 'Jaipur & Mumbai · Private Consultations by Appointment'
+  assign heading = heading | default: 'Get in Touch'
+  assign subtext = subtext | default: "We'd love to hear from you. Whether you're enquiring about a piece, arranging a virtual appointment, or exploring a bespoke creation, our team is here to assist."
+  assign email = email | default: 'hello@prescribedjewels.com'
+  assign insta_handle = insta_handle | default: 'prescribed.jewels'
+  assign insta_url = insta_url | default: 'https://www.instagram.com/prescribed.jewels?exln=dGVsc2ZjdTloM2g='
 -%}
 
 <div class="pj-contact-page">
   <div class="pj-container pj-contact-page__container">
-    <div class="pj-contact-page__grid">
-      <!-- Left Column: Editorial Intro & Direct Concierge Details -->
-      <div class="pj-contact-page__info">
-        <div class="pj-contact-page__monogram">
-          {% render 'pj-monogram', variant: 'monogram' %}
-        </div>
-        <p class="pj-eyebrow pj-contact-page__eyebrow">{{ eyebrow }}</p>
-        <h1 class="pj-section-title pj-contact-page__title">{{ heading }}</h1>
-        <p class="pj-contact-page__lead">{{ subtext }}</p>
+    <!-- Top Centered Header (Matching Reference Layout) -->
+    <div class="pj-contact-page__header">
+      <h1 class="pj-contact-page__title">{{ heading }}</h1>
+      <p class="pj-contact-page__lead">{{ subtext }}</p>
 
-        <div class="pj-contact-page__details">
-          <div class="pj-contact-page__detail-item">
-            <span class="pj-contact-page__detail-label">Concierge Email</span>
-            <a href="mailto:{{ email }}" class="pj-contact-page__detail-val pj-contact-page__detail-link">{{ email }}</a>
-          </div>
+      <div class="pj-contact-page__meta">
+        <a href="mailto:{{ email }}" class="pj-contact-page__meta-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"/>
+            <path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>{{ email }}</span>
+        </a>
 
-          <div class="pj-contact-page__detail-item">
-            <span class="pj-contact-page__detail-label">Telephone &amp; WhatsApp</span>
-            <a href="tel:{{ phone | remove: ' ' }}" class="pj-contact-page__detail-val pj-contact-page__detail-link">{{ phone }}</a>
-          </div>
+        <span class="pj-contact-page__meta-sep" aria-hidden="true">·</span>
 
-          <div class="pj-contact-page__detail-item">
-            <span class="pj-contact-page__detail-label">Atelier Hours</span>
-            <span class="pj-contact-page__detail-val">{{ hours }}</span>
-          </div>
+        <a
+          href="{{ insta_url }}"
+          class="pj-contact-page__meta-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram @{{ insta_handle }}"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+          </svg>
+          <span>@{{ insta_handle }}</span>
+        </a>
+      </div>
+    </div>
 
-          <div class="pj-contact-page__detail-item">
-            <span class="pj-contact-page__detail-label">Private Atelier</span>
-            <span class="pj-contact-page__detail-val">{{ location }}</span>
-          </div>
-        </div>
-
-        <div class="pj-contact-page__prescription-box">
-          <p class="pj-contact-page__prescription-note">Ready to submit your birth details for a gemstone prescription?</p>
-          <button
-            type="button"
-            class="pj-btn pj-btn--outline pj-contact-page__prescription-btn"
-            data-open-prescription
-            data-design="01 — The Classic (Signature Ring)"
+    <!-- Bottom 2-Column Split: Photo Left, Form Right -->
+    <div class="pj-contact-page__split">
+      <div class="pj-contact-page__media">
+        {%- if image != blank -%}
+          {{ image | image_url: width: 1200 | image_tag: class: 'pj-contact-page__img', widths: '500, 800, 1200', sizes: '(min-width: 900px) 46vw, 100vw', alt: heading, loading: 'eager' }}
+        {%- else -%}
+          <img
+            src="{{ 'contact-portrait.jpg' | asset_url }}"
+            alt="{{ heading | escape }}"
+            class="pj-contact-page__img"
+            width="607"
+            height="424"
+            loading="eager"
           >
-            <span>Begin Your Prescription</span>
-            <span aria-hidden="true">→</span>
-          </button>
-        </div>
+        {%- endif -%}
       </div>
 
-      <!-- Right Column: Luxury Inquiry Form -->
-      <div class="pj-contact-page__form-card">
-        <h2 class="pj-contact-page__form-title">Send an Inquiry</h2>
-        <p class="pj-contact-page__form-subtitle">Our concierge responds to all inquiries within 24 hours.</p>
-
+      <div class="pj-contact-page__form-wrap">
         {%- form 'contact', id: 'pj-contact-page-form', class: 'pj-contact-form' -%}
           {%- if form.posted_successfully? -%}
             <div class="pj-contact-form__success" role="status" tabindex="-1" autofocus>
-              <span class="pj-contact-form__success-badge">INQUIRY RECEIVED</span>
-              <p>Thank you for reaching out to Prescribed Jewels. Our concierge team has received your message and will respond shortly.</p>
+              <span class="pj-contact-form__success-badge">MESSAGE SENT</span>
+              <p>Thank you for getting in touch. Our team will get back to you shortly.</p>
             </div>
           {%- endif -%}
 
           {%- if form.errors -%}
             <div class="pj-contact-form__errors" role="alert" tabindex="-1" autofocus>
-              <p>Please check the following fields:</p>
               {{ form.errors | default_errors }}
             </div>
           {%- endif -%}
 
-          <div class="pj-form__grid">
-            <div class="pj-form__field">
-              <label for="pj-contact-name" class="pj-form__label">Full Name <span class="pj-req">*</span></label>
+          <div class="pj-contact-form__row pj-contact-form__row--two">
+            <div class="pj-contact-form__field">
+              <label for="pj-contact-name" class="pj-visually-hidden">Name</label>
               <input
                 type="text"
                 id="pj-contact-name"
                 name="contact[name]"
-                class="pj-form__input"
+                class="pj-contact-form__input"
                 value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-                placeholder="Your full name"
-                required
+                placeholder="Name"
               >
             </div>
 
-            <div class="pj-form__field">
-              <label for="pj-contact-email" class="pj-form__label">Email Address <span class="pj-req">*</span></label>
+            <div class="pj-contact-form__field">
+              <label for="pj-contact-email" class="pj-visually-hidden">Email *</label>
               <input
                 type="email"
                 id="pj-contact-email"
                 name="contact[email]"
-                class="pj-form__input"
+                class="pj-contact-form__input"
                 value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-                placeholder="you@example.com"
+                placeholder="Email *"
                 autocorrect="off"
                 autocapitalize="off"
                 required
               >
             </div>
+          </div>
 
-            <div class="pj-form__field">
-              <label for="pj-contact-phone" class="pj-form__label">Phone / WhatsApp</label>
+          <div class="pj-contact-form__row">
+            <div class="pj-contact-form__field">
+              <label for="pj-contact-phone" class="pj-visually-hidden">Phone number</label>
               <input
                 type="tel"
                 id="pj-contact-phone"
                 name="contact[phone]"
-                class="pj-form__input"
+                class="pj-contact-form__input"
                 value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-                placeholder="+91 98290 00000"
+                placeholder="Phone number"
               >
             </div>
+          </div>
 
-            <div class="pj-form__field">
-              <label for="pj-contact-subject" class="pj-form__label">Subject</label>
-              <select id="pj-contact-subject" name="contact[subject]" class="pj-form__select">
-                <option value="Gemstone Prescription Inquiry">Gemstone Prescription Inquiry</option>
-                <option value="The 7 Signature Designs">The 7 Signature Designs</option>
-                <option value="Custom Bespoke Commission">Custom Bespoke Commission</option>
-                <option value="Existing Order & Care">Existing Order &amp; Care</option>
-                <option value="Private Consultation">Private Consultation</option>
-              </select>
-            </div>
-
-            <div class="pj-form__field pj-form__field--full">
-              <label for="pj-contact-body" class="pj-form__label">Message <span class="pj-req">*</span></label>
+          <div class="pj-contact-form__row">
+            <div class="pj-contact-form__field">
+              <label for="pj-contact-body" class="pj-visually-hidden">Comment</label>
               <textarea
                 id="pj-contact-body"
                 name="contact[body]"
-                class="pj-form__textarea"
+                class="pj-contact-form__textarea"
                 rows="5"
-                placeholder="How may we assist you?"
+                placeholder="Comment"
                 required
               >{{ form.body }}</textarea>
             </div>
           </div>
 
-          <button type="submit" class="pj-btn pj-btn--primary pj-btn--full pj-contact-form__submit">
-            <span>Send Inquiry</span>
-            <span aria-hidden="true">→</span>
-          </button>
+          <div class="pj-contact-form__actions">
+            <button type="submit" class="pj-contact-form__submit">
+              Send
+            </button>
+          </div>
         {%- endform -%}
       </div>
     </div>
