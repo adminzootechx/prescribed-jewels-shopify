@@ -131,13 +131,21 @@
         {%- endfor -%}
       {%- elsif section.blocks.size > 0 -%}
         {%- for block in section.blocks -%}
-          <a href="{{ block.settings.link | default: '#' }}" class="pj-header__link pj-header__link--{{ nav_case_cls }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+          {%- assign raw_link = block.settings.link | default: '#' -%}
+          {%- assign first_ch = raw_link | slice: 0, 1 -%}
+          {%- if first_ch == '#' and template.name != 'index' and raw_link.size > 1 -%}
+            {%- assign nav_href = routes.root_url | append: raw_link -%}
+          {%- else -%}
+            {%- assign nav_href = raw_link -%}
+          {%- endif -%}
+          <a href="{{ nav_href }}" class="pj-header__link pj-header__link--{{ nav_case_cls }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
         {%- endfor -%}
       {%- else -%}
-        <a href="#pj-process" class="pj-header__link pj-header__link--{{ nav_case_cls }}">The Process</a>
-        <a href="#pj-designs" class="pj-header__link pj-header__link--{{ nav_case_cls }}">The Designs</a>
-        <a href="#pj-story" class="pj-header__link pj-header__link--{{ nav_case_cls }}">Our Philosophy</a>
-        <a href="/blogs/journal" class="pj-header__link pj-header__link--{{ nav_case_cls }}">Journal</a>
+        <a href="{% unless template.name == 'index' %}{{ routes.root_url }}{% endunless %}#pj-process" class="pj-header__link pj-header__link--{{ nav_case_cls }}">The Process</a>
+        <a href="{% unless template.name == 'index' %}{{ routes.root_url }}{% endunless %}#pj-designs" class="pj-header__link pj-header__link--{{ nav_case_cls }}">The Designs</a>
+        <a href="{% unless template.name == 'index' %}{{ routes.root_url }}{% endunless %}#pj-story" class="pj-header__link pj-header__link--{{ nav_case_cls }}">Our Philosophy</a>
+        <a href="{% unless template.name == 'index' %}{{ routes.root_url }}{% endunless %}#pj-gemstones" class="pj-header__link pj-header__link--{{ nav_case_cls }}">Gemstones</a>
+        <a href="/pages/contact" class="pj-header__link pj-header__link--{{ nav_case_cls }}">Contact Us</a>
       {%- endif -%}
     </nav>
 
@@ -169,13 +177,21 @@
         {%- endfor -%}
       {%- elsif section.blocks.size > 0 -%}
         {%- for block in section.blocks -%}
-          <a href="{{ block.settings.link | default: '#' }}" class="pj-mobile-nav__link">{{ block.settings.label }}</a>
+          {%- assign raw_link = block.settings.link | default: '#' -%}
+          {%- assign first_ch = raw_link | slice: 0, 1 -%}
+          {%- if first_ch == '#' and template.name != 'index' and raw_link.size > 1 -%}
+            {%- assign nav_href = routes.root_url | append: raw_link -%}
+          {%- else -%}
+            {%- assign nav_href = raw_link -%}
+          {%- endif -%}
+          <a href="{{ nav_href }}" class="pj-mobile-nav__link">{{ block.settings.label }}</a>
         {%- endfor -%}
       {%- else -%}
-        <a href="#pj-process" class="pj-mobile-nav__link">The Process</a>
-        <a href="#pj-designs" class="pj-mobile-nav__link">The Designs</a>
-        <a href="#pj-story" class="pj-mobile-nav__link">Our Philosophy</a>
-        <a href="/blogs/journal" class="pj-mobile-nav__link">Journal</a>
+        <a href="{% unless template.name == 'index' %}{{ routes.root_url }}{% endunless %}#pj-process" class="pj-mobile-nav__link">The Process</a>
+        <a href="{% unless template.name == 'index' %}{{ routes.root_url }}{% endunless %}#pj-designs" class="pj-mobile-nav__link">The Designs</a>
+        <a href="{% unless template.name == 'index' %}{{ routes.root_url }}{% endunless %}#pj-story" class="pj-mobile-nav__link">Our Philosophy</a>
+        <a href="{% unless template.name == 'index' %}{{ routes.root_url }}{% endunless %}#pj-gemstones" class="pj-mobile-nav__link">Gemstones</a>
+        <a href="/pages/contact" class="pj-mobile-nav__link">Contact Us</a>
       {%- endif -%}
       <a href="{{ routes.cart_url }}" class="pj-mobile-nav__link pj-mobile-nav__cart">{{ hs.cart_label | default: 'Cart' }}{% if hs.show_cart_count %} ({{ cart.item_count }}){% endif %}</a>
     </nav>

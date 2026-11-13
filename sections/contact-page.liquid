@@ -1,0 +1,56 @@
+{%- assign s = section.settings -%}
+
+<section
+  id="pj-contact"
+  class="pj-contact-section"
+  style="
+    --pj-contact-bg: {{ s.bg_color | default: '#F3ECE0' }};
+    --pj-contact-card-bg: {{ s.card_bg | default: '#FBF8F3' }};
+    --pj-contact-text: {{ s.text_color | default: '#1E1A16' }};
+    --pj-contact-muted: {{ s.muted_color | default: '#5A5045' }};
+    --pj-contact-accent: {{ s.accent_color | default: '#B69156' }};
+    --pj-contact-pt: {{ s.padding_top | default: 56 }}px;
+    --pj-contact-pb: {{ s.padding_bottom | default: 72 }}px;
+  "
+>
+  {% render 'pj-contact-content',
+    eyebrow: s.eyebrow,
+    heading: s.heading,
+    subtext: s.subtext,
+    email: s.email,
+    phone: s.phone,
+    hours: s.hours,
+    location: s.location
+  %}
+</section>
+
+{% schema %}
+{
+  "name": "Contact Us Page",
+  "tag": "div",
+  "class": "pj-section-contact",
+  "settings": [
+    { "type": "header", "content": "Text & Details" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "PRIVATE CONCIERGE & ATELIER" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Contact Us" },
+    { "type": "textarea", "id": "subtext", "label": "Intro Text", "default": "Whether you are inquiring about your Vedic gemstone prescription, one of our seven signature designs, or a custom bespoke commission, our concierge and gemologists are here to assist you." },
+    { "type": "text", "id": "email", "label": "Concierge Email", "default": "concierge@prescribedjewels.com" },
+    { "type": "text", "id": "phone", "label": "Phone / WhatsApp", "default": "+91 98290 00000" },
+    { "type": "text", "id": "hours", "label": "Atelier Hours", "default": "Monday – Saturday · 10:00 AM – 7:00 PM IST" },
+    { "type": "text", "id": "location", "label": "Location / Note", "default": "Jaipur & Mumbai · Private Consultations by Appointment" },
+    { "type": "header", "content": "Colours & Spacing" },
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#F3ECE0" },
+    { "type": "color", "id": "card_bg", "label": "Form card background", "default": "#FBF8F3" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#1E1A16" },
+    { "type": "color", "id": "muted_color", "label": "Muted text color", "default": "#5A5045" },
+    { "type": "color", "id": "accent_color", "label": "Gold accent color", "default": "#B69156" },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "presets": [
+    {
+      "name": "Contact Us Page"
+    }
+  ]
+}
+{% endschema %}

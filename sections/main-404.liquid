@@ -1,0 +1,35 @@
+{%- if request.path contains 'contact' -%}
+  <section
+    id="pj-contact"
+    class="pj-contact-section"
+    style="
+      --pj-contact-bg: #F3ECE0;
+      --pj-contact-card-bg: #FBF8F3;
+      --pj-contact-text: #1E1A16;
+      --pj-contact-muted: #5A5045;
+      --pj-contact-accent: #B69156;
+      --pj-contact-pt: 56px;
+      --pj-contact-pb: 72px;
+    "
+  >
+    {% render 'pj-contact-content' %}
+  </section>
+{%- else -%}
+  <section class="pj-contact-section" style="--pj-contact-bg: #F3ECE0; --pj-contact-pt: 80px; --pj-contact-pb: 96px; text-align: center;">
+    <div class="pj-container" style="max-width: 640px; margin: 0 auto;">
+      <p class="pj-eyebrow">404</p>
+      <h1 class="pj-section-title" style="margin-bottom: 1rem;">Page Not Found</h1>
+      <p style="color: var(--pj-text-muted); margin-bottom: 2rem;">The page you are looking for may have moved or no longer exists.</p>
+      <a href="{{ routes.root_url }}" class="pj-btn pj-btn--primary">Return Home →</a>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "404 / Contact Fallback",
+  "tag": "div",
+  "class": "pj-section-404",
+  "settings": []
+}
+{% endschema %}

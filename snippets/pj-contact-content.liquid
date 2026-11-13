@@ -1,0 +1,152 @@
+{%- liquid
+  assign eyebrow = eyebrow | default: 'PRIVATE CONCIERGE & ATELIER'
+  assign heading = heading | default: 'Contact Us'
+  assign subtext = subtext | default: 'Whether you are inquiring about your Vedic gemstone prescription, one of our seven signature designs, or a custom bespoke commission, our concierge and gemologists are here to assist you.'
+  assign email = email | default: 'concierge@prescribedjewels.com'
+  assign phone = phone | default: '+91 98290 00000'
+  assign hours = hours | default: 'Monday – Saturday · 10:00 AM – 7:00 PM IST'
+  assign location = location | default: 'Jaipur & Mumbai · Private Consultations by Appointment'
+-%}
+
+<div class="pj-contact-page">
+  <div class="pj-container pj-contact-page__container">
+    <div class="pj-contact-page__grid">
+      <!-- Left Column: Editorial Intro & Direct Concierge Details -->
+      <div class="pj-contact-page__info">
+        <div class="pj-contact-page__monogram">
+          {% render 'pj-monogram', variant: 'monogram' %}
+        </div>
+        <p class="pj-eyebrow pj-contact-page__eyebrow">{{ eyebrow }}</p>
+        <h1 class="pj-section-title pj-contact-page__title">{{ heading }}</h1>
+        <p class="pj-contact-page__lead">{{ subtext }}</p>
+
+        <div class="pj-contact-page__details">
+          <div class="pj-contact-page__detail-item">
+            <span class="pj-contact-page__detail-label">Concierge Email</span>
+            <a href="mailto:{{ email }}" class="pj-contact-page__detail-val pj-contact-page__detail-link">{{ email }}</a>
+          </div>
+
+          <div class="pj-contact-page__detail-item">
+            <span class="pj-contact-page__detail-label">Telephone &amp; WhatsApp</span>
+            <a href="tel:{{ phone | remove: ' ' }}" class="pj-contact-page__detail-val pj-contact-page__detail-link">{{ phone }}</a>
+          </div>
+
+          <div class="pj-contact-page__detail-item">
+            <span class="pj-contact-page__detail-label">Atelier Hours</span>
+            <span class="pj-contact-page__detail-val">{{ hours }}</span>
+          </div>
+
+          <div class="pj-contact-page__detail-item">
+            <span class="pj-contact-page__detail-label">Private Atelier</span>
+            <span class="pj-contact-page__detail-val">{{ location }}</span>
+          </div>
+        </div>
+
+        <div class="pj-contact-page__prescription-box">
+          <p class="pj-contact-page__prescription-note">Ready to submit your birth details for a gemstone prescription?</p>
+          <button
+            type="button"
+            class="pj-btn pj-btn--outline pj-contact-page__prescription-btn"
+            data-open-prescription
+            data-design="01 — The Classic (Signature Ring)"
+          >
+            <span>Begin Your Prescription</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Luxury Inquiry Form -->
+      <div class="pj-contact-page__form-card">
+        <h2 class="pj-contact-page__form-title">Send an Inquiry</h2>
+        <p class="pj-contact-page__form-subtitle">Our concierge responds to all inquiries within 24 hours.</p>
+
+        {%- form 'contact', id: 'pj-contact-page-form', class: 'pj-contact-form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="pj-contact-form__success" role="status" tabindex="-1" autofocus>
+              <span class="pj-contact-form__success-badge">INQUIRY RECEIVED</span>
+              <p>Thank you for reaching out to Prescribed Jewels. Our concierge team has received your message and will respond shortly.</p>
+            </div>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <div class="pj-contact-form__errors" role="alert" tabindex="-1" autofocus>
+              <p>Please check the following fields:</p>
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="pj-form__grid">
+            <div class="pj-form__field">
+              <label for="pj-contact-name" class="pj-form__label">Full Name <span class="pj-req">*</span></label>
+              <input
+                type="text"
+                id="pj-contact-name"
+                name="contact[name]"
+                class="pj-form__input"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="Your full name"
+                required
+              >
+            </div>
+
+            <div class="pj-form__field">
+              <label for="pj-contact-email" class="pj-form__label">Email Address <span class="pj-req">*</span></label>
+              <input
+                type="email"
+                id="pj-contact-email"
+                name="contact[email]"
+                class="pj-form__input"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                placeholder="you@example.com"
+                autocorrect="off"
+                autocapitalize="off"
+                required
+              >
+            </div>
+
+            <div class="pj-form__field">
+              <label for="pj-contact-phone" class="pj-form__label">Phone / WhatsApp</label>
+              <input
+                type="tel"
+                id="pj-contact-phone"
+                name="contact[phone]"
+                class="pj-form__input"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                placeholder="+91 98290 00000"
+              >
+            </div>
+
+            <div class="pj-form__field">
+              <label for="pj-contact-subject" class="pj-form__label">Subject</label>
+              <select id="pj-contact-subject" name="contact[subject]" class="pj-form__select">
+                <option value="Gemstone Prescription Inquiry">Gemstone Prescription Inquiry</option>
+                <option value="The 7 Signature Designs">The 7 Signature Designs</option>
+                <option value="Custom Bespoke Commission">Custom Bespoke Commission</option>
+                <option value="Existing Order & Care">Existing Order &amp; Care</option>
+                <option value="Private Consultation">Private Consultation</option>
+              </select>
+            </div>
+
+            <div class="pj-form__field pj-form__field--full">
+              <label for="pj-contact-body" class="pj-form__label">Message <span class="pj-req">*</span></label>
+              <textarea
+                id="pj-contact-body"
+                name="contact[body]"
+                class="pj-form__textarea"
+                rows="5"
+                placeholder="How may we assist you?"
+                required
+              >{{ form.body }}</textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="pj-btn pj-btn--primary pj-btn--full pj-contact-form__submit">
+            <span>Send Inquiry</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>

@@ -41,13 +41,21 @@
             "label": "Gemstones",
             "link": "#pj-gemstones"
           }
+        },
+        "link5": {
+          "type": "link",
+          "settings": {
+            "label": "Contact Us",
+            "link": "/pages/contact"
+          }
         }
       },
       "block_order": [
         "link1",
         "link2",
         "link3",
-        "link4"
+        "link4",
+        "link5"
       ],
       "settings": {
         "logo_layout": "stacked",
