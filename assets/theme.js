@@ -213,7 +213,12 @@
       }
 
       targetTranslateX = getCenterTranslateForIndex(currentCardIndex);
-      requestTick();
+      if (window.innerWidth < 960) {
+        // Phones scroll the viewport natively, so the arrows must scroll it too
+        designsViewport.scrollTo({ left: targetTranslateX, behavior: 'smooth' });
+      } else {
+        requestTick();
+      }
 
       clearTimeout(stepCooldownTimer);
       stepCooldownTimer = setTimeout(() => {
@@ -250,6 +255,16 @@
     designsViewport.addEventListener('scroll', () => {
       if (window.innerWidth < 960) {
         updateActiveSpotlight();
+        // Keep the arrows in sync with manual swipes: find the card nearest the centre
+        const mid = designsViewport.scrollLeft + designsViewport.clientWidth / 2;
+        let best = 0;
+        let bestDist = Infinity;
+        allCards.forEach((card, i) => {
+          const d = Math.abs(card.offsetLeft + card.offsetWidth / 2 - mid);
+          if (d < bestDist) { bestDist = d; best = i; }
+        });
+        const len = originalCards.length;
+        currentCardIndex = (((best - PREPEND_COUNT) % len) + len) % len;
       }
     }, { passive: true });
 
@@ -1195,7 +1210,7 @@
         if (!isSwiping || e.touches.length !== 1) return;
         const dy = e.touches[0].clientY - touchStartY;
         const dx = e.touches[0].clientX - touchStartX;
-        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
           if (e.cancelable) e.preventDefault();
         }
       }, { passive: false });
@@ -1203,9 +1218,11 @@
       stage.addEventListener('touchend', (e) => {
         if (!isSwiping) return;
         isSwiping = false;
+        const dx = e.changedTouches[0].clientX - touchStartX;
         const dy = e.changedTouches[0].clientY - touchStartY;
-        if (Math.abs(dy) >= 28) {
-          const dir = dy < 0 ? 1 : -1;
+        const d = Math.abs(dx) >= Math.abs(dy) ? dx : dy;
+        if (Math.abs(d) >= 28) {
+          const dir = d < 0 ? 1 : -1;
           const next = activeStoneIndex + dir;
           if (next >= 0 && next < GEMSTONES.length) {
             goTo(next);
