@@ -822,6 +822,18 @@
       inner.appendChild(claws);
       slot.appendChild(inner);
 
+      // Direct tap/click on any gemstone slot brings it into focus
+      slot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const currentActiveSlot = (wheelStep % NUM_SLOTS + NUM_SLOTS) % NUM_SLOTS;
+        const rel = ((s - currentActiveSlot) % NUM_SLOTS + NUM_SLOTS) % NUM_SLOTS;
+        let adjustedRel = rel;
+        if (adjustedRel > 4) adjustedRel -= NUM_SLOTS;
+        const targetStone = (((activeStoneIndex + adjustedRel) % GEMSTONES.length) + GEMSTONES.length) % GEMSTONES.length;
+        goTo(targetStone);
+        restartAuto();
+      });
+
       wheelRotor.appendChild(slot);
       slotElements.push({ slot, inner, img });
     }
@@ -1165,6 +1177,42 @@
           restartAuto();
         }
       }, { passive: false });
+
+      // Mobile touch interaction: swipe up/down on the wheel turns it
+      let touchStartY = 0;
+      let touchStartX = 0;
+      let isSwiping = false;
+
+      stage.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          touchStartY = e.touches[0].clientY;
+          touchStartX = e.touches[0].clientX;
+          isSwiping = true;
+        }
+      }, { passive: true });
+
+      stage.addEventListener('touchmove', (e) => {
+        if (!isSwiping || e.touches.length !== 1) return;
+        const dy = e.touches[0].clientY - touchStartY;
+        const dx = e.touches[0].clientX - touchStartX;
+        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
+          if (e.cancelable) e.preventDefault();
+        }
+      }, { passive: false });
+
+      stage.addEventListener('touchend', (e) => {
+        if (!isSwiping) return;
+        isSwiping = false;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dy) >= 28) {
+          const dir = dy < 0 ? 1 : -1;
+          const next = activeStoneIndex + dir;
+          if (next >= 0 && next < GEMSTONES.length) {
+            goTo(next);
+            restartAuto();
+          }
+        }
+      }, { passive: true });
     }
 
     window.addEventListener('resize', () => placeArrow(false), { passive: true });

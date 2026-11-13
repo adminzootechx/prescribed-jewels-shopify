@@ -924,10 +924,7 @@ textarea {
 }
 
 .pj-design-tile__num {
-  font-size: 0.64rem;
-  letter-spacing: 0.18em;
-  color: var(--pj-accent-gold);
-  font-weight: 500;
+  display: none !important;
 }
 
 .pj-design-tile__name {
@@ -1583,51 +1580,7 @@ textarea {
   text-wrap: pretty;
 }
 
-@media (max-width: 900px) {
-  .pj-gem-display-layout {
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    max-width: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .pj-gem-display-stone {
-    flex: 0 0 auto;
-    width: 100%;
-  }
-  .pj-gem-orbit-wrap {
-    width: 280px;
-    height: 280px;
-  }
-  .pj-gem-orbit-wrap .pj-gem-diagram__photo {
-    width: 235px !important;
-    height: 235px !important;
-    transform: translate(-12px, 4px);
-  }
-  .pj-gem-display-name {
-    transform: none;
-    white-space: normal;
-  }
-  .pj-gem-display-details {
-    width: 100%;
-    max-width: 340px;
-    gap: 1.45rem;
-    padding-top: 0;
-    text-align: left;
-  }
-  .pj-gem-info-card--color,
-  .pj-gem-info-card--symbolism,
-  .pj-gem-info-card--everyday {
-    transform: none;
-    margin-top: 0;
-  }
-  .pj-gem-info-card--color .pj-gem-info-icon-col,
-  .pj-gem-info-card--symbolism .pj-gem-info-icon-col,
-  .pj-gem-info-card--everyday .pj-gem-info-icon-col {
-    padding-top: 4px;
-  }
-}
+/* Replaced by unified single-screen mobile gemstones layout */
 /* The diagram: photograph in the middle, four notes around it, each tied back by a fine leader line */
 .pj-gem-diagram {
   position: relative;
@@ -1765,44 +1718,200 @@ textarea {
 .pj-gem-diagram__name { transition: opacity 0.26s ease; }
 .pj-gem-diagram.is-fading .pj-gem-diagram__name { transform: translateX(-50%); }
 
-/* Phones and tablets: photograph first, notes stacked beneath, no leader lines */
+/* ==========================================================================
+ * Gemstones Atlas: Single-Screen Mobile Layout (Wheel & Info visible together)
+ * ========================================================================== */
 @media (max-width: 959px) {
-  .pj-gemstones-wheel__layout {
-    grid-template-columns: 1fr;
-    gap: 2.25rem;
-  }
-  .pj-gem-diagram { aspect-ratio: auto; display: grid; gap: 1.25rem; justify-items: center; text-align: center; }
-  .pj-gem-diagram__lines { display: none; }
-  .pj-gem-diagram__photo, .pj-gem-diagram__name, .pj-gem-note { position: static; transform: none; width: auto; text-align: center; }
-  .pj-gem-diagram__photo { width: min(78vw, 320px); }
-  .pj-gem-diagram__name { width: 100%; }
-  .pj-gem-note p {
-    aspect-ratio: auto;
+  .pj-gemstones-wheel-section {
+    min-height: calc(100vh - 54px);
+    min-height: calc(100dvh - 54px);
     height: auto;
-    -webkit-line-clamp: unset;
-    font-size: calc(1.3rem * var(--pj-w-ns, 1));
-  }
-  .pj-gem-diagram__name .pj-gemstones-wheel__title { font-size: calc(2.2rem * var(--pj-hs, 1) * var(--pj-hs-sec, 1)); }
-  .pj-gem-diagram.is-fading .pj-gem-diagram__name { transform: none; }
-  .pj-gemstones-wheel__stage {
-    justify-content: center;
-    margin-right: 0;
-    width: 100%;
+    max-height: calc(100vh - 54px);
+    max-height: calc(100dvh - 54px);
+    padding: 0.5rem 0.4rem;
     overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .pj-wheel-half-clip {
-    transform-origin: center center;
-    transform: scale(calc(var(--pj-w-wscale, 1) * var(--pj-w-mobile-scale, 0.85)));
-    width: min(92vw, 370px);
-    height: clamp(380px, 80vw, 560px);
-  }
-}
 
-@media (max-width: 480px) {
+  .pj-gemstones-wheel__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    gap: 0;
+    position: relative;
+  }
+
+  .pj-gemstones-wheel__info {
+    padding-left: clamp(0.4rem, 2vw, 1.25rem);
+    padding-right: 0.25rem;
+    transform: none !important;
+    width: 100%;
+    max-width: 100%;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .pj-gem-display-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.45rem;
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+    margin: 0;
+  }
+
+  .pj-gem-display-stone {
+    flex: 0 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .pj-gem-orbit-wrap {
+    width: clamp(115px, 29vw, 145px);
+    height: clamp(115px, 29vw, 145px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .pj-gem-orbit-wrap .pj-gem-diagram__photo {
+    width: clamp(90px, 23vw, 115px) !important;
+    height: clamp(90px, 23vw, 115px) !important;
+    transform: translate(-3px, 2px) !important;
+  }
+
+  .pj-gem-orbit-wrap .pj-gem-diagram__photo img {
+    transform: scale(1.12);
+  }
+
+  .pj-gem-display-name {
+    margin: 0.25rem 0 0.1rem 0;
+    transform: none !important;
+    font-size: clamp(1.05rem, 3.4vw, 1.35rem);
+    letter-spacing: 0.14em;
+    text-indent: 0.14em;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .pj-gem-display-details {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.38rem;
+    padding-top: 0;
+    text-align: left;
+  }
+
+  .pj-gem-info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    transform: none !important;
+    margin: 0 !important;
+    min-height: auto;
+  }
+
+  .pj-gem-info-icon-col {
+    flex: 0 0 20px;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2px !important;
+  }
+
+  .pj-gem-color-swatch {
+    width: 16px;
+    height: 16px;
+  }
+
+  .pj-gem-info-icon--lotus {
+    width: 20px;
+    height: 16px;
+  }
+
+  .pj-gem-info-icon--star {
+    width: 16px;
+    height: 16px;
+  }
+
+  .pj-gem-info-heading {
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 0.05rem 0;
+    color: var(--gem-c, #B69156);
+    font-family: var(--pj-font-sans);
+    font-weight: 600;
+  }
+
+  .pj-gem-info-value {
+    font-size: clamp(0.72rem, 2.1vw, 0.82rem);
+    line-height: 1.3;
+    max-width: 100%;
+    color: var(--pj-w-text, #231A12);
+  }
+
+  #pj-gem-everyday-val {
+    font-style: italic;
+    color: var(--pj-w-muted, #5A4E43);
+  }
+
+  /* Right Stage: Wheel Flush Right */
+  .pj-gemstones-wheel__stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+    right: 0;
+    z-index: 3;
+    flex-shrink: 0;
+    overflow: hidden;
+    width: clamp(120px, 32vw, 155px);
+    height: clamp(280px, 58vh, 380px);
+  }
+
   .pj-wheel-half-clip {
-    transform: scale(calc(var(--pj-w-wscale, 1) * var(--pj-w-mobile-scale, 0.72)));
-    width: min(94vw, 320px);
-    height: clamp(290px, 82vw, 420px);
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+    touch-action: pan-y;
+    cursor: grab;
+    transform: none !important;
+  }
+
+  .pj-wheel-assembly {
+    position: absolute;
+    left: calc(100% - 280px);
+    top: calc(50% - 280px);
+    width: 560px;
+    height: 560px;
+    transform-origin: 280px 280px;
+    transform: scale(clamp(0.42, calc(var(--pj-w-mobile-scale, 0.85) * 0.56), 0.58));
   }
 }
 

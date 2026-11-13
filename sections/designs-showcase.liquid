@@ -40,7 +40,6 @@
               {%- endif -%}
             </div>
             <div class="pj-design-tile__info">
-              <span class="pj-design-tile__num">{{ forloop.index | prepend: '0' }}</span>
               <h3 class="pj-design-tile__name">{{ b.name }}</h3>
               <button type="button" class="pj-design-tile__link" data-open-prescription data-design="{{ b.request_label | escape }}">{{ b.button_label }}</button>
             </div>
