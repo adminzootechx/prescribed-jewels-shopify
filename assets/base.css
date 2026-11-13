@@ -1849,7 +1849,7 @@ textarea {
   }
 
   /* The wheel: turned a quarter so its left half becomes an arch at the bottom */
-  .pj-gemstones-wheel__stage {
+  .pj-gemstones-wheel-section .pj-gemstones-wheel__stage {
     --pj-m-s: 0.63;
     position: relative;
     display: block;
@@ -1863,7 +1863,7 @@ textarea {
     z-index: 3;
   }
 
-  .pj-wheel-half-clip {
+  .pj-gemstones-wheel-section .pj-wheel-half-clip {
     position: absolute;
     left: 50%;
     top: calc(100% - 185px * var(--pj-m-s));
@@ -1878,14 +1878,14 @@ textarea {
   }
 
   /* Keep every stone upright inside the turned wheel */
-  .pj-wheel-gem-inner {
+  .pj-gemstones-wheel-section .pj-wheel-gem-inner {
     transform: rotate(calc(var(--ur, 0deg) - 90deg)) scale(var(--sc, 1));
   }
 }
 
-@media (max-width: 389px) { .pj-gemstones-wheel__stage { --pj-m-s: 0.56; } }
-@media (min-width: 430px) and (max-width: 519px) { .pj-gemstones-wheel__stage { --pj-m-s: 0.7; } }
-@media (min-width: 520px) and (max-width: 959px) { .pj-gemstones-wheel__stage { --pj-m-s: 0.95; } }
+@media (max-width: 389px) { .pj-gemstones-wheel-section .pj-gemstones-wheel__stage { --pj-m-s: 0.56; } }
+@media (min-width: 430px) and (max-width: 519px) { .pj-gemstones-wheel-section .pj-gemstones-wheel__stage { --pj-m-s: 0.7; } }
+@media (min-width: 520px) and (max-width: 959px) { .pj-gemstones-wheel-section .pj-gemstones-wheel__stage { --pj-m-s: 0.95; } }
 
 @media (prefers-reduced-motion: reduce) {
   .pj-gem-diagram__photo.is-turning img { animation: none; }
