@@ -1,11 +1,60 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "contact_page": {
+      "type": "contact-page",
+      "settings": {
+        "heading": "Get in Touch",
+        "subtext": "We'd love to hear from you. Whether you're enquiring about a piece, arranging a virtual appointment, or exploring a bespoke creation, our team is here to assist.",
+        "email": "hello@prescribedjewels.com",
+        "insta_handle": "prescribed.jewels",
+        "insta_url": "https://www.instagram.com/prescribed.jewels?exln=dGVsc2ZjdTloM2g=",
+        "btn_label": "Send",
+        "use_custom_fonts": false,
+        "font_heading": "cormorant_n4",
+        "font_body": "jost_n4",
+        "heading_size": 42,
+        "subtext_size": 15,
+        "meta_size": 14,
+        "input_size": 14,
+        "btn_size": 14,
+        "bg_color": "#FFFFFF",
+        "bg_opacity": 100,
+        "text_color": "#1F2A44",
+        "muted_color": "#3B4760",
+        "meta_color": "#3B4760",
+        "input_bg_color": "#FFFFFF",
+        "input_border_color": "#8E98A8",
+        "input_text_color": "#1F2A44",
+        "btn_bg_color": "#233352",
+        "btn_text_color": "#FFFFFF",
+        "max_width": 1220,
+        "image_width": 48,
+        "header_gap": 48,
+        "padding_top": 56,
+        "padding_bottom": 80
+      }
+    },
+    "product_page": {
+      "type": "main-product",
+      "settings": {}
+    },
     "main": {
       "type": "main-404",
       "settings": {}
     }
   },
   "order": [
+    "contact_page",
+    "product_page",
     "main"
   ]
 }

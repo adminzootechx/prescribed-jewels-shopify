@@ -4,6 +4,7 @@
   assign email = email | default: 'hello@prescribedjewels.com'
   assign insta_handle = insta_handle | default: 'prescribed.jewels'
   assign insta_url = insta_url | default: 'https://www.instagram.com/prescribed.jewels?exln=dGVsc2ZjdTloM2g='
+  assign btn_label = btn_label | default: 'Send'
 -%}
 
 <div class="pj-contact-page">
@@ -132,7 +133,7 @@
 
           <div class="pj-contact-form__actions">
             <button type="submit" class="pj-contact-form__submit">
-              Send
+              {{ btn_label }}
             </button>
           </div>
         {%- endform -%}

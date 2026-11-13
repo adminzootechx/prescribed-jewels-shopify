@@ -7,38 +7,6 @@
   assign design_price = placeholder_price | default: '$2,400'
   assign design_desc = placeholder_description | default: '<p>A timeless solitaire silhouette in solid 18k gold, designed to be worn every day. The centre stone is not chosen from a menu — it is prescribed for you from your date, time, city and country of birth.</p>'
 
-  if path_downcase contains 'solace'
-    assign default_idx = 1
-    assign design_title = 'The Solace — Signature Pendant'
-    assign design_price = '$2,100'
-    assign design_desc = '<p>An intimate everyday pendant worn close to the heart, set in solid gold with the single natural gemstone prescribed by our Vedic astrologer from your date, time, city and country of birth.</p>'
-  elsif path_downcase contains 'balance'
-    assign default_idx = 2
-    assign design_title = 'The Balance — Signature Bracelet'
-    assign design_price = '$2,650'
-    assign design_desc = '<p>A refined gold bracelet balanced around your prescribed natal gemstone, crafted for effortless everyday wear and accompanied by your personal gemstone prescription.</p>'
-  elsif path_downcase contains 'aura'
-    assign default_idx = 3
-    assign design_title = 'The Aura — Signature Drop Earrings'
-    assign design_price = '$2,800'
-    assign design_desc = '<p>Luminous drop earrings pairing architectural goldwork with your personally prescribed gemstone, selected from your birth date, time, city and country.</p>'
-  elsif path_downcase contains 'signet'
-    assign default_idx = 4
-    assign design_title = 'The Signet — Signature Crest Ring'
-    assign design_price = '$2,950'
-    assign design_desc = '<p>A modern heirloom signet ring in solid gold, centering the natural gemstone prescribed from your natal birth chart.</p>'
-  elsif path_downcase contains 'celestial'
-    assign default_idx = 5
-    assign design_title = 'The Celestial — Signature Medallion'
-    assign design_price = '$3,100'
-    assign design_desc = '<p>A sculptural talisman medallion inspired by celestial geometry, holding the natural gemstone prescribed from your birth details.</p>'
-  elsif path_downcase contains 'custom' or path_downcase contains 'bespoke'
-    assign default_idx = 6
-    assign design_title = 'Custom — Bespoke Commission'
-    assign design_price = 'By Consultation'
-    assign design_desc = '<p>A one-of-a-kind bespoke creation tailored around your prescribed gemstone and personal silhouette preferences, crafted in 5–7 weeks.</p>'
-  endif
-
   assign has_real_product = false
   if product != blank and product.id != blank
     assign has_real_product = true
@@ -52,7 +20,7 @@
   endif
 -%}
 
-<div class="pj-pdp__container">
+<div class="pj-pdp__container" data-pdp-root data-has-real-product="{{ has_real_product }}">
   <nav class="pj-pdp__crumbs" aria-label="Breadcrumb">
     <a href="{{ routes.root_url }}">Home</a>
     <span aria-hidden="true">/</span>
@@ -63,13 +31,13 @@
 
   <!-- Quick Design Selector Pills (Placeholder Preview Switcher) -->
   <div class="pj-pdp__design-pills" role="navigation" aria-label="Switch design">
-    <a href="/products/the-classic" class="pj-pdp__design-pill{% if default_idx == 0 %} is-active{% endif %}">01 · The Classic</a>
-    <a href="/products/the-solace" class="pj-pdp__design-pill{% if default_idx == 1 %} is-active{% endif %}">02 · The Solace</a>
-    <a href="/products/the-balance" class="pj-pdp__design-pill{% if default_idx == 2 %} is-active{% endif %}">03 · The Balance</a>
-    <a href="/products/the-aura" class="pj-pdp__design-pill{% if default_idx == 3 %} is-active{% endif %}">04 · The Aura</a>
-    <a href="/products/the-signet" class="pj-pdp__design-pill{% if default_idx == 4 %} is-active{% endif %}">05 · The Signet</a>
-    <a href="/products/the-celestial" class="pj-pdp__design-pill{% if default_idx == 5 %} is-active{% endif %}">06 · The Celestial</a>
-    <a href="/products/custom-bespoke" class="pj-pdp__design-pill{% if default_idx == 6 %} is-active{% endif %}">07 · Custom</a>
+    <a href="/products/the-classic" data-design-slug="the-classic" class="pj-pdp__design-pill{% if default_idx == 0 %} is-active{% endif %}">01 · The Classic</a>
+    <a href="/products/the-solace" data-design-slug="the-solace" class="pj-pdp__design-pill{% if default_idx == 1 %} is-active{% endif %}">02 · The Solace</a>
+    <a href="/products/the-balance" data-design-slug="the-balance" class="pj-pdp__design-pill{% if default_idx == 2 %} is-active{% endif %}">03 · The Balance</a>
+    <a href="/products/the-aura" data-design-slug="the-aura" class="pj-pdp__design-pill{% if default_idx == 3 %} is-active{% endif %}">04 · The Aura</a>
+    <a href="/products/the-signet" data-design-slug="the-signet" class="pj-pdp__design-pill{% if default_idx == 4 %} is-active{% endif %}">05 · The Signet</a>
+    <a href="/products/the-celestial" data-design-slug="the-celestial" class="pj-pdp__design-pill{% if default_idx == 5 %} is-active{% endif %}">06 · The Celestial</a>
+    <a href="/products/custom-bespoke" data-design-slug="custom-bespoke" class="pj-pdp__design-pill{% if default_idx == 6 %} is-active{% endif %}">07 · Custom</a>
   </div>
 
   <div class="pj-pdp__grid">
@@ -86,7 +54,7 @@
           {%- for i in (0..3) -%}
             {%- assign idx = default_idx | plus: i | modulo: 7 -%}
             <div class="pj-pdp__slide{% if forloop.first %} is-active{% endif %}" data-pdp-slide="{{ forloop.index0 }}">
-              <img src="{{ fallbacks[idx] | asset_url }}" alt="{{ design_title | escape }} — view {{ forloop.index }}" class="pj-pdp__img" width="900" height="1200" loading="eager">
+              <img src="{{ fallbacks[idx] | asset_url }}" alt="{{ design_title | escape }} — view {{ forloop.index }}" class="pj-pdp__img" data-pdp-slide-img="{{ forloop.index0 }}" width="900" height="1200" loading="eager">
             </div>
           {%- endfor -%}
         {%- endif -%}
@@ -104,7 +72,7 @@
           {%- for i in (0..3) -%}
             {%- assign idx = default_idx | plus: i | modulo: 7 -%}
             <button type="button" class="pj-pdp__thumb{% if forloop.first %} is-active{% endif %}" data-pdp-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}">
-              <img src="{{ fallbacks[idx] | asset_url }}" alt="" width="120" height="160" loading="lazy">
+              <img src="{{ fallbacks[idx] | asset_url }}" alt="" data-pdp-thumb-img="{{ forloop.index0 }}" width="120" height="160" loading="lazy">
             </button>
           {%- endfor -%}
         {%- endif -%}
@@ -114,10 +82,10 @@
     <!-- DETAILS + NATAL BIRTH DETAILS FORM -->
     <div class="pj-pdp__details">
       <p class="pj-pdp__eyebrow">{{ eyebrow | default: 'SIGNATURE DESIGN · PRESCRIBED JEWELS' }}</p>
-      <h1 id="pj-pdp-title" class="pj-pdp__title">{{ design_title }}</h1>
+      <h1 id="pj-pdp-title" class="pj-pdp__title" data-pdp-title>{{ design_title }}</h1>
 
       <div class="pj-pdp__price-row">
-        <p class="pj-pdp__price">
+        <p class="pj-pdp__price" data-pdp-price>
           {%- if has_real_product and current_variant.price > 0 -%}
             {{ current_variant.price | money }}
           {%- else -%}
@@ -130,7 +98,7 @@
       </div>
       <p class="pj-pdp__price-note">{{ price_note | default: 'The personal gemstone selection is included.' }}</p>
 
-      <div class="pj-pdp__desc">
+      <div class="pj-pdp__desc" data-pdp-desc>
         {%- if has_real_product and product.description != blank -%}
           {{ product.description }}
         {%- else -%}
@@ -224,11 +192,11 @@
         <form id="pj-pdp-form" class="pj-pdp__form" data-pdp-form data-placeholder-form novalidate>
           <div class="pj-pdp__field">
             <label for="pj-pdp-metal" class="pj-pdp__label">Select Precious Metal</label>
-            <select id="pj-pdp-metal" name="metal" class="pj-pdp__input">
-              <option value="18k Yellow Gold" selected>18k Solid Yellow Gold — {{ design_price }}</option>
-              <option value="18k Rose Gold">18k Solid Rose Gold — {{ design_price }}</option>
-              <option value="18k White Gold">18k Solid White Gold — {{ design_price }}</option>
-              <option value="Platinum">Platinum 950 — {{ design_price }}</option>
+            <select id="pj-pdp-metal" name="metal" class="pj-pdp__input" data-pdp-metal>
+              <option value="18k Yellow Gold" selected>18k Solid Yellow Gold</option>
+              <option value="18k Rose Gold">18k Solid Rose Gold</option>
+              <option value="18k White Gold">18k Solid White Gold</option>
+              <option value="Platinum">Platinum 950</option>
             </select>
           </div>
 
@@ -352,6 +320,116 @@
     const scripts = document.querySelectorAll('script');
     const currentScript = document.currentScript || scripts[scripts.length - 1];
     const root = currentScript.closest('.pj-pdp') || document;
+    const pdpRoot = root.querySelector('[data-pdp-root]');
+    const hasRealProduct = pdpRoot && pdpRoot.getAttribute('data-has-real-product') === 'true';
+
+    const designImages = [
+      {{ 'design-01-classic.jpg' | asset_url | json }},
+      {{ 'design-02-solace.jpg' | asset_url | json }},
+      {{ 'design-03-balance.jpg' | asset_url | json }},
+      {{ 'design-04-aura.jpg' | asset_url | json }},
+      {{ 'design-05-signet.jpg' | asset_url | json }},
+      {{ 'design-06-celestial.jpg' | asset_url | json }},
+      {{ 'design-07-bespoke.jpg' | asset_url | json }}
+    ];
+
+    const catalog = {
+      'the-classic': {
+        idx: 0,
+        title: 'The Classic — Signature Ring',
+        price: '$2,400',
+        desc: '<p>A timeless solitaire silhouette in solid 18k gold, designed to be worn every day. The centre stone is not chosen from a menu — it is prescribed for you from your date, time, city and country of birth.</p>'
+      },
+      'the-solace': {
+        idx: 1,
+        title: 'The Solace — Signature Pendant',
+        price: '$2,100',
+        desc: '<p>An intimate everyday pendant worn close to the heart, set in solid gold with the single natural gemstone prescribed by our Vedic astrologer from your date, time, city and country of birth.</p>'
+      },
+      'the-balance': {
+        idx: 2,
+        title: 'The Balance — Signature Bracelet',
+        price: '$2,650',
+        desc: '<p>A refined gold bracelet balanced around your prescribed natal gemstone, crafted for effortless everyday wear and accompanied by your personal gemstone prescription.</p>'
+      },
+      'the-aura': {
+        idx: 3,
+        title: 'The Aura — Signature Drop Earrings',
+        price: '$2,800',
+        desc: '<p>Luminous drop earrings pairing architectural goldwork with your personally prescribed gemstone, selected from your birth date, time, city and country.</p>'
+      },
+      'the-signet': {
+        idx: 4,
+        title: 'The Signet — Signature Crest Ring',
+        price: '$2,950',
+        desc: '<p>A modern heirloom signet ring in solid gold, centering the natural gemstone prescribed from your natal birth chart.</p>'
+      },
+      'the-celestial': {
+        idx: 5,
+        title: 'The Celestial — Signature Medallion',
+        price: '$3,100',
+        desc: '<p>A sculptural talisman medallion inspired by celestial geometry, holding the natural gemstone prescribed from your birth details.</p>'
+      },
+      'custom-bespoke': {
+        idx: 6,
+        title: 'Custom — Bespoke Commission',
+        price: 'By Consultation',
+        desc: '<p>A one-of-a-kind bespoke creation tailored around your prescribed gemstone and personal silhouette preferences, crafted in 5–7 weeks.</p>'
+      }
+    };
+
+    const applyDesignBySlug = (slug) => {
+      if (hasRealProduct) return;
+      const item = catalog[slug];
+      if (!item) return;
+
+      const titleEl = root.querySelector('[data-pdp-title]');
+      const crumbEl = root.querySelector('[data-pdp-crumb-title]');
+      const priceEl = root.querySelector('[data-pdp-price]');
+      const descEl = root.querySelector('[data-pdp-desc]');
+
+      if (titleEl) titleEl.textContent = item.title;
+      if (crumbEl) crumbEl.textContent = item.title;
+      if (priceEl) priceEl.textContent = item.price;
+      if (descEl) descEl.innerHTML = item.desc;
+
+      root.querySelectorAll('[data-design-slug]').forEach((pill) => {
+        pill.classList.toggle('is-active', pill.getAttribute('data-design-slug') === slug);
+      });
+
+      for (let i = 0; i < 4; i++) {
+        const imgSrc = designImages[(item.idx + i) % designImages.length];
+        const slideImg = root.querySelector(`[data-pdp-slide-img="${i}"]`);
+        const thumbImg = root.querySelector(`[data-pdp-thumb-img="${i}"]`);
+        if (slideImg) slideImg.src = imgSrc;
+        if (thumbImg) thumbImg.src = imgSrc;
+      }
+    };
+
+    const detectSlugFromLocation = () => {
+      const p = window.location.pathname.toLowerCase();
+      for (const key of Object.keys(catalog)) {
+        if (p.includes(key)) return key;
+      }
+      return null;
+    };
+
+    const initialSlug = detectSlugFromLocation();
+    if (initialSlug) {
+      applyDesignBySlug(initialSlug);
+    }
+
+    root.querySelectorAll('[data-design-slug]').forEach((pill) => {
+      pill.addEventListener('click', (e) => {
+        if (hasRealProduct) return;
+        e.preventDefault();
+        const slug = pill.getAttribute('data-design-slug');
+        if (window.history && window.history.pushState) {
+          window.history.pushState({}, '', `/products/${slug}`);
+        }
+        applyDesignBySlug(slug);
+      });
+    });
 
     const slides = root.querySelectorAll('[data-pdp-slide]');
     const thumbs = root.querySelectorAll('[data-pdp-thumb]');
@@ -391,7 +469,6 @@
           const bCity = form.querySelector('[name="birth_city"]')?.value || '';
           const bCountry = form.querySelector('[name="birth_country"]')?.value || '';
 
-          // Pre-fill the prescription modal if present, or show inline confirmation
           const modal = document.getElementById('pj-prescription-modal');
           if (modal && typeof modal.showModal === 'function') {
             const mDate = modal.querySelector('#pj-birth-date');
@@ -404,7 +481,7 @@
             if (mCountry) mCountry.value = bCountry;
             modal.showModal();
           } else if (success && summary) {
-            summary.textContent = `Birth details logged (${bDate} at ${bTime}, ${bCity}, ${bCountry}). Connect a live Shopify product to proceed directly to payment.`;
+            summary.textContent = `Birth details logged (${bDate} at ${bTime}, ${bCity}, ${bCountry}).`;
             success.hidden = false;
           }
         }

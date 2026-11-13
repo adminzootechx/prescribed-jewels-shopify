@@ -1,15 +1,45 @@
 {%- assign s = section.settings -%}
+{%- assign bg_op = s.bg_opacity | default: 100 -%}
+
+{%- if s.use_custom_fonts -%}
+  <style>
+    {{ s.font_heading | font_face: font_display: 'swap' }}
+    {{ s.font_body | font_face: font_display: 'swap' }}
+  </style>
+{%- endif -%}
 
 <section
   id="pj-contact"
   class="pj-contact-section"
+  data-route-section="contact"
   style="
-    --pj-contact-bg: {{ s.bg_color | default: '#FFFFFF' }};
+    {% if bg_op < 100 %}
+      --pj-contact-bg: color-mix(in srgb, {{ s.bg_color | default: '#FFFFFF' }} {{ bg_op }}%, transparent);
+    {% else %}
+      --pj-contact-bg: {{ s.bg_color | default: '#FFFFFF' }};
+    {% endif %}
     --pj-contact-text: {{ s.text_color | default: '#1F2A44' }};
     --pj-contact-muted: {{ s.muted_color | default: '#3B4760' }};
+    --pj-contact-meta: {{ s.meta_color | default: '#3B4760' }};
+    --pj-contact-input-bg: {{ s.input_bg_color | default: '#FFFFFF' }};
+    --pj-contact-input-border: {{ s.input_border_color | default: '#8E98A8' }};
+    --pj-contact-input-text: {{ s.input_text_color | default: '#1F2A44' }};
     --pj-contact-btn-bg: {{ s.btn_bg_color | default: '#233352' }};
+    --pj-contact-btn-text: {{ s.btn_text_color | default: '#FFFFFF' }};
+    --pj-contact-title-size: {{ s.heading_size | default: 42 }}px;
+    --pj-contact-lead-size: {{ s.subtext_size | default: 15 }}px;
+    --pj-contact-meta-size: {{ s.meta_size | default: 14 }}px;
+    --pj-contact-input-size: {{ s.input_size | default: 14 }}px;
+    --pj-contact-btn-size: {{ s.btn_size | default: 14 }}px;
+    --pj-contact-max-w: {{ s.max_width | default: 1220 }}px;
+    --pj-contact-hdr-gap: {{ s.header_gap | default: 48 }}px;
+    --pj-contact-img-col: {{ s.image_width | default: 48 }}%;
     --pj-contact-pt: {{ s.padding_top | default: 56 }}px;
     --pj-contact-pb: {{ s.padding_bottom | default: 80 }}px;
+    {% if s.use_custom_fonts %}
+      --pj-contact-font-heading: {{ s.font_heading.family }}, {{ s.font_heading.fallback_families }};
+      --pj-contact-font-body: {{ s.font_body.family }}, {{ s.font_body.fallback_families }};
+    {% endif %}
   "
 >
   {% render 'pj-contact-content',
@@ -18,9 +48,22 @@
     subtext: s.subtext,
     email: s.email,
     insta_handle: s.insta_handle,
-    insta_url: s.insta_url
+    insta_url: s.insta_url,
+    btn_label: s.btn_label
   %}
 </section>
+
+<script>
+  (() => {
+    const sec = document.getElementById('pj-contact');
+    if (!sec) return;
+    const is404Template = document.body.classList.contains('template-404');
+    if (is404Template) {
+      const path = window.location.pathname.toLowerCase();
+      sec.style.display = path.includes('contact') ? '' : 'none';
+    }
+  })();
+</script>
 
 {% schema %}
 {
@@ -28,20 +71,43 @@
   "tag": "div",
   "class": "pj-section-contact",
   "settings": [
-    { "type": "header", "content": "Image & Text" },
+    { "type": "header", "content": "Image & Text Content" },
     { "type": "image_picker", "id": "image", "label": "Left Column Image (optional override)" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Get in Touch" },
     { "type": "textarea", "id": "subtext", "label": "Subtitle", "default": "We'd love to hear from you. Whether you're enquiring about a piece, arranging a virtual appointment, or exploring a bespoke creation, our team is here to assist." },
     { "type": "text", "id": "email", "label": "Email Address", "default": "hello@prescribedjewels.com" },
     { "type": "text", "id": "insta_handle", "label": "Instagram Handle (without @)", "default": "prescribed.jewels" },
-    { "type": "url", "id": "insta_url", "label": "Instagram Link URL" },
-    { "type": "header", "content": "Colours & Spacing" },
-    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#FFFFFF" },
-    { "type": "color", "id": "text_color", "label": "Heading color", "default": "#1F2A44" },
-    { "type": "color", "id": "muted_color", "label": "Body & link color", "default": "#3B4760" },
-    { "type": "color", "id": "btn_bg_color", "label": "Send button color", "default": "#233352" },
-    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 56 },
-    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 20, "max": 120, "step": 4, "unit": "px", "default": 80 }
+    { "type": "text", "id": "insta_url", "label": "Instagram Link URL", "default": "https://www.instagram.com/prescribed.jewels?exln=dGVsc2ZjdTloM2g=" },
+    { "type": "text", "id": "btn_label", "label": "Submit Button Label", "default": "Send" },
+
+    { "type": "header", "content": "Fonts & Font Sizes" },
+    { "type": "checkbox", "id": "use_custom_fonts", "label": "Use custom fonts for this section", "default": false },
+    { "type": "font_picker", "id": "font_heading", "label": "Heading Font", "default": "cormorant_n4" },
+    { "type": "font_picker", "id": "font_body", "label": "Body & Form Font", "default": "jost_n4" },
+    { "type": "range", "id": "heading_size", "label": "Heading Font Size", "min": 20, "max": 72, "step": 1, "unit": "px", "default": 42 },
+    { "type": "range", "id": "subtext_size", "label": "Subtitle Font Size", "min": 12, "max": 28, "step": 1, "unit": "px", "default": 15 },
+    { "type": "range", "id": "meta_size", "label": "Email & Instagram Font Size", "min": 11, "max": 24, "step": 1, "unit": "px", "default": 14 },
+    { "type": "range", "id": "input_size", "label": "Form Input Font Size", "min": 12, "max": 22, "step": 1, "unit": "px", "default": 14 },
+    { "type": "range", "id": "btn_size", "label": "Send Button Font Size", "min": 11, "max": 22, "step": 1, "unit": "px", "default": 14 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#FFFFFF" },
+    { "type": "range", "id": "bg_opacity", "label": "Background Opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "color", "id": "text_color", "label": "Heading Color", "default": "#1F2A44" },
+    { "type": "color", "id": "muted_color", "label": "Subtitle Color", "default": "#3B4760" },
+    { "type": "color", "id": "meta_color", "label": "Email & Instagram Link Color", "default": "#3B4760" },
+    { "type": "color", "id": "input_bg_color", "label": "Form Input Background Color", "default": "#FFFFFF" },
+    { "type": "color", "id": "input_border_color", "label": "Form Input Border Color", "default": "#8E98A8" },
+    { "type": "color", "id": "input_text_color", "label": "Form Input Text Color", "default": "#1F2A44" },
+    { "type": "color", "id": "btn_bg_color", "label": "Send Button Background Color", "default": "#233352" },
+    { "type": "color", "id": "btn_text_color", "label": "Send Button Text Color", "default": "#FFFFFF" },
+
+    { "type": "header", "content": "Layout & Spacing" },
+    { "type": "range", "id": "max_width", "label": "Container Max Width", "min": 900, "max": 1600, "step": 20, "unit": "px", "default": 1220 },
+    { "type": "range", "id": "image_width", "label": "Left Image Column Width", "min": 35, "max": 60, "step": 1, "unit": "%", "default": 48 },
+    { "type": "range", "id": "header_gap", "label": "Space Below Header", "min": 16, "max": 88, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 16, "max": 140, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 16, "max": 140, "step": 4, "unit": "px", "default": 80 }
   ],
   "presets": [
     {

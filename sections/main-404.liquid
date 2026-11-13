@@ -1,49 +1,30 @@
-{%- assign path_dc = request.path | downcase -%}
-{%- if path_dc contains 'contact' -%}
-  <section
-    id="pj-contact"
-    class="pj-contact-section"
-    style="
-      --pj-contact-bg: #FFFFFF;
-      --pj-contact-text: #1F2A44;
-      --pj-contact-muted: #3B4760;
-      --pj-contact-btn-bg: #233352;
-      --pj-contact-pt: 56px;
-      --pj-contact-pb: 80px;
-    "
-  >
-    {% render 'pj-contact-content' %}
-  </section>
-{%- elsif path_dc contains '/products/' or path_dc contains 'product' or path_dc contains 'design' -%}
-  <section
-    class="pj-pdp"
-    aria-labelledby="pj-pdp-title"
-    style="
-      --pj-pdp-pt: 48px;
-      --pj-pdp-pb: 72px;
-      --pj-pdp-max-w: 1280px;
-      --pj-pdp-ratio: 4 / 5;
-      --pj-pdp-bg: #F3ECE0;
-      --pj-pdp-text: #1A1815;
-      --pj-pdp-accent: #9A7440;
-    "
-  >
-    {% render 'pj-product-content' %}
-  </section>
-{%- else -%}
-  <section class="pj-contact-section" style="--pj-contact-bg: #F3ECE0; --pj-contact-pt: 80px; --pj-contact-pb: 96px; text-align: center;">
-    <div class="pj-container" style="max-width: 640px; margin: 0 auto;">
-      <p class="pj-eyebrow">404</p>
-      <h1 class="pj-section-title" style="margin-bottom: 1rem;">Page Not Found</h1>
-      <p style="color: var(--pj-text-muted); margin-bottom: 2rem;">The page you are looking for may have moved or no longer exists.</p>
-      <a href="{{ routes.root_url }}" class="pj-btn pj-btn--primary">Return Home →</a>
-    </div>
-  </section>
-{%- endif -%}
+<section
+  id="pj-404-fallback"
+  class="pj-contact-section"
+  style="--pj-contact-bg: #F3ECE0; --pj-contact-pt: 80px; --pj-contact-pb: 96px; text-align: center; display: none;"
+>
+  <div class="pj-container" style="max-width: 640px; margin: 0 auto;">
+    <p class="pj-eyebrow">404</p>
+    <h1 class="pj-section-title" style="margin-bottom: 1rem;">Page Not Found</h1>
+    <p style="color: var(--pj-text-muted); margin-bottom: 2rem;">The page you are looking for may have moved or no longer exists.</p>
+    <a href="{{ routes.root_url }}" class="pj-btn pj-btn--primary">Return Home →</a>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const sec = document.getElementById('pj-404-fallback');
+    if (!sec) return;
+    const path = window.location.pathname.toLowerCase();
+    const isContact = path.includes('contact');
+    const isProduct = path.includes('/products/') || path.includes('product') || path.includes('design') || path.includes('classic') || path.includes('solace') || path.includes('balance') || path.includes('aura') || path.includes('signet') || path.includes('celestial') || path.includes('bespoke');
+    sec.style.display = (!isContact && !isProduct) ? '' : 'none';
+  })();
+</script>
 
 {% schema %}
 {
-  "name": "404 / Page Fallback",
+  "name": "404 Not Found Message",
   "tag": "div",
   "class": "pj-section-404",
   "settings": []

@@ -1,7 +1,9 @@
 {%- assign s = section.settings -%}
 
 <section
+  id="pj-product-page"
   class="pj-pdp"
+  data-route-section="product"
   aria-labelledby="pj-pdp-title"
   style="
     --pj-pdp-pt: {{ s.padding_top | default: 48 }}px;
@@ -26,6 +28,19 @@
     placeholder_description: s.placeholder_description
   %}
 </section>
+
+<script>
+  (() => {
+    const sec = document.getElementById('pj-product-page');
+    if (!sec) return;
+    const is404Template = document.body.classList.contains('template-404');
+    if (is404Template) {
+      const path = window.location.pathname.toLowerCase();
+      const isProductRoute = path.includes('/products/') || path.includes('product') || path.includes('design') || path.includes('classic') || path.includes('solace') || path.includes('balance') || path.includes('aura') || path.includes('signet') || path.includes('celestial') || path.includes('bespoke');
+      sec.style.display = isProductRoute && !path.includes('contact') ? '' : 'none';
+    }
+  })();
+</script>
 
 {% schema %}
 {
@@ -68,6 +83,11 @@
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#F3ECE0" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#1A1815" },
     { "type": "color", "id": "accent_color", "label": "Accent (gold)", "default": "#9A7440" }
+  ],
+  "presets": [
+    {
+      "name": "Product — Natal Order"
+    }
   ]
 }
 {% endschema %}
